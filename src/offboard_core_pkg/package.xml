@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>offboard_core_pkg</name>
+  <version>0.1.0</version>
+  <description>Task-scheduled MAVROS offboard control core.</description>
+  <maintainer email="maintainer@example.com">flight stack maintainers</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>geometry_msgs</depend>
+  <depend>mavros_msgs</depend>
+  <depend>ament_index_cpp</depend>
+  <exec_depend>launch</exec_depend>
+  <exec_depend>launch_ros</exec_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

@@ -1,0 +1,13 @@
+offboard_core_node:
+  ros__parameters:
+    # Keep false until MAVROS/SITL topic and frame validation has passed.
+    auto_start: false
+    setpoint_rate_hz: 20.0
+    presetpoint_duration_s: 2.0
+    command_timeout_s: 10.0
+    command_retry_interval_s: 1.0
+    takeoff_height_m: 1.5
+    takeoff_tolerance_m: 0.20
+    takeoff_timeout_s: 30.0
+    hover_duration_s: 2.0
+    land_timeout_s: 15.0

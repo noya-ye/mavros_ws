@@ -1,0 +1,15 @@
+# ROS 2 / colcon generated artifacts
+/build/
+/install/
+/log/
+
+# Editor and operating-system files
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Local Codex workspace metadata
+/.agents/
+/.codex/

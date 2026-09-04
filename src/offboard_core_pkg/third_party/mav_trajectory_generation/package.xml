@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>mav_trajectory_generation_vendor</name>
+  <version>0.0.1</version>
+  <description>Optional trajectory generation boundary for offboard_core_pkg.</description>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>
