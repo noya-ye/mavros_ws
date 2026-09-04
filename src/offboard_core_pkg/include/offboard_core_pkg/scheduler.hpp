@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <limits>
+#include <iostream>
 
 #include "offboard_core_pkg/itask.hpp"
 
@@ -75,6 +76,7 @@ public:
           paused_stack_.push_back(Frame{idx_, true});
         } else {
           current->onCancel(ctx, iface);
+          logTaskEnd(*current, CancelledStatus{});
         }
       } else if (mode == InterruptMode::RESUME_CURRENT) {
         paused_stack_.push_back(Frame{idx_, false});
@@ -102,10 +104,15 @@ public:
     if (done_ || failed_) return;
     if (idx_ >= tasks_.size()) { done_ = true; return; }
     auto &task = *tasks_[idx_].task;
-    if (!entered_) { task.onEnter(ctx, iface); entered_ = true; }
+    if (!entered_) {
+      logTaskStart(task);
+      task.onEnter(ctx, iface);
+      entered_ = true;
+    }
     const auto status = task.tick(ctx, iface, dt_s);
     if (status == ITask::Status::RUNNING) return;
     task.onExit(ctx, iface);
+    logTaskEnd(task, status);
     entered_ = false;
     if (status == ITask::Status::FAILURE) { failed_ = true; done_ = true; return; }
     if (!paused_stack_.empty()) {
@@ -140,13 +147,37 @@ private:
     entered_ = false;
   }
   void cancelCurrentAndPaused(Context &ctx, MavrosIface &iface) {
-    if (!done_ && idx_ < tasks_.size() && entered_) tasks_[idx_].task->onCancel(ctx, iface);
+    if (!done_ && idx_ < tasks_.size() && entered_) {
+      tasks_[idx_].task->onCancel(ctx, iface);
+      logTaskEnd(*tasks_[idx_].task, CancelledStatus{});
+    }
     while (!paused_stack_.empty()) {
       const auto frame = paused_stack_.back();
       paused_stack_.pop_back();
-      if (frame.idx < tasks_.size() && frame.was_entered) tasks_[frame.idx].task->onCancel(ctx, iface);
+      if (frame.idx < tasks_.size() && frame.was_entered) {
+        tasks_[frame.idx].task->onCancel(ctx, iface);
+        logTaskEnd(*tasks_[frame.idx].task, CancelledStatus{});
+      }
     }
     entered_ = false;
+  }
+
+  struct CancelledStatus {};
+
+  void logTaskStart(const ITask &task) const {
+    const auto total = total_count();
+    const auto position = current_index() + 1;
+    std::cout << "[TASK START] " << task.name() << " ("
+              << position << "/" << total << ")" << std::endl;
+  }
+
+  void logTaskEnd(const ITask &task, ITask::Status status) const {
+    const char *label = status == ITask::Status::SUCCESS ? "SUCCESS" : "FAILURE";
+    std::cout << "[TASK END] " << task.name() << " - " << label << std::endl;
+  }
+
+  void logTaskEnd(const ITask &task, CancelledStatus) const {
+    std::cout << "[TASK END] " << task.name() << " - CANCELLED" << std::endl;
   }
 
   std::vector<TaskSlot> tasks_;
