@@ -19,6 +19,8 @@ private:
   double retry_interval_s_;
   double elapsed_s_{0.0};
   double retry_elapsed_s_{0.0};
+  double approach_height_m_{0.0};
+  bool approach_initialized_{false};
   bool request_pending_{false};
   bool request_accepted_{false};
 };

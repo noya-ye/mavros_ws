@@ -9,6 +9,7 @@ constexpr char kStateTopic[] = "/mavros/state";
 constexpr char kPoseTopic[] = "/mavros/local_position/pose";
 constexpr char kVelocityTopic[] = "/mavros/local_position/velocity_local";
 constexpr char kPositionSetpointTopic[] = "/mavros/setpoint_position/local";
+constexpr char kRawSetpointTopic[] = "/mavros/setpoint_raw/local";
 }  // namespace
 
 MavrosIface::MavrosIface(rclcpp::Node &node, Context &context) : node_(node), ctx_(context) {
@@ -43,6 +44,8 @@ MavrosIface::MavrosIface(rclcpp::Node &node, Context &context) : node_(node), ct
     
   position_pub_ = node_.create_publisher<geometry_msgs::msg::PoseStamped>(
     kPositionSetpointTopic, rclcpp::QoS(10));
+  raw_setpoint_pub_ = node_.create_publisher<mavros_msgs::msg::PositionTarget>(
+    kRawSetpointTopic, rclcpp::QoS(10));
     // 发布setpoint：控制飞机的目标位置和姿态，使飞机保持offboard
 
 
@@ -64,6 +67,36 @@ MavrosIface::MavrosIface(rclcpp::Node &node, Context &context) : node_(node), ct
 
 void MavrosIface::publishSetpoint() {
   if (!ctx_.publish_position_setpoint) return;
+  const auto mode = ctx_.use_position_velocity_acceleration
+    ? SetpointMode::POSITION_VELOCITY_ACCELERATION : ctx_.setpoint_mode;
+  if (mode != SetpointMode::POSITION) {
+    mavros_msgs::msg::PositionTarget msg;
+    msg.header.stamp = node_.now();
+    msg.header.frame_id = "map";
+    msg.coordinate_frame = mavros_msgs::msg::PositionTarget::FRAME_LOCAL_NED;
+    using Target = mavros_msgs::msg::PositionTarget;
+    if (mode == SetpointMode::POSITION_VELOCITY) {
+      msg.type_mask = Target::IGNORE_AFX | Target::IGNORE_AFY | Target::IGNORE_AFZ;
+    } else if (mode == SetpointMode::VELOCITY_ONLY) {
+      msg.type_mask = Target::IGNORE_PX | Target::IGNORE_PY | Target::IGNORE_PZ |
+        Target::IGNORE_AFX | Target::IGNORE_AFY | Target::IGNORE_AFZ;
+    } else {
+      msg.type_mask = 0;
+    }
+    msg.position.x = ctx_.position_setpoint_enu.x;
+    msg.position.y = ctx_.position_setpoint_enu.y;
+    msg.position.z = -ctx_.position_setpoint_enu.z;
+    msg.velocity.x = ctx_.velocity_setpoint_enu.x;
+    msg.velocity.y = ctx_.velocity_setpoint_enu.y;
+    msg.velocity.z = -ctx_.velocity_setpoint_enu.z;
+    msg.acceleration_or_force.x = ctx_.acceleration_setpoint_enu.x;
+    msg.acceleration_or_force.y = ctx_.acceleration_setpoint_enu.y;
+    msg.acceleration_or_force.z = -ctx_.acceleration_setpoint_enu.z;
+    msg.yaw = static_cast<float>(ctx_.yaw_setpoint_enu);
+    msg.yaw_rate = static_cast<float>(ctx_.yaw_rate_setpoint_enu);
+    raw_setpoint_pub_->publish(msg);
+    return;
+  }
   geometry_msgs::msg::PoseStamped msg;
   msg.header.stamp = node_.now();
   msg.header.frame_id = "map";
