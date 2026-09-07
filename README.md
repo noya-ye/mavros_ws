@@ -57,6 +57,31 @@ The task timing parameters are `presetpoint_duration_s`, `command_timeout_s`,
 `takeoff_timeout_s`, `hover_duration_s`, and `land_timeout_s` in
 `config/ego_goto.yaml`.
 
+## EGO Test Flight
+
+`ego_test_node` runs `presetpoint -> set_offboard -> arm -> takeoff 1 m ->
+hover 5 s -> EGO +x 2 m -> land`. It publishes the EGO goal to
+`/simple_2d_planner/goal`, consumes FAST-LIO odometry and `/position_cmd`, and
+uses `auto_start: true`; launching it begins the sequence after MAVROS has a
+valid local pose.
+
+```bash
+source /opt/ros/humble/setup.bash
+source install/setup.bash
+ros2 launch offboard_core_pkg ego_test.launch.py
+```
+
+The defaults in `config/ego_test.yaml` require FAST-LIO and MAVROS local
+coordinates to remain aligned in ENU: `ego.swap_xy=false`, axis signs of `1`,
+and `ego.yaw_align_rad=0`.
+
 The restricted build environment cannot initialize CycloneDDS because it has no
 enumerable UDP interface. Run the node and MAVROS/PX4 SITL validation in a
 normal ROS 2 environment with DDS networking available.
+
+## Lidar to PX4 Bridge
+
+`lidar_to_px4_bridge` forwards `/fastlio2/lio_odom` to
+`/mavros/vision_pose/pose`. It rejects non-finite positions and any position
+jump larger than `0.1 m` relative to the last accepted sample. The threshold
+can be adjusted with the `jump_threshold_m` ROS parameter when needed.

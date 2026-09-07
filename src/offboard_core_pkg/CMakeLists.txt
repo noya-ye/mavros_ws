@@ -43,6 +43,10 @@ add_executable(ego_goto_node src/nodes/ego_goto_node.cpp)
 target_link_libraries(ego_goto_node ${PROJECT_NAME})
 ament_target_dependencies(ego_goto_node ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs)
 
+add_executable(ego_test_node src/nodes/ego_test_node.cpp)
+target_link_libraries(ego_test_node ${PROJECT_NAME})
+ament_target_dependencies(ego_test_node ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs)
+
 add_executable(snake_ego_avoid_node src/nodes/snake_ego_avoid_node.cpp)
 target_link_libraries(snake_ego_avoid_node ${PROJECT_NAME})
 ament_target_dependencies(snake_ego_avoid_node
@@ -51,7 +55,7 @@ ament_target_dependencies(snake_ego_avoid_node
 add_executable(lidar_to_px4_bridge src/bridge/lidar_to_px4_bridge.cpp)
 ament_target_dependencies(lidar_to_px4_bridge rclcpp geometry_msgs nav_msgs)
 
-install(TARGETS ${PROJECT_NAME} offboard_core_node snake_node ego_goto_node
+install(TARGETS ${PROJECT_NAME} offboard_core_node snake_node ego_goto_node ego_test_node
   snake_ego_avoid_node lidar_to_px4_bridge
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

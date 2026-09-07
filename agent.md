@@ -21,6 +21,9 @@
 - Added `TakeoffTask` and completed the node sequence as `presetpoint -> set_offboard -> arm -> takeoff -> hover -> land`; validation is pending the build below.
 - `source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select offboard_core_pkg --allow-overriding offboard_core_pkg --event-handlers console_direct+` completed successfully: `1 package finished [10.6s]`.
 - `source /opt/ros/humble/setup.bash && source install/setup.bash && ROS_LOG_DIR=/tmp/mavros_ws_roslog ros2 launch offboard_core_pkg offboard_core.launch.py --show-args` parsed successfully with no arguments.
+- Date: 2026-09-07. Added `ego_test_node`: `presetpoint -> set_offboard -> arm -> takeoff(1 m) -> hover(5 s) -> EGO +x(2 m) -> land`. The test defaults to direct ENU mapping (`swap_xy=false`, unity axis signs, zero yaw alignment) because FAST-LIO and MAVROS local coordinates were verified aligned. `source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select offboard_core_pkg --allow-overriding offboard_core_pkg --event-handlers console_direct+` completed successfully: `1 package finished [0.98s]`. `source /opt/ros/humble/setup.bash && source install/setup.bash && ROS_LOG_DIR=/tmp/mavros_ws_roslog ros2 launch offboard_core_pkg ego_test.launch.py --show-args` parsed successfully. No MAVROS/PX4 flight behavior was executed.
+- Date: 2026-09-07. Added position jump protection to `lidar_to_px4_bridge`: non-finite positions and jumps greater than the default `0.1 m` are rejected before publishing, and rejected samples do not update the accepted-position baseline. `source /opt/ros/humble/setup.bash && colcon build --symlink-install --packages-select offboard_core_pkg --allow-overriding offboard_core_pkg --event-handlers console_direct+` completed successfully: `1 package finished [1min 1s]`. No MAVROS/PX4 runtime behavior was executed.
+- `source /opt/ros/humble/setup.bash && source install/setup.bash && ROS_LOG_DIR=/tmp/mavros_ws_roslog ros2 launch offboard_core_pkg mavros_lidar.launch.py --show-args` parsed successfully with no arguments; the same check without `ROS_LOG_DIR` was blocked by the read-only default `/home/jetson/.ros/log` path.
 
 ## Known Limits
 
@@ -36,5 +39,6 @@
 - [x] Parse the launch file.
 - [x] Compile the independent five-task offboard sequence.
 - [x] Compile the complete six-task flight sequence.
+- [x] Compile and parse the `ego_test_node` launch entry.
 - [ ] Verify the node remains alive with MAVROS/SITL.
 - [ ] Validate OFFBOARD, arming, takeoff, and landing behavior in SITL.

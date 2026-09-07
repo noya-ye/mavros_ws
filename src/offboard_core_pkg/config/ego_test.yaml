@@ -1,0 +1,25 @@
+ego_test_node:
+  ros__parameters:
+    auto_start: true
+    setpoint_rate_hz: 20.0
+    presetpoint_duration_s: 2.0
+    command_timeout_s: 10.0
+    command_retry_interval_s: 1.0
+    takeoff_height_m: 0.8
+    takeoff_tolerance_m: 0.15
+    takeoff_timeout_s: 30.0
+    hover_duration_s: 5.0
+    land_timeout_s: 20.0
+    goal.x_rel_m: 2.0
+    goal.y_rel_m: 0.0
+    ego.goal_topic: /simple_2d_planner/goal
+    ego.goal_frame: lidar
+    ego.use_velocity_ff: true
+    ego.use_acceleration_ff: false
+    ego.vel_ff_scale: 0.5
+    ego.acc_ff_scale: 0.0
+    # FAST-LIO and MAVROS local position are currently aligned in ENU.
+    ego.x_sign: 1.0
+    ego.y_sign: 1.0
+    ego.swap_xy: false
+    ego.yaw_align_rad: 0.0
