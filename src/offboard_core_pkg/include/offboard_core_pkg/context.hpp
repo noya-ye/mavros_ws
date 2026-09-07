@@ -37,7 +37,7 @@ struct Context {
 
   // The scheduler writes this every cycle; the interface publishes it at the
   // configured rate, including during MAVROS OFFBOARD warm-up.
-  Vec3 position_setpoint_enu;
+  Vec3 position_setpoint_enu;  // 飞机应到达的目标位置
   // Optional raw setpoint feed-forward terms, expressed in ROS ENU.
   Vec3 velocity_setpoint_enu;
   Vec3 acceleration_setpoint_enu;

@@ -20,6 +20,7 @@ add_library(${PROJECT_NAME} SHARED
   src/tasks/presetpoint_task.cpp
   src/tasks/set_offboard_task.cpp
   src/tasks/takeoff_task.cpp
+  src/tasks/goto_task.cpp
   src/tasks/snake_grid_task.cpp
   src/tasks/ego_goto_task.cpp
   src/tasks/snake_ego_avoid_task.cpp
@@ -47,8 +48,11 @@ target_link_libraries(snake_ego_avoid_node ${PROJECT_NAME})
 ament_target_dependencies(snake_ego_avoid_node
   ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs)
 
+add_executable(lidar_to_px4_bridge src/bridge/lidar_to_px4_bridge.cpp)
+ament_target_dependencies(lidar_to_px4_bridge rclcpp geometry_msgs nav_msgs)
+
 install(TARGETS ${PROJECT_NAME} offboard_core_node snake_node ego_goto_node
-  snake_ego_avoid_node
+  snake_ego_avoid_node lidar_to_px4_bridge
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME})

@@ -17,12 +17,12 @@ public:
     const auto presetpoint_s = declare_parameter<double>("presetpoint_duration_s", 2.0);
     const auto command_timeout_s = declare_parameter<double>("command_timeout_s", 10.0);
     const auto command_retry_s = declare_parameter<double>("command_retry_interval_s", 1.0);
-    const auto takeoff_height_m = declare_parameter<double>("takeoff_height_m", 1.5);
+    const auto takeoff_height_m = declare_parameter<double>("takeoff_height_m", 0.8);
     const auto takeoff_tolerance_m = declare_parameter<double>("takeoff_tolerance_m", 0.20);
     const auto takeoff_timeout_s = declare_parameter<double>("takeoff_timeout_s", 30.0);
     const auto hover_s = declare_parameter<double>("hover_duration_s", 2.0);
     const auto land_timeout_s = declare_parameter<double>("land_timeout_s", 15.0);
-    const auto auto_start = declare_parameter<bool>("auto_start", false);
+    const auto auto_start = declare_parameter<bool>("auto_start", true);
     if (rate_hz < 2.0) throw std::invalid_argument("setpoint_rate_hz must be at least 2 Hz");
 
     scheduler_.add(std::make_unique<PresetpointTask>(presetpoint_s));
