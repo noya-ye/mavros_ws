@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="760" viewBox="0 0 900 760">
+  <title>YZQ rectangular field, O-centred metre coordinates</title>
+  <rect width="900" height="760" fill="white"/>
+  <!-- plot maps x=-5..5 to 100..800 and y=-0.5..8 to 700..105 -->
+  <rect x="100" y="105" width="700" height="595" fill="#e6e6e6" stroke="#222" stroke-width="3"/>
+  <g fill="#b83b2d" stroke="#702018" stroke-width="1">
+    <rect x="184" y="595" width="56" height="56"/><rect x="394" y="539" width="56" height="56"/>
+    <rect x="680" y="595" width="56" height="56"/><rect x="275" y="399" width="56" height="56"/>
+    <rect x="492" y="371" width="56" height="56"/><rect x="646" y="259" width="56" height="56"/>
+    <rect x="156" y="203" width="56" height="56"/><rect x="394" y="203" width="56" height="56"/>
+  </g>
+  <circle cx="450" cy="665" r="35" fill="none" stroke="#111" stroke-width="4"/>
+  <circle cx="450" cy="665" r="4" fill="#111"/>
+  <g stroke="#174a7e" stroke-width="3" fill="none" marker-end="url(#arrow)">
+    <path d="M450 665 H560"/><path d="M450 665 V550"/>
+  </g>
+  <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#174a7e"/></marker></defs>
+  <g font-family="sans-serif" font-size="18" fill="#111">
+    <text x="452" y="658">O = (0, 0)</text><text x="565" y="665">+x right</text><text x="458" y="545">+y up</text>
+    <text x="460" y="620">r = 0.5 m</text><text x="458" y="692">T = (0, -0.5), tangent</text>
+    <text x="380" y="80" font-size="22">Horizontal length = 10.0 m</text>
+    <text x="820" y="415" transform="rotate(90 820 415)" font-size="22">Vertical length = 8.5 m</text>
+    <text x="115" y="730">O to left boundary = 5.0 m</text><text x="505" y="730">O to lower boundary = 0.5 m</text>
+    <text x="108" y="95">x = -5.0</text><text x="750" y="95">x = 5.0</text><text x="45" y="705">y = -0.5</text><text x="45" y="115">y = 8.0</text>
+  </g>
+</svg>

@@ -18,6 +18,13 @@ public:
   enum class StopMode { EVERY_CELL, LINE_END_ONLY };
 
   struct ObstacleCell { int ix{0}; int iy{0}; };
+  struct WaypointInfo {
+    int ix{0};
+    int iy{0};
+    double x{0.0};
+    double y{0.0};
+    double z{0.0};
+  };
 
   struct Config {
     FirstAxis first_axis{FirstAxis::X_FIRST};
@@ -52,6 +59,9 @@ public:
   std::string currentCell() const;
   bool finished() const;
   bool failed() const;
+  bool waypointAt(std::size_t index, WaypointInfo &out) const;
+  void skipCurrentWaypoint();
+  void resumeAfterWaypoint(std::size_t completed_index, Context &ctx);
 
 private:
   struct Waypoint { int ix{0}; int iy{0}; double x{0}; double y{0}; double z{0}; bool hover_after{false}; };

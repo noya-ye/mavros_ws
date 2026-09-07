@@ -107,4 +107,39 @@ std::uint32_t SnakeGridTask::planId() const{return plan_id_;} bool SnakeGridTask
 const std::vector<std::string>& SnakeGridTask::routeCells() const{return route_cells_;} std::size_t SnakeGridTask::currentIndex() const{return std::min(index_,route_cells_.size());}
 std::size_t SnakeGridTask::totalWaypoints() const{return route_cells_.size();} std::string SnakeGridTask::currentCell() const{return route_cells_.empty()?std::string{}:route_cells_[std::min(index_,route_cells_.size()-1)];}
 bool SnakeGridTask::finished() const{return phase_==Phase::FINISHED;} bool SnakeGridTask::failed() const{return phase_==Phase::FAILED;}
+
+bool SnakeGridTask::waypointAt(std::size_t index, WaypointInfo &out) const {
+  if (index >= waypoints_.size()) return false;
+  const auto &waypoint = waypoints_[index];
+  out.ix = waypoint.ix;
+  out.iy = waypoint.iy;
+  out.x = waypoint.x;
+  out.y = waypoint.y;
+  out.z = waypoint.z;
+  return true;
+}
+
+void SnakeGridTask::skipCurrentWaypoint() {
+  if (index_ >= waypoints_.size()) {
+    phase_ = Phase::FINISHED;
+    return;
+  }
+  ++index_;
+  hover_elapsed_s_ = 0.0;
+  phase_ = index_ >= waypoints_.size() ? Phase::FINISHED : Phase::MOVING;
+}
+
+void SnakeGridTask::resumeAfterWaypoint(
+  std::size_t completed_index, Context &ctx) {
+  if (waypoints_.empty()) {
+    phase_ = Phase::FINISHED;
+    return;
+  }
+  index_ = std::min(completed_index + 1, waypoints_.size());
+  cmd_x_ = ctx.position_enu.x;
+  cmd_y_ = ctx.position_enu.y;
+  cmd_z_ = ctx.position_enu.z;
+  hover_elapsed_s_ = 0.0;
+  phase_ = index_ >= waypoints_.size() ? Phase::FINISHED : Phase::MOVING;
+}
 }  // namespace offboard_core_pkg

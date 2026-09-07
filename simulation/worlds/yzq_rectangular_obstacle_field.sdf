@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Coordinate convention: Gazebo ENU world frame, metres.
+  Field bounds: x=[-5.0,5.0], y=[-0.5,8.0].
+  The vehicle is spawned by PX4 as gz_x500_mono_cam_down.
+-->
+<sdf version="1.9">
+  <world name="yzq_rectangular_obstacle_field">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-imu-system" name="gz::sim::systems::Imu"/>
+    <plugin filename="gz-sim-air-pressure-system" name="gz::sim::systems::AirPressure"/>
+    <plugin filename="gz-sim-magnetometer-system" name="gz::sim::systems::Magnetometer"/>
+    <plugin filename="gz-sim-navsat-system" name="gz::sim::systems::NavSat"/>
+
+    <physics type="ode">
+      <max_step_size>0.004</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>250</real_time_update_rate>
+    </physics>
+    <gravity>0 0 -9.8</gravity>
+    <scene>
+      <ambient>0.45 0.45 0.45 1</ambient>
+      <background>0.70 0.70 0.70 1</background>
+      <shadows>true</shadows>
+    </scene>
+
+    <!-- Exact 10.0 m x 8.5 m field. Top surface is z=0. -->
+    <model name="rectangular_field">
+      <static>true</static>
+      <pose>0 3.75 -0.05 0 0 0</pose>
+      <link name="link">
+        <collision name="collision">
+          <geometry><box><size>10.0 8.5 0.1</size></box></geometry>
+        </collision>
+        <visual name="visual">
+          <geometry><box><size>10.0 8.5 0.1</size></box></geometry>
+          <material>
+            <ambient>0.72 0.72 0.72 1</ambient>
+            <diffuse>0.72 0.72 0.72 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Circular marker: centre O=(0,0), radius=0.5 m, tangent at (0,-0.5). -->
+    <model name="origin_marker">
+      <static>true</static>
+      <pose>0 0 0.011 0 0 0</pose>
+      <link name="link">
+        <visual name="ring">
+          <geometry><cylinder><radius>0.5</radius><length>0.02</length></cylinder></geometry>
+          <material>
+            <ambient>0.08 0.08 0.08 1</ambient>
+            <diffuse>0.08 0.08 0.08 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Eight static 0.8 m x 0.8 m x 1.8 m obstacles. -->
+    <model name="obstacle_01"><static>true</static><pose>-3.8 1.0 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.75 0.18 0.10 1</ambient><diffuse>0.75 0.18 0.10 1</diffuse></material></visual></link></model>
+    <model name="obstacle_02"><static>true</static><pose>0.0 1.8 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.10 0.35 0.78 1</ambient><diffuse>0.10 0.35 0.78 1</diffuse></material></visual></link></model>
+    <model name="obstacle_03"><static>true</static><pose>3.6 1.0 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.12 0.58 0.30 1</ambient><diffuse>0.12 0.58 0.30 1</diffuse></material></visual></link></model>
+    <model name="obstacle_04"><static>true</static><pose>-2.5 3.8 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.78 0.52 0.08 1</ambient><diffuse>0.78 0.52 0.08 1</diffuse></material></visual></link></model>
+    <model name="obstacle_05"><static>true</static><pose>1.0 4.2 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.48 0.18 0.65 1</ambient><diffuse>0.48 0.18 0.65 1</diffuse></material></visual></link></model>
+    <model name="obstacle_06"><static>true</static><pose>3.8 5.8 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.10 0.55 0.62 1</ambient><diffuse>0.10 0.55 0.62 1</diffuse></material></visual></link></model>
+    <model name="obstacle_07"><static>true</static><pose>-3.8 6.8 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.62 0.28 0.10 1</ambient><diffuse>0.62 0.28 0.10 1</diffuse></material></visual></link></model>
+    <model name="obstacle_08"><static>true</static><pose>0.0 6.8 0.9 0 0 0</pose><link name="link"><collision name="collision"><geometry><box><size>0.8 0.8 1.8</size></box></geometry></collision><visual name="visual"><geometry><box><size>0.8 0.8 1.8</size></box></geometry><material><ambient>0.20 0.20 0.20 1</ambient><diffuse>0.20 0.20 0.20 1</diffuse></material></visual></link></model>
+
+    <light name="sun" type="directional"><pose>0 0 500 0 0 0</pose><cast_shadows>true</cast_shadows><intensity>1</intensity><direction>0.2 0.5 -0.8</direction></light>
+    <spherical_coordinates><surface_model>EARTH_WGS84</surface_model><world_frame_orientation>ENU</world_frame_orientation><latitude_deg>47.397971057728974</latitude_deg><longitude_deg>8.546163739800146</longitude_deg><elevation>0</elevation></spherical_coordinates>
+  </world>
+</sdf>

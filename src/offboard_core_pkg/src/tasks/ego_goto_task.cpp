@@ -3,12 +3,28 @@
 #include <cmath>
 
 namespace offboard_core_pkg {
+void EgoGotoTask::setTargetEnu(double x, double y, double z) {
+  target_x_ = x;
+  target_y_ = y;
+  target_z_ = z;
+  target_override_valid_ = std::isfinite(x) && std::isfinite(y) && std::isfinite(z);
+}
+
 void EgoGotoTask::onEnter(Context &ctx, MavrosIface &) {
   started_=false; elapsed_=0; stable_=0; planner_.reset(ctx);
   ctx.ego_cmd_valid=false;
   ctx.setpoint_mode=SetpointMode::POSITION;
-  if (ctx.home_initialized) { target_x_=ctx.home_enu.x+cfg_.x_rel; target_y_=ctx.home_enu.y+cfg_.y_rel; target_z_=ctx.home_enu.z+cfg_.height_m; }
-  else { target_x_=ctx.position_enu.x+cfg_.x_rel; target_y_=ctx.position_enu.y+cfg_.y_rel; target_z_=ctx.position_enu.z+cfg_.height_m; }
+  if (!target_override_valid_) {
+    if (ctx.home_initialized) {
+      target_x_ = ctx.home_enu.x + cfg_.x_rel;
+      target_y_ = ctx.home_enu.y + cfg_.y_rel;
+      target_z_ = ctx.home_enu.z + cfg_.height_m;
+    } else {
+      target_x_ = ctx.position_enu.x + cfg_.x_rel;
+      target_y_ = ctx.position_enu.y + cfg_.y_rel;
+      target_z_ = ctx.position_enu.z + cfg_.height_m;
+    }
+  }
   if (ctx.ego_odom_valid) { publishGoal(ctx); started_=true; }
 }
 

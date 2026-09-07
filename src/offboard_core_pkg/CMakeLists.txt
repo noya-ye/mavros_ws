@@ -22,6 +22,7 @@ add_library(${PROJECT_NAME} SHARED
   src/tasks/takeoff_task.cpp
   src/tasks/snake_grid_task.cpp
   src/tasks/ego_goto_task.cpp
+  src/tasks/snake_ego_avoid_task.cpp
 )
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 target_include_directories(${PROJECT_NAME} PUBLIC
@@ -41,10 +42,17 @@ add_executable(ego_goto_node src/nodes/ego_goto_node.cpp)
 target_link_libraries(ego_goto_node ${PROJECT_NAME})
 ament_target_dependencies(ego_goto_node ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs)
 
+add_executable(snake_ego_avoid_node src/nodes/snake_ego_avoid_node.cpp)
+target_link_libraries(snake_ego_avoid_node ${PROJECT_NAME})
+ament_target_dependencies(snake_ego_avoid_node
+  ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs)
+
 install(TARGETS ${PROJECT_NAME} offboard_core_node snake_node ego_goto_node
+  snake_ego_avoid_node
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib/${PROJECT_NAME})
 install(DIRECTORY include/ DESTINATION include)
 install(DIRECTORY config launch DESTINATION share/${PROJECT_NAME})
+install(DIRECTORY ../../simulation/worlds/ DESTINATION share/${PROJECT_NAME}/worlds)
 ament_package()

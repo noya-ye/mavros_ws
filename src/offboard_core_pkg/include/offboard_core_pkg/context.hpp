@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <cstdint>
+#include <vector>
 #include <string>
 
 namespace offboard_core_pkg {
@@ -60,6 +62,17 @@ struct Context {
   std::uint64_t ego_odom_stamp_us{0};
   Vec3 ego_odom_position;
   Vec3 ego_odom_velocity;
+
+  // Inflated occupancy grid published by ego_2d_planner_pkg.
+  // The grid is expressed in the same local frame as position_enu.
+  bool occupancy_grid_valid{false};
+  std::uint64_t occupancy_grid_stamp_us{0};
+  double occupancy_grid_resolution{0.0};
+  double occupancy_grid_origin_x{0.0};
+  double occupancy_grid_origin_y{0.0};
+  std::uint32_t occupancy_grid_width{0};
+  std::uint32_t occupancy_grid_height{0};
+  std::vector<std::int8_t> occupancy_grid_data;
 
   bool finitePosition() const {
     return std::isfinite(position_enu.x) && std::isfinite(position_enu.y) &&

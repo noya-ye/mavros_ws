@@ -133,6 +133,15 @@ public:
 - `name()`：由 `Config::task_name` 指定，默认 `"EGO_GOTO"`。
 - 行为：向配置目标发布 `PoseStamped`，跟踪 EGO 输出并在位置、速度同时稳定达到容差后返回 `SUCCESS`；规划器异常时保持当前位置。
 
+### `SnakeEgoAvoidTask`
+
+- 构造：`SnakeEgoAvoidTask(rclcpp::Logger, rclcpp::Clock::SharedPtr, PoseStamped publisher, const Config &)`。
+- `name()`：`"SNAKE_EGO_AVOID"`。
+- `Config`：包含 `SnakeGridTask::Config`、`EgoGotoTask::Config`、`trigger_distance_m`、`occupancy_timeout_s`、`avoidance_timeout_s`、`occupied_threshold` 和内部降落参数。
+- 行为：执行 `SnakeGridTask` 蛇形覆盖；读取 EGO 膨胀后的 `OccupancyGrid`，当当前航段进入可配置触发距离时，将当前或后续第一个未占据航点交给 `EgoGotoTask`。被占据航点跳过，EGO 成功后从该航点之后继续蛇形遍历。
+- 失败处理：EGO 超时、规划失败、地图无安全航点或蛇形任务失败时进入内部 `LandTask`；降落完成后以 `FAILURE` 结束并保留故障原因。
+- 公共生命周期：`onEnter`、`tick`、`onExit`；内部状态为蛇形、EGO 避障、降落和失败。
+
 ## 8. 维护检查清单
 
 当新增 task，或修改构造参数、`name()`、生命周期覆盖、setpoint/服务副作用、成功/失败条件、公开查询接口时：同步修改本文登记；检查 `tasks.hpp`、`CMakeLists.txt`、节点注册和测试；在变更说明中指出是否影响 scheduler 中断/恢复语义。

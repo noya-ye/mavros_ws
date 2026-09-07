@@ -83,15 +83,17 @@ void MavrosIface::publishSetpoint() {
     } else {
       msg.type_mask = 0;
     }
+    // MAVROS accepts /setpoint_raw/local data in ROS ENU and converts all
+    // local vectors and yaw to the MAVLink FRAME_LOCAL_NED convention.
     msg.position.x = ctx_.position_setpoint_enu.x;
     msg.position.y = ctx_.position_setpoint_enu.y;
-    msg.position.z = -ctx_.position_setpoint_enu.z;
+    msg.position.z = ctx_.position_setpoint_enu.z;
     msg.velocity.x = ctx_.velocity_setpoint_enu.x;
     msg.velocity.y = ctx_.velocity_setpoint_enu.y;
-    msg.velocity.z = -ctx_.velocity_setpoint_enu.z;
+    msg.velocity.z = ctx_.velocity_setpoint_enu.z;
     msg.acceleration_or_force.x = ctx_.acceleration_setpoint_enu.x;
     msg.acceleration_or_force.y = ctx_.acceleration_setpoint_enu.y;
-    msg.acceleration_or_force.z = -ctx_.acceleration_setpoint_enu.z;
+    msg.acceleration_or_force.z = ctx_.acceleration_setpoint_enu.z;
     msg.yaw = static_cast<float>(ctx_.yaw_setpoint_enu);
     msg.yaw_rate = static_cast<float>(ctx_.yaw_rate_setpoint_enu);
     raw_setpoint_pub_->publish(msg);
