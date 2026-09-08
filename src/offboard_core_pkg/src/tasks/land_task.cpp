@@ -21,10 +21,21 @@ void LandTask::onEnter(Context &ctx, MavrosIface &) {
   elapsed_s_ = 0.0;
   retry_elapsed_s_ = 0.0;
   approach_height_m_ = 0.0;
+  locked_x_m_ = 0.0;
+  locked_y_m_ = 0.0;
   approach_initialized_ = false;
+  horizontal_position_locked_ = false;
   request_pending_ = false;
   request_accepted_ = false;
   ctx.fault.clear();
+
+  // Capture the horizontal reference on entry when local position is already
+  // available. tick() performs the same capture if the task starts first.
+  if (ctx.position_valid && ctx.finitePosition()) {
+    locked_x_m_ = ctx.position_enu.x;
+    locked_y_m_ = ctx.position_enu.y;
+    horizontal_position_locked_ = true;
+  }
 }
 
 ITask::Status LandTask::tick(Context &ctx, MavrosIface &iface, double dt_s) {
@@ -40,15 +51,23 @@ ITask::Status LandTask::tick(Context &ctx, MavrosIface &iface, double dt_s) {
       return Status::RUNNING;
     }
     approach_height_m_ = ctx.home_enu.z + kLandingApproachOffsetM;
+    if (!horizontal_position_locked_) {
+      locked_x_m_ = ctx.position_enu.x;
+      locked_y_m_ = ctx.position_enu.y;
+      horizontal_position_locked_ = true;
+    }
     approach_initialized_ = true;
   }
 
+  // Keep the entry XY target for the entire descent and until MAVROS accepts
+  // the LAND request. Do not chase the measured position while descending.
+  ctx.position_setpoint_enu.x = locked_x_m_;
+  ctx.position_setpoint_enu.y = locked_y_m_;
+  ctx.position_setpoint_enu.z = approach_height_m_;
+  ctx.yaw_setpoint_enu = ctx.yaw_enu;
+  ctx.publish_position_setpoint = true;
+
   if (std::abs(ctx.position_enu.z - approach_height_m_) > kLandingApproachToleranceM) {
-    ctx.position_setpoint_enu.x = ctx.position_enu.x;
-    ctx.position_setpoint_enu.y = ctx.position_enu.y;
-    ctx.position_setpoint_enu.z = approach_height_m_;
-    ctx.yaw_setpoint_enu = ctx.yaw_enu;
-    ctx.publish_position_setpoint = true;
     return Status::RUNNING;
   }
 

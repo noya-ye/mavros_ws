@@ -57,11 +57,11 @@ public:
     const double command_timeout_s = declare_parameter<double>("command_timeout_s", 10.0);
     const double command_retry_s = declare_parameter<double>(
       "command_retry_interval_s", 1.0);
-    const double takeoff_height_m = declare_parameter<double>("takeoff_height_m", 0.8);
+    const double  = declare_parameter<double>("takeoff_height_m", 0.7);
     const double takeoff_tolerance_m = declare_parameter<double>(
       "takeoff_tolerance_m", 0.15);
     const double takeoff_timeout_s = declare_parameter<double>("takeoff_timeout_s", 30.0);
-    const double hover_s = declare_parameter<double>("hover_duration_s", 5.0);
+    const double hover_s = declare_parameter<double>("hover_duration_s", 3.0);
     const double land_timeout_s = declare_parameter<double>("land_timeout_s", 20.0);
 
     EgoGotoTask::Config ego_cfg;
@@ -74,7 +74,7 @@ public:
     ego_cfg.planner.use_velocity_ff = declare_parameter<bool>(
       "ego.use_velocity_ff", true);
     ego_cfg.planner.use_acceleration_ff = declare_parameter<bool>(
-      "ego.use_acceleration_ff", false);
+      "ego.use_acceleration_ff", true);
     ego_cfg.planner.vel_ff_scale = declare_parameter<double>("ego.vel_ff_scale", 0.5);
     ego_cfg.planner.acc_ff_scale = declare_parameter<double>("ego.acc_ff_scale", 0.0);
     ego_cfg.planner.x_sign = declare_parameter<double>("ego.x_sign", 1.0);

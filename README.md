@@ -37,8 +37,9 @@ period. The command tasks retry unavailable or rejected services until their
 timeouts, while confirming the resulting mode/arming state from `/mavros/state`.
 `takeoff` raises the captured ENU setpoint by `takeoff_height_m` and waits for
 the measured altitude to enter `takeoff_tolerance_m`. `hover` then continues to
-publish that altitude, and `land` waits for MAVROS to report disarmed after a
-landing request.
+publish that altitude. On entry, `land` captures the current valid local XY and
+holds it while descending to the landing-approach height, then waits for MAVROS
+to report disarmed after a landing request.
 
 ## Build and Run
 
@@ -48,6 +49,23 @@ colcon build --symlink-install --allow-overriding offboard_core_pkg
 source install/setup.bash
 ros2 launch offboard_core_pkg offboard_core.launch.py
 ```
+
+## Flight Recording
+
+Use `record_flight.py` to record selected topics. It does not start or
+capture any launch process:
+
+```bash
+source /opt/ros/humble/setup.bash
+python3 record_flight.py \
+  -t /position_cmd \
+  -t /fastlio2/lio_odom \
+  -t /mavros/state \
+  -t /mavros/local_position/pose
+```
+
+Press `Ctrl-C` to stop recording. The output directory contains the rosbag
+under `bag/`.
 
 `auto_start` defaults to `false`. Validate MAVROS connection, the local frame,
 and takeoff direction in SITL before setting it to `true`.

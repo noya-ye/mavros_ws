@@ -109,7 +109,7 @@ public:
 
 - 构造：`LandTask(double timeout_s = 15.0, double retry_interval_s = 1.0)`。
 - `name()`：`"land"`。
-- 行为：未解锁即成功；否则先读取 `ctx.home_enu.z`，将位置 setpoint 设为当前 XY/yaw 且高度为起飞初始高度上方 0.1 m，等待实际高度进入约 0.05 m 容差后，再通过 `requestLand(callback)` 周期重试开启 LAND；超过 timeout 失败（`landing command timed out`）。等待连接、有效位置或 home 初始化期间保持 `RUNNING`。
+- 行为：未解锁即成功；进入时捕获有效本地位置的 XY（若进入时尚无定位，则首次有效 tick 捕获），随后始终保持该 XY。任务将高度 setpoint 设为 `ctx.home_enu.z + 0.1 m`，等待实际高度进入约 0.05 m 容差后，再通过 `requestLand(callback)` 周期重试开启 LAND；超过 timeout 失败（`landing command timed out`）。等待连接、有效位置或 home 初始化期间保持 `RUNNING`。
 - 公共生命周期：`onEnter`、`tick`；默认可暂停。
 
 ### `SnakeGridTask`
