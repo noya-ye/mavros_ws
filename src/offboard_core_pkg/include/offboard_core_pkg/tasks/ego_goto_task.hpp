@@ -26,6 +26,8 @@ private:
   bool started_{false}; 
   double elapsed_{0}, stable_{0}; 
   double target_x_{0},target_y_{0},target_z_{0},target_ego_x_{0},target_ego_y_{0},target_ego_z_{0};
+  double held_altitude_enu_{0};
+  bool held_altitude_valid_{false};
   bool target_override_valid_{false};
 };
 }  // namespace offboard_core_pkg

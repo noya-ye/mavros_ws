@@ -57,7 +57,7 @@ public:
     const double command_timeout_s = declare_parameter<double>("command_timeout_s", 10.0);
     const double command_retry_s = declare_parameter<double>(
       "command_retry_interval_s", 1.0);
-    const double  = declare_parameter<double>("takeoff_height_m", 0.7);
+    const double takeoff_height_m = declare_parameter<double>("takeoff_height_m", 0.7);
     const double takeoff_tolerance_m = declare_parameter<double>(
       "takeoff_tolerance_m", 0.15);
     const double takeoff_timeout_s = declare_parameter<double>("takeoff_timeout_s", 30.0);

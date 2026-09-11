@@ -108,6 +108,10 @@ const std::vector<std::string>& SnakeGridTask::routeCells() const{return route_c
 std::size_t SnakeGridTask::totalWaypoints() const{return route_cells_.size();} std::string SnakeGridTask::currentCell() const{return route_cells_.empty()?std::string{}:route_cells_[std::min(index_,route_cells_.size()-1)];}
 bool SnakeGridTask::finished() const{return phase_==Phase::FINISHED;} bool SnakeGridTask::failed() const{return phase_==Phase::FAILED;}
 
+// ============================================================================
+// SnakeGridTask 相关函数
+// ============================================================================
+//把输入index转换成二维网格坐标(ix, iy)，并返回对应的航点信息
 bool SnakeGridTask::waypointAt(std::size_t index, WaypointInfo &out) const {
   if (index >= waypoints_.size()) return false;
   const auto &waypoint = waypoints_[index];

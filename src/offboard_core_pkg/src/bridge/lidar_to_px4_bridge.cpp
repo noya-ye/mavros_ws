@@ -11,7 +11,8 @@ namespace offboard_core_pkg {
 class LidarToPx4Bridge final : public rclcpp::Node {
 public:
   LidarToPx4Bridge() : Node("lidar_to_px4_bridge") {
-    const auto odometry_topic = declare_parameter<std::string>("odometry_topic", "/fastlio2/lio_odom");
+    const auto odometry_topic =
+        declare_parameter<std::string>("odometry_topic", "/fastlio2/lio_odom");
     const auto vision_pose_topic =
         declare_parameter<std::string>("vision_pose_topic", "/mavros/vision_pose/pose");
     const auto frame_id = declare_parameter<std::string>("frame_id", "map");

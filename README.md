@@ -93,11 +93,44 @@ The defaults in `config/ego_test.yaml` require FAST-LIO and MAVROS local
 coordinates to remain aligned in ENU: `ego.swap_xy=false`, axis signs of `1`,
 and `ego.yaw_align_rad=0`.
 
+EGO supplies horizontal motion only. When `EgoGotoTask` begins, it captures
+the current MAVROS ENU altitude and holds that value for the entire EGO phase;
+the Z position, velocity, and acceleration fields of `/position_cmd` are
+ignored. This prevents the 2D planner's nominal Z output from changing flight
+altitude.
+
+## Snake EGO Avoidance
+
+The snake/EGO avoidance node can be launched with:
+
+```bash
+ros2 launch offboard_core_pkg snake_ego_avoid.launch.py
+```
+
+Its parameters are in `config/snake_ego_avoid.yaml`. In particular,
+`snake.first_axis` accepts `x_first` or `y_first`, and `snake.max_step_m`
+controls the maximum commanded snake-path step per 0.05 s reference interval.
+During operation, `[SNAKE_EGO]` logs report the task phase, current grid cell,
+aircraft ENU position, target point, occupied-cell skips, EGO avoidance, and
+landing failures. Periodic SNAKE and AVOIDING status lines are throttled to
+one per second.
+
 The restricted build environment cannot initialize CycloneDDS because it has no
 enumerable UDP interface. Run the node and MAVROS/PX4 SITL validation in a
 normal ROS 2 environment with DDS networking available.
 
 ## Lidar to PX4 Bridge
+
+`mavros_lidar.launch.py` starts the MID-360 driver, then the `fastlio2`
+package's `lio_launch.py`, then the bridge. The FAST-LIO workspace prefix must
+be sourced before this workspace:
+
+```bash
+source /opt/ros/humble/setup.bash
+source /home/jetson/fastlio2_ws/install/setup.bash
+source /home/jetson/mavros_ws/install/setup.bash
+ros2 launch offboard_core_pkg mavros_lidar.launch.py
+```
 
 `lidar_to_px4_bridge` forwards `/fastlio2/lio_odom` to
 `/mavros/vision_pose/pose`. It rejects non-finite positions and any position

@@ -30,6 +30,7 @@ def generate_launch_description():
                 executable='lidar_to_px4_bridge',
                 name='lidar_to_px4_bridge',
                 output='screen',
+                parameters=[{'odometry_topic': '/fastlio2/lio_odom'}],
             ),
         ],
     )

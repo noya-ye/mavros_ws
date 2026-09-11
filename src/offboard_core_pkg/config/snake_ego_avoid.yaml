@@ -1,0 +1,49 @@
+snake_ego_avoid_node:
+  ros__parameters:
+    # Main loop. The node reads these values at startup.
+    auto_start: true
+    setpoint_rate_hz: 20.0
+
+    # MAVROS command sequence.
+    presetpoint_duration_s: 2.0
+    command_timeout_s: 10.0
+    command_retry_interval_s: 1.0
+    takeoff.height_m: 0.6
+    takeoff_tolerance_m: 0.12
+    takeoff_timeout_s: 30.0
+    land_timeout_s: 15.0
+    land_retry_interval_s: 1.0
+
+    # Topics used by the EGO planner and inflated occupancy grid.
+    ego.goal_topic: /simple_2d_planner/goal
+    ego.occupancy_grid_topic: /ego_2d_planner/occupancy_grid
+    ego.goal_frame: lidar
+
+    # Snake coverage geometry and timing.
+    # Accepted values: x_first, y_first (also x/y).
+    snake.first_axis: y_first
+    snake.x_cells: 4
+    snake.y_cells: 6
+    snake.cell_size_m: 1.0
+    snake.hover_s: 0.8
+    snake.max_step_m: 0.03
+    snake.arrive_xy_m: 0.12
+    snake.arrive_z_m: 0.15
+    snake.include_start_cell: true
+
+    # Obstacle-triggered EGO avoidance.
+    avoidance.trigger_distance_m: 0.1
+    avoidance.occupancy_timeout_s: 0.5
+    avoidance.timeout_s: 30.0
+    avoidance.occupied_threshold: 50
+
+    # EGO feed-forward and coordinate mapping.
+    ego.use_velocity_ff: true
+    ego.use_acceleration_ff: false
+    ego.vel_ff_scale: 0.5
+    ego.acc_ff_scale: 0.0
+    # FAST-LIO lidar and MAVROS local position use the same ENU axes.
+    ego.x_sign: 1.0
+    ego.y_sign: 1.0
+    ego.swap_xy: false
+    ego.yaw_align_rad: 0.0

@@ -31,6 +31,9 @@ public:
     double max_acc_z_mps2{0.4};
     double err_xy_hold_m{2.0};
     double err_z_hold_m{1.0};
+    // The current EGO planner is two-dimensional and emits a nominal Z value.
+    // Do not treat that value as a flight-altitude command by default.
+    bool follow_ego_z{false};
     double x_sign{1.0};
     double y_sign{1.0};
     bool swap_xy{true};
@@ -59,6 +62,8 @@ public:
   const Config &config() const { return cfg_; }
   void reset(Context &) { initialized_ = true; }
 
+
+  //plan() 函数是 EgoVelPlanner 类的核心功能，用于根据当前的上下文（Context）计算出无人机的速度规划，并将结果存储在 Context 中。它还可以输出调试信息。
   Result plan(Context &ctx, Debug *out = nullptr) {
     Debug dbg; const auto now = nowUs();
     dbg.cmd_age_s = age(now, ctx.ego_cmd_stamp_us); dbg.odom_age_s = age(now, ctx.ego_odom_stamp_us);
@@ -77,8 +82,9 @@ public:
      ey=ctx.ego_cmd_position.y-ctx.ego_odom_position.y,
       ez=ctx.ego_cmd_position.z-ctx.ego_odom_position.z;
     dbg.err_xy=std::hypot(ex,ey);
-     dbg.err_z=std::fabs(ez);
-    if(dbg.err_xy>cfg_.err_xy_hold_m||dbg.err_z>cfg_.err_z_hold_m){
+    dbg.err_z=std::fabs(ez);
+    if(dbg.err_xy>cfg_.err_xy_hold_m ||
+       (cfg_.follow_ego_z && dbg.err_z>cfg_.err_z_hold_m)){
       hold(ctx);
       dbg.reason="EGO error too large";
       if(out)*out=dbg;return Result::HOLD_ERROR;}//ego误差过大，保持当前位置
@@ -86,13 +92,15 @@ public:
     limit(mx,my,cfg_.max_cmd_xy_m);
     ctx.position_setpoint_enu.x=ctx.position_enu.x+cfg_.kp_xy*mx;//这里的误差用的是ego命令与lio里程计的误差，而不是当前位置与目标位置的误差
     ctx.position_setpoint_enu.y=ctx.position_enu.y+cfg_.kp_xy*my;
-    ctx.position_setpoint_enu.z=ctx.position_enu.z+cfg_.kp_z*ez;
+    ctx.position_setpoint_enu.z=cfg_.follow_ego_z
+      ? ctx.position_enu.z+cfg_.kp_z*ez
+      : ctx.position_enu.z;
     ctx.velocity_setpoint_enu={0,0,0}; ctx.acceleration_setpoint_enu={0,0,0};
     if(cfg_.use_velocity_ff){
       double vx,vy;
       map(ctx.ego_cmd_velocity.x,ctx.ego_cmd_velocity.y,vx,vy);
       ctx.velocity_setpoint_enu={vx*cfg_.vel_ff_scale,vy*cfg_.vel_ff_scale,
-        ctx.ego_cmd_velocity.z*cfg_.vel_ff_scale};
+        cfg_.follow_ego_z ? ctx.ego_cmd_velocity.z*cfg_.vel_ff_scale : 0.0};
         limit(ctx.velocity_setpoint_enu.x,ctx.velocity_setpoint_enu.y,cfg_.max_vel_xy_mps);
         ctx.velocity_setpoint_enu.z=
         std::clamp(ctx.velocity_setpoint_enu.z,-cfg_.max_vel_z_mps,cfg_.max_vel_z_mps);}
@@ -101,7 +109,7 @@ public:
       map(ctx.ego_cmd_acceleration.x,ctx.ego_cmd_acceleration.y,ax,ay);//map函数将EGO命令的加速度从相机/里程计坐标系转换为ENU坐标系，并应用配置中的缩放因子和限制条件
       ctx.acceleration_setpoint_enu={ax*cfg_.acc_ff_scale,
         ay*cfg_.acc_ff_scale,
-        ctx.ego_cmd_acceleration.z*cfg_.acc_ff_scale};
+        cfg_.follow_ego_z ? ctx.ego_cmd_acceleration.z*cfg_.acc_ff_scale : 0.0};
         limit(ctx.acceleration_setpoint_enu.x,
           ctx.acceleration_setpoint_enu.y,cfg_.max_acc_xy_mps2);
           ctx.acceleration_setpoint_enu.z=

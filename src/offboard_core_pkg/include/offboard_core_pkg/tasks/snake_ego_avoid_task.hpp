@@ -36,6 +36,7 @@ public:
 private:
   enum class Phase { SNAKE, AVOIDING, LANDING, FAILED };
 
+  const char *phaseName() const;
   bool obstacleDataFresh(const Context &ctx) const;
   bool occupiedAt(const Context &ctx, double x, double y) const;
   bool obstacleNearSegment(const Context &ctx, double x0, double y0,

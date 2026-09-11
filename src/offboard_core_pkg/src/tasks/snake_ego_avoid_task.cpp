@@ -61,6 +61,16 @@ SnakeEgoAvoidTask::SnakeEgoAvoidTask(
 
 std::string SnakeEgoAvoidTask::name() const { return "SNAKE_EGO_AVOID"; }
 
+const char *SnakeEgoAvoidTask::phaseName() const {
+  switch (phase_) {
+    case Phase::SNAKE: return "SNAKE";
+    case Phase::AVOIDING: return "AVOIDING";
+    case Phase::LANDING: return "LANDING";
+    case Phase::FAILED: return "FAILED";
+  }
+  return "UNKNOWN";
+}
+
 void SnakeEgoAvoidTask::onEnter(Context &ctx, MavrosIface &iface) {
   phase_ = Phase::SNAKE;
   avoidance_target_index_ = 0;
@@ -70,7 +80,17 @@ void SnakeEgoAvoidTask::onEnter(Context &ctx, MavrosIface &iface) {
   if (snake_.failed()) {
     phase_ = Phase::FAILED;
     ctx.fault = "snake route initialization failed";
+    RCLCPP_ERROR(logger_, "[SNAKE_EGO] phase=%s: %s", phaseName(),
+                 ctx.fault.c_str());
+    return;
   }
+  RCLCPP_INFO(
+    logger_,
+    "[SNAKE_EGO] phase=%s started: aircraft=(%.2f, %.2f, %.2f), "
+    "grid=%dx%d, cell_size=%.2f m, first_axis=%s",
+    phaseName(), ctx.position_enu.x, ctx.position_enu.y, ctx.position_enu.z,
+    cfg_.snake.x_cells, cfg_.snake.y_cells, cfg_.snake.cell_size,
+    cfg_.snake.first_axis == SnakeGridTask::FirstAxis::X_FIRST ? "x" : "y");
 }
 
 ITask::Status SnakeEgoAvoidTask::tick(
@@ -80,24 +100,57 @@ ITask::Status SnakeEgoAvoidTask::tick(
   if (phase_ == Phase::FAILED) return Status::FAILURE;
   if (phase_ == Phase::LANDING) return tickLanding(ctx, iface, dt);
 
+
+
+  //蛇形遍历
   if (phase_ == Phase::SNAKE) {
-    if (snake_.finished()) return Status::SUCCESS;
+    if (snake_.finished()) {
+      RCLCPP_INFO(logger_, "[SNAKE_EGO] phase=%s: snake route complete",
+                  phaseName());
+      return Status::SUCCESS;
+    }
 
     // Skip every currently targeted cell that is occupied in the inflated map.
     SnakeGridTask::WaypointInfo waypoint;
     while (snake_.waypointAt(snake_.currentIndex(), waypoint) &&
            occupiedAt(ctx, waypoint.x, waypoint.y)) {
+      RCLCPP_WARN(
+        logger_,
+        "[SNAKE_EGO] phase=%s: skip occupied cell=(%d, %d), "
+        "target=(%.2f, %.2f, %.2f)",
+        phaseName(), waypoint.ix, waypoint.iy, waypoint.x, waypoint.y,
+        waypoint.z);
       snake_.skipCurrentWaypoint();
+    }//如果当前蛇形航点被膨胀地图占据，则跳过该航点，继续下一个航点
+    if (snake_.finished()) {
+      RCLCPP_INFO(logger_, "[SNAKE_EGO] phase=%s: all remaining cells occupied; "
+                  "snake route complete", phaseName());
+      return Status::SUCCESS;
     }
-    if (snake_.finished()) return Status::SUCCESS;
     if (!snake_.waypointAt(snake_.currentIndex(), waypoint)) {
       ctx.fault = "snake waypoint index is invalid";
+      RCLCPP_ERROR(logger_, "[SNAKE_EGO] phase=%s: %s", phaseName(),
+                   ctx.fault.c_str());
       return Status::FAILURE;
     }
+
+    RCLCPP_INFO_THROTTLE(
+      logger_, *clock_, 1000,
+      "[SNAKE_EGO] phase=%s cell=(%d, %d) [%zu/%zu], "
+      "aircraft=(%.2f, %.2f, %.2f), target=(%.2f, %.2f, %.2f)",
+      phaseName(), waypoint.ix, waypoint.iy,
+      snake_.currentIndex() + 1, snake_.totalWaypoints(),
+      ctx.position_enu.x, ctx.position_enu.y, ctx.position_enu.z,
+      waypoint.x, waypoint.y, waypoint.z);
 
     const bool near_obstacle = obstacleDataFresh(ctx) && obstacleNearSegment(
       ctx, ctx.position_enu.x, ctx.position_enu.y, waypoint.x, waypoint.y);
     if (near_obstacle) {
+      RCLCPP_WARN(
+        logger_,
+        "[SNAKE_EGO] obstacle near segment: aircraft=(%.2f, %.2f), "
+        "snake_target=(%.2f, %.2f)",
+        ctx.position_enu.x, ctx.position_enu.y, waypoint.x, waypoint.y);
       if (!selectAvoidanceTarget(ctx)) {
         failAndLand(ctx, iface, "no safe snake waypoint for EGO avoidance");
         return Status::RUNNING;
@@ -112,10 +165,30 @@ ITask::Status SnakeEgoAvoidTask::tick(
       failAndLand(ctx, iface, "snake task failed");
       return Status::RUNNING;
     }
+    if (status == Status::SUCCESS) {
+      RCLCPP_INFO(logger_, "[SNAKE_EGO] phase=%s: snake route complete",
+                  phaseName());
+    }
     return status;
   }
 
+
+
+
   avoidance_elapsed_s_ += dt;
+  SnakeGridTask::WaypointInfo avoidance_target;
+  const bool avoidance_target_valid =
+    snake_.waypointAt(avoidance_target_index_, avoidance_target);
+  RCLCPP_INFO_THROTTLE(
+    logger_, *clock_, 1000,
+    "[SNAKE_EGO] phase=%s EGO target=%s(%d, %d) [%zu/%zu], "
+    "target=(%.2f, %.2f, %.2f), elapsed=%.1f/%.1f s, "
+    "aircraft=(%.2f, %.2f, %.2f)",
+    phaseName(), avoidance_target_valid ? "cell=" : "invalid cell=",
+    avoidance_target.ix, avoidance_target.iy, avoidance_target_index_ + 1,
+    snake_.totalWaypoints(), avoidance_target.x, avoidance_target.y,
+    avoidance_target.z, avoidance_elapsed_s_, cfg_.avoidance_timeout_s,
+    ctx.position_enu.x, ctx.position_enu.y, ctx.position_enu.z);
   if (avoidance_elapsed_s_ >= cfg_.avoidance_timeout_s) {
     failAndLand(ctx, iface, "EGO avoidance timed out");
     return Status::RUNNING;
@@ -129,6 +202,11 @@ ITask::Status SnakeEgoAvoidTask::tick(
     snake_.resumeAfterWaypoint(avoidance_target_index_, ctx);
     phase_ = Phase::SNAKE;
     avoidance_elapsed_s_ = 0.0;
+    RCLCPP_INFO(logger_,
+                "[SNAKE_EGO] EGO avoidance succeeded; resume phase=%s at "
+                "snake waypoint %zu/%zu",
+                phaseName(), snake_.currentIndex() + 1,
+                snake_.totalWaypoints());
   } else if (status == Status::FAILURE) {
     failAndLand(ctx, iface, "EGO avoidance failed");
   }
@@ -174,6 +252,9 @@ bool SnakeEgoAvoidTask::occupiedAt(
          ctx.occupancy_grid_data[index] >= cfg_.occupied_threshold;
 }
 
+
+//蛇形预设路径的下一段附近有没有障碍物，如果有，就触发 EGO 避障
+//如何判断路径上有无障碍物：对当前蛇形航段的起点和终点，计算出一个矩形区域（包含一定的安全边距），然后遍历这个矩形区域内的所有栅格单元，如果有任何一个栅格单元被占据（即其值大于等于 occupied_threshold），并且该栅格单元到蛇形航段的距离小于等于安全边距，则认为路径上有障碍物，触发 EGO 避障。
 bool SnakeEgoAvoidTask::obstacleNearSegment(
   const Context &ctx, double x0, double y0, double x1, double y1) const {
   if (!obstacleDataFresh(ctx)) return false;
@@ -216,7 +297,7 @@ bool SnakeEgoAvoidTask::obstacleNearSegment(
   }
   return false;
 }
-
+//从当前蛇形航点开始，向后寻找第一个“不被障碍占用”的航点，并把它设为 EGO 绕障后的目标点。
 bool SnakeEgoAvoidTask::selectAvoidanceTarget(const Context &ctx) {
   SnakeGridTask::WaypointInfo waypoint;
   for (std::size_t i = snake_.currentIndex();
@@ -232,6 +313,11 @@ bool SnakeEgoAvoidTask::selectAvoidanceTarget(const Context &ctx) {
 void SnakeEgoAvoidTask::beginAvoidance(Context &ctx, MavrosIface &iface) {
   SnakeGridTask::WaypointInfo waypoint;
   snake_.waypointAt(avoidance_target_index_, waypoint);
+  RCLCPP_INFO(
+    logger_, "[SNAKE_EGO] begin EGO avoidance: target cell=(%d, %d) "
+    "[%zu/%zu], target=(%.2f, %.2f, %.2f)", waypoint.ix, waypoint.iy,
+    avoidance_target_index_ + 1, snake_.totalWaypoints(), waypoint.x,
+    waypoint.y, waypoint.z);
   snake_.onPause(ctx, iface);
   ego_.setTargetEnu(waypoint.x, waypoint.y, waypoint.z);
   ego_.onEnter(ctx, iface);
@@ -261,6 +347,8 @@ void SnakeEgoAvoidTask::failAndLand(
   if (phase_ == Phase::AVOIDING) ego_.onExit(ctx, iface);
   land_.onEnter(ctx, iface);
   phase_ = Phase::LANDING;
+  RCLCPP_ERROR(logger_, "[SNAKE_EGO] phase=%s: %s; starting landing",
+               phaseName(), failure_reason_.c_str());
 }
 
 }  // namespace offboard_core_pkg

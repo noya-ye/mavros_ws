@@ -27,6 +27,10 @@ void EgoGotoTask::onEnter(Context &ctx, MavrosIface &) {
   started_ = false;
   elapsed_ = 0.0;
   stable_ = 0.0;
+  held_altitude_valid_ = ctx.position_valid && ctx.finitePosition();
+  if (held_altitude_valid_) {
+    held_altitude_enu_ = ctx.position_enu.z;
+  }
 
   planner_.reset(ctx);
 
@@ -50,6 +54,12 @@ void EgoGotoTask::onEnter(Context &ctx, MavrosIface &) {
       target_y_ = ctx.position_enu.y + cfg_.y_rel;
       target_z_ = ctx.position_enu.z + cfg_.height_m;
     }
+  }
+
+  // EGO is a 2D planner.  Lock the MAVROS height at the instant control is
+  // handed to EGO, regardless of its nominal goal or PositionCommand Z.
+  if (held_altitude_valid_) {
+    target_z_ = held_altitude_enu_;
   }
 
   // --------------------------------------------------------------------------
@@ -82,6 +92,12 @@ ITask::Status EgoGotoTask::tick(
     hold(ctx);
     stable_ = 0.0;
     return Status::RUNNING;
+  }
+
+  if (!held_altitude_valid_) {
+    held_altitude_enu_ = ctx.position_enu.z;
+    held_altitude_valid_ = true;
+    target_z_ = held_altitude_enu_;
   }
 
   const double dt =
@@ -248,6 +264,12 @@ ITask::Status EgoGotoTask::tick(
 
   const auto result =
       planner_.plan(ctx, &dbg);
+
+  // Preserve the entry altitude even when EGO input becomes stale and the
+  // planner falls back to its own hold behavior.
+  ctx.position_setpoint_enu.z = held_altitude_enu_;
+  ctx.velocity_setpoint_enu.z = 0.0;
+  ctx.acceleration_setpoint_enu.z = 0.0;
 
   if (result != EgoVelPlanner::Result::OK) {
     return Status::RUNNING;
@@ -433,6 +455,9 @@ void EgoGotoTask::hold(
 {
   ctx.position_setpoint_enu =
       ctx.position_enu;
+  if (held_altitude_valid_) {
+    ctx.position_setpoint_enu.z = held_altitude_enu_;
+  }
 
   ctx.velocity_setpoint_enu = {
       0.0,

@@ -57,7 +57,7 @@ public:
     configureSnake(cfg);
     configureEgo(cfg);
     cfg.trigger_distance_m = declare_parameter<double>(
-      "avoidance.trigger_distance_m", 0.8);
+      "avoidance.trigger_distance_m", 0.01);
     cfg.occupancy_timeout_s = declare_parameter<double>(
       "avoidance.occupancy_timeout_s", 0.5);
     cfg.avoidance_timeout_s = declare_parameter<double>(
@@ -76,6 +76,8 @@ public:
       takeoff_height_m, takeoff_tolerance_m, takeoff_timeout_s));
     scheduler_.add(std::make_unique<SnakeEgoAvoidTask>(
       get_logger(), get_clock(), goal_pub_, cfg));
+    scheduler_.add(std::make_unique<LandTask>(
+      land_timeout_s, land_retry_s));
     scheduler_.reset();
 
     const auto period = std::chrono::duration<double>(1.0 / rate_hz);
@@ -101,7 +103,16 @@ private:
   }
 
   void configureSnake(SnakeEgoAvoidTask::Config &cfg) {
-    cfg.snake.first_axis = SnakeGridTask::FirstAxis::X_FIRST;
+    const auto first_axis = declare_parameter<std::string>(
+      "snake.first_axis", "y_first");
+    if (first_axis == "x_first" || first_axis == "X_FIRST" || first_axis == "x") {
+      cfg.snake.first_axis = SnakeGridTask::FirstAxis::X_FIRST;
+    } else if (first_axis == "y_first" || first_axis == "Y_FIRST" || first_axis == "y") {
+      cfg.snake.first_axis = SnakeGridTask::FirstAxis::Y_FIRST;
+    } else {
+      throw std::invalid_argument(
+        "snake.first_axis must be x_first or y_first");
+    }
     cfg.snake.stop_mode = SnakeGridTask::StopMode::LINE_END_ONLY;
     cfg.snake.x_cells = declare_parameter<int>("snake.x_cells", 3);
     cfg.snake.y_cells = declare_parameter<int>("snake.y_cells", 3);
@@ -117,7 +128,7 @@ private:
   void configureEgo(SnakeEgoAvoidTask::Config &cfg) {
     cfg.ego.task_name = "EGO_AVOID";
     cfg.ego.goal_frame = declare_parameter<std::string>(
-      "ego.goal_frame", "camera_init");
+      "ego.goal_frame", "lidar");
     cfg.ego.planner.use_velocity_ff = declare_parameter<bool>(
       "ego.use_velocity_ff", true);
     cfg.ego.planner.use_acceleration_ff = declare_parameter<bool>(
@@ -126,6 +137,12 @@ private:
       "ego.vel_ff_scale", 0.5);
     cfg.ego.planner.acc_ff_scale = declare_parameter<double>(
       "ego.acc_ff_scale", 0.0);
+    // FAST-LIO lidar odometry and MAVROS local position are aligned in ENU.
+    cfg.ego.planner.x_sign = declare_parameter<double>("ego.x_sign", 1.0);
+    cfg.ego.planner.y_sign = declare_parameter<double>("ego.y_sign", 1.0);
+    cfg.ego.planner.swap_xy = declare_parameter<bool>("ego.swap_xy", false);
+    cfg.ego.planner.yaw_align_rad = declare_parameter<double>(
+      "ego.yaw_align_rad", 0.0);
   }
 
   void subscribeEgoInputs() {
