@@ -13,3 +13,5 @@
 # Local Codex workspace metadata
 /.agents/
 /.codex/
+rosbag2_*
+*.db3
