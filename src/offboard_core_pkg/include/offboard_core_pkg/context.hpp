@@ -1,11 +1,17 @@
 #pragma once
 
 #include <cmath>
+#include <chrono>
 #include <cstdint>
 #include <vector>
 #include <string>
 
 namespace offboard_core_pkg {
+
+struct YoloDetection {
+  std::int32_t class_id{0};
+  float confidence{0.0F};
+};
 
 // MAVROS local-position and setpoint APIs use ROS ENU coordinates. MAVROS
 // performs the ENU <-> PX4 NED conversion at the bridge boundary.
@@ -50,6 +56,20 @@ struct Context {
   bool command_pending{false};
   bool command_accepted{false};
   std::string fault;
+
+  // Camera node reports image-center offsets: x is up, y is left (pixels).
+  // Reception time and sequence distinguish new frames from repeated scheduler ticks.
+  Vec3 down_circle_offset_px;
+  Vec3 down_contour_offset_px;
+  std::chrono::steady_clock::time_point down_circle_stamp;
+  std::chrono::steady_clock::time_point down_contour_stamp;
+  std::uint64_t down_circle_seq{0};
+  std::uint64_t down_contour_seq{0};
+
+  // YOLO detections received as alternating class_id/confidence values.
+  std::vector<YoloDetection> yolo_detections;
+  std::chrono::steady_clock::time_point yolo_detections_stamp;
+  std::uint64_t yolo_detections_seq{0};
 
   // EGO planner input state (camera/odometry frame).
   bool ego_cmd_valid{false};

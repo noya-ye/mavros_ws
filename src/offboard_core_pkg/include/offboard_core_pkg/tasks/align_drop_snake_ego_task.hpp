@@ -1,0 +1,85 @@
+#pragma once
+
+#include <geometry_msgs/msg/pose_stamped.hpp>
+#include <rclcpp/rclcpp.hpp>
+
+#include "offboard_core_pkg/tasks/align_down_task.hpp"
+#include "offboard_core_pkg/tasks/ego_goto_task.hpp"
+#include "offboard_core_pkg/tasks/land_task.hpp"
+#include "offboard_core_pkg/tasks/snake_grid_task.hpp"
+
+namespace offboard_core_pkg {
+
+class AlignDropSnakeEgoTask final : public ITask {
+public:
+  struct Config {
+    SnakeGridTask::Config snake;
+    EgoGotoTask::Config ego;
+    double trigger_distance_m{0.8};
+    double occupancy_timeout_s{0.5};
+    double avoidance_timeout_s{30.0};
+    int occupied_threshold{50};
+    double landing_timeout_s{15.0};
+    double landing_retry_interval_s{1.0};
+    double align_pixels_per_meter{100.0};
+    int align_stable_frames{5};
+    double align_arrive_distance_m{0.1};
+    double align_max_step_m{0.10};
+    double align_timeout_s{10.0};
+    double contour_timeout_s{0.5};
+    double align_retrigger_radius_m{0.55};
+  };
+
+  AlignDropSnakeEgoTask(
+    rclcpp::Logger logger,
+    rclcpp::Clock::SharedPtr clock,
+    rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr goal_pub,
+    const Config &cfg);
+
+  std::string name() const override;
+  void onEnter(Context &, MavrosIface &) override;
+  Status tick(Context &, MavrosIface &, double dt_s) override;
+  void onExit(Context &, MavrosIface &) override;
+
+private:
+  enum class Phase { SNAKE, AVOIDING, ALIGNING, RETURNING, LANDING, FAILED };
+  enum class ResumePhase { SNAKE, AVOIDING };
+
+  const char *phaseName() const;
+  bool obstacleDataFresh(const Context &ctx) const;
+  bool occupiedAt(const Context &ctx, double x, double y) const;
+  bool obstacleNearSegment(const Context &ctx, double x0, double y0,
+                           double x1, double y1) const;
+  bool contourFresh(const Context &ctx) const;
+  bool circleFresh(const Context &ctx) const;
+  bool circlePositionEnu(const Context &ctx, Vec3 &position) const;
+  bool insideCompletedTargetRadius(const Context &ctx) const;
+  bool selectAvoidanceTarget(const Context &ctx);
+  void beginAvoidance(Context &ctx, MavrosIface &iface);
+  void beginAlignment(Context &ctx, MavrosIface &iface, ResumePhase resume_phase);
+  Status tickAlignment(Context &ctx, MavrosIface &iface, double dt_s);
+  Status tickReturn(Context &ctx, MavrosIface &iface, double dt_s);
+  Status tickLanding(Context &ctx, MavrosIface &iface, double dt_s);
+  void failAndLand(Context &ctx, MavrosIface &iface, const char *reason);
+
+  rclcpp::Logger logger_;
+  rclcpp::Clock::SharedPtr clock_;
+  Config cfg_;
+  SnakeGridTask snake_;
+  EgoGotoTask ego_;
+  AlignDownTask align_;
+  LandTask land_;
+  Phase phase_{Phase::FAILED};
+  ResumePhase resume_phase_{ResumePhase::SNAKE};
+  std::size_t avoidance_target_index_{0};
+  double avoidance_elapsed_s_{0.0};
+  double align_elapsed_s_{0.0};
+  std::string failure_reason_;
+  Vec3 resume_position_;
+  double resume_yaw_{0.0};
+  bool alignment_latched_{false};
+  bool completed_target_valid_{false};
+  Vec3 completed_target_enu_;
+};
+
+}  // namespace offboard_core_pkg

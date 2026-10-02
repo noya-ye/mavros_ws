@@ -13,10 +13,12 @@ std::string HoverTask::name() const { return "hover"; }
 void HoverTask::onEnter(Context &ctx, MavrosIface &) {
   elapsed_s_ = 0.0;
   ctx.fault.clear();
+  hover_z_= ctx.position_setpoint_enu.z;
 }
 
-ITask::Status HoverTask::tick(Context &, MavrosIface &, double dt_s) {
+ITask::Status HoverTask::tick(Context &ctx, MavrosIface &, double dt_s) {
   elapsed_s_ += std::max(0.0, dt_s);
+  ctx.position_setpoint_enu.z = hover_z_;
   return elapsed_s_ >= duration_s_ ? Status::SUCCESS : Status::RUNNING;
 }
 

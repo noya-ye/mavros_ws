@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
+#include <geometry_msgs/msg/point.hpp>
 #include <nav_msgs/msg/occupancy_grid.hpp>
 #include <nav_msgs/msg/odometry.hpp>
 #include <quadrotor_msgs/msg/position_command.hpp>
@@ -21,7 +22,11 @@ namespace offboard_core_pkg {
 class SnakeEgoAvoidNode final : public rclcpp::Node {
 public:
   SnakeEgoAvoidNode()
+#ifdef ALIGN_DROP_SNAKE_EGO_NODE
+  : Node("align_drop_snake_ego_node"), iface_(*this, ctx_) {
+#else
   : Node("snake_ego_avoid_node"), iface_(*this, ctx_) {
+#endif
     const double rate_hz = declare_parameter<double>("setpoint_rate_hz", 20.0);
     const bool auto_start = declare_parameter<bool>("auto_start", true);
     const double warmup_s = declare_parameter<double>("presetpoint_duration_s", 2.0);
@@ -53,7 +58,7 @@ public:
     subscribeEgoInputs();
     subscribeOccupancyGrid(grid_topic);
 
-    SnakeEgoAvoidTask::Config cfg;
+    AlignDropSnakeEgoTask::Config cfg;
     configureSnake(cfg);
     configureEgo(cfg);
     cfg.trigger_distance_m = declare_parameter<double>(
@@ -67,6 +72,47 @@ public:
     cfg.landing_timeout_s = land_timeout_s;
     cfg.landing_retry_interval_s = land_retry_s;
 
+    const auto contour_topic = declare_parameter<std::string>(
+      "align_down.contour_topic", "/target/contour_center");
+    const auto circle_topic = declare_parameter<std::string>(
+      "align_down.circle_topic", "/target/circle_center");
+    cfg.align_pixels_per_meter = declare_parameter<double>(
+      "align_down.pixels_per_meter", 100.0);
+    cfg.align_stable_frames = declare_parameter<int>(
+      "align_down.stable_frames", 5);
+    cfg.align_arrive_distance_m = declare_parameter<double>(
+      "align_down.arrive_distance_m", 0.1);
+    cfg.align_max_step_m = declare_parameter<double>(
+      "align_down.max_step_m", 0.10);
+    cfg.align_timeout_s = declare_parameter<double>("align_down.timeout_s", 10.0);
+    cfg.contour_timeout_s = declare_parameter<double>(
+      "align_down.detection_timeout_s", 0.5);
+    cfg.align_retrigger_radius_m = declare_parameter<double>(
+      "align_down.retrigger_radius_m", 0.55);
+    if (!std::isfinite(cfg.align_max_step_m) || cfg.align_max_step_m <= 0.0) {
+      throw std::invalid_argument("align_down.max_step_m must be positive");
+    }
+    if (!std::isfinite(cfg.align_timeout_s) || cfg.align_timeout_s <= 0.0) {
+      throw std::invalid_argument("align_down.timeout_s must be positive");
+    }
+    if (!std::isfinite(cfg.align_retrigger_radius_m) ||
+        cfg.align_retrigger_radius_m < 0.0) {
+      throw std::invalid_argument(
+        "align_down.retrigger_radius_m must be non-negative");
+    }
+    circle_sub_ = create_subscription<geometry_msgs::msg::Point>(
+      circle_topic, 10, [this](geometry_msgs::msg::Point::ConstSharedPtr msg) {
+        ctx_.down_circle_offset_px = {msg->x, msg->y, 0.0};
+        ctx_.down_circle_stamp = std::chrono::steady_clock::now();
+        ++ctx_.down_circle_seq;
+      });
+    contour_sub_ = create_subscription<geometry_msgs::msg::Point>(
+      contour_topic, 10, [this](geometry_msgs::msg::Point::ConstSharedPtr msg) {
+        ctx_.down_contour_offset_px = {msg->x, msg->y, 0.0};
+        ctx_.down_contour_stamp = std::chrono::steady_clock::now();
+        ++ctx_.down_contour_seq;
+      });
+
     scheduler_.add(std::make_unique<PresetpointTask>(warmup_s));
     scheduler_.add(std::make_unique<SetOffboardTask>(
       command_timeout_s, command_retry_s));
@@ -74,7 +120,7 @@ public:
       command_timeout_s, command_retry_s));
     scheduler_.add(std::make_unique<TakeoffTask>(
       takeoff_height_m, takeoff_tolerance_m, takeoff_timeout_s));
-    scheduler_.add(std::make_unique<SnakeEgoAvoidTask>(
+    scheduler_.add(std::make_unique<AlignDropSnakeEgoTask>(
       get_logger(), get_clock(), goal_pub_, cfg));
     scheduler_.add(std::make_unique<LandTask>(
       land_timeout_s, land_retry_s));
@@ -92,6 +138,9 @@ public:
         if (auto_start && !scheduler_.done() && !scheduler_.failed()) {
           scheduler_.tick(ctx_, iface_, dt_s);
         }
+        if (ctx_.home_initialized) {
+          ctx_.yaw_setpoint_enu = ctx_.home_yaw_enu;
+        }
         iface_.publishSetpoint();
       });
   }
@@ -102,7 +151,7 @@ private:
            stamp.nanosec / 1000ULL;
   }
 
-  void configureSnake(SnakeEgoAvoidTask::Config &cfg) {
+  void configureSnake(AlignDropSnakeEgoTask::Config &cfg) {
     const auto first_axis = declare_parameter<std::string>(
       "snake.first_axis", "y_first");
     if (first_axis == "x_first" || first_axis == "X_FIRST" || first_axis == "x") {
@@ -125,7 +174,7 @@ private:
       "snake.include_start_cell", true);
   }
 
-  void configureEgo(SnakeEgoAvoidTask::Config &cfg) {
+  void configureEgo(AlignDropSnakeEgoTask::Config &cfg) {
     cfg.ego.task_name = "EGO_AVOID";
     cfg.ego.goal_frame = declare_parameter<std::string>(
       "ego.goal_frame", "lidar");
@@ -197,6 +246,8 @@ private:
   MavrosIface iface_;
   Scheduler scheduler_;
   rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr goal_pub_;
+  rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr circle_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr contour_sub_;
   rclcpp::Subscription<quadrotor_msgs::msg::PositionCommand>::SharedPtr ego_cmd_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr ego_odom_sub_;
   rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr occupancy_sub_;

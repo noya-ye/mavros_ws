@@ -17,6 +17,7 @@ public:
 private:
   double duration_s_;
   double elapsed_s_{0.0};
+  double hover_z_{0.0};
 };
 
 }  // namespace offboard_core_pkg

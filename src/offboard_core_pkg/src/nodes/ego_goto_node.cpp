@@ -15,7 +15,7 @@ class EgoGotoNode final : public rclcpp::Node {
 public:
   EgoGotoNode() : Node("ego_goto_node"), iface_(*this,ctx_) {
     const auto rate=declare_parameter<double>("setpoint_rate_hz",20.0); const auto auto_start=declare_parameter<bool>("auto_start",true);
-    const auto pub_topic=declare_parameter<std::string>("ego.goal_topic","/simple_2d_planner/goal");
+    const auto pub_topic=declare_parameter<std::string>("ego.goal_topic","ros");
     rclcpp::QoS qos(10);
     goal_pub_=create_publisher<geometry_msgs::msg::PoseStamped>(pub_topic,qos);
     ego_cmd_sub_=create_subscription<quadrotor_msgs::msg::PositionCommand>("/position_cmd",rclcpp::SensorDataQoS(),[this](quadrotor_msgs::msg::PositionCommand::ConstSharedPtr msg){

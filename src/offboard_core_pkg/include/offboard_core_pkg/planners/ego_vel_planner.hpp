@@ -44,7 +44,7 @@ public:
   struct Debug { double cmd_age_s{999}, odom_age_s{999}, err_xy{0}, err_z{0}; std::string reason; };
   EgoVelPlanner() = default;//让编译器自动生成 EgoVelPlanner 的默认构造函数
   explicit EgoVelPlanner(const Config &cfg) : cfg_(cfg) {}//根据传入的配置参数 cfg 初始化 EgoVelPlanner 对象
-  // 方式1：
+  // 方式1： 
   // EgoVelPlanner planner;
   //         ↓
   // EgoVelPlanner()

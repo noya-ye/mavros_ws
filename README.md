@@ -41,6 +41,41 @@ publish that altitude. On entry, `land` captures the current valid local XY and
 holds it while descending to the landing-approach height, then waits for MAVROS
 to report disarmed after a landing request.
 
+To insert downward-camera alignment between hover and land, set
+`align_down.enabled: true` for `offboard_core_node`. The camera node publishes
+`geometry_msgs/Point` offsets on `/target/circle_center` (preferred) and
+`/target/contour_center` (fallback). Configure
+`align_down.pixels_per_meter` (calibrated pixels per meter),
+`align_down.stable_frames` (consecutive fresh detections),
+`align_down.arrive_distance_m` (horizontal error in meters), and
+`align_down.max_step_m` (maximum horizontal correction per fresh frame, default
+`0.10` m, finite and positive); topic names are
+overridable via `align_down.circle_topic` and `align_down.contour_topic`.
+The image's up and left directions must correspond to vehicle forward and
+left; confirm camera orientation, offset signs, and pixel scale in SITL
+before enabling flight. Alignment holds the entry altitude and commands the
+home yaw; body offsets are rotated using the measured current yaw. Lost
+detections hold the current XY at the entry altitude. Alignment
+does not have a timeout and therefore waits for detections before landing.
+
+## YOLO Detection Topic
+
+`yolov8_seg_usb.py` publishes each frame's detections to `/yolo/detections`
+as `std_msgs/Float32MultiArray`. The data is a flat sequence of alternating
+`class_id, confidence` values; an empty array means no detections in that
+frame. The topic can be changed with `--topic`. The `offboard_core_node`
+subscriber stores received pairs in `Context::yolo_detections` as
+`YoloDetection { class_id, confidence }`, with a receive timestamp and
+sequence counter. Its topic can be changed with the `yolo.detections_topic`
+parameter. Source ROS 2 Humble before running the script so `rclpy` is available.
+
+```bash
+source /opt/ros/humble/setup.bash
+python3 yolov8_seg_usb.py --engine best.engine
+```
+
+Inspect the stream with `ros2 topic echo /yolo/detections`.
+
 ## Build and Run
 
 ```bash
@@ -49,6 +84,30 @@ colcon build --symlink-install --allow-overriding offboard_core_pkg
 source install/setup.bash
 ros2 launch offboard_core_pkg offboard_core.launch.py
 ```
+
+Snake coverage with EGO obstacle avoidance and down-camera alignment runs with:
+
+```bash
+ros2 launch offboard_core_pkg snake_ego_avoid.launch.py
+```
+
+The same task sequence is also available as a dedicated node whose alignment
+calibration matches `offboard_core.yaml`:
+
+```bash
+ros2 launch offboard_core_pkg align_drop_snake_ego.launch.py
+```
+
+Its snake and EGO avoidance settings follow
+`config/snake_ego_avoid.yaml`; alignment settings are in
+`config/align_drop_snake_ego.yaml`.
+
+The node prioritizes fresh down-contour detections over obstacle avoidance,
+returns to the interrupted position after alignment, and fails if alignment
+exceeds `align_down.timeout_s` (default `10.0` seconds). Configure camera topics,
+calibration, `align_down.max_step_m`, and detection freshness in `config/snake_ego_avoid.yaml`. After a
+successful alignment it suppresses repeat alignment for the same circle center
+within `align_down.retrigger_radius_m` (default `0.55` m).
 
 ## Flight Recording
 
@@ -110,6 +169,10 @@ ros2 launch offboard_core_pkg snake_ego_avoid.launch.py
 Its parameters are in `config/snake_ego_avoid.yaml`. In particular,
 `snake.first_axis` accepts `x_first` or `y_first`, and `snake.max_step_m`
 controls the maximum commanded snake-path step per 0.05 s reference interval.
+The node captures yaw from its first valid MAVROS local pose and commands that
+same heading on every outgoing setpoint, including takeoff, snake traversal,
+EGO avoidance, and task transitions. Once PX4 takes over in LAND mode, yaw is
+controlled by the flight controller rather than this node.
 During operation, `[SNAKE_EGO]` logs report the task phase, current grid cell,
 aircraft ENU position, target point, occupied-cell skips, EGO avoidance, and
 landing failures. Periodic SNAKE and AVOIDING status lines are throttled to
