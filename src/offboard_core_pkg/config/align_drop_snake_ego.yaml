@@ -21,7 +21,7 @@ align_drop_snake_ego_node:
     snake.y_cells: 6
     snake.cell_size_m: 1.0
     snake.hover_s: 0.8
-    snake.max_step_m: 0.03
+    snake.max_step_m: 0.05
     snake.arrive_xy_m: 0.12
     snake.arrive_z_m: 0.15
     snake.include_start_cell: true
@@ -33,13 +33,14 @@ align_drop_snake_ego_node:
 
     align_down.contour_topic: /target/contour_center
     align_down.circle_topic: /target/circle_center
-    align_down.pixels_per_meter: 600.0
-    align_down.stable_frames: 2
-    align_down.arrive_distance_m: 0.15
-    align_down.max_step_m: 0.10  # 单帧水平纠偏的最大步长（米）
+    yolo.detections_topic: /yolo/detections
+    align_down.pixels_per_meter: 400.0
+    align_down.stable_frames: 5
+    align_down.arrive_distance_m: 0.08
+    align_down.max_step_m: 0.15  # 单帧水平纠偏的最大步长（米）
     align_down.timeout_s: 15.0
     align_down.detection_timeout_s: 0.5
-    align_down.retrigger_radius_m: 0.55
+    align_down.retrigger_radius_m: 0.80
 
     ego.use_velocity_ff: true
     ego.use_acceleration_ff: false

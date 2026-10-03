@@ -11,8 +11,8 @@ def generate_launch_description():
             output="screen",
             parameters=[{
                 "camera_device": "/dev/video0",
-                "frame_width": 1280,
-                "frame_height": 720,
+                "frame_width": 640,
+                "frame_height": 480,
                 "camera_fps": 30.0,
 
                 # 是否本机弹出 OpenCV 窗口

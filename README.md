@@ -1,9 +1,9 @@
 # MAVROS Offboard Workspace
 
-This workspace was rebuilt around the task architecture used by
-`offboard_core_pkg`: `Context`, `MavrosIface`, `Scheduler`, `ITask`, and
-independent task implementations. It intentionally has one source package,
-`offboard_core_pkg`, rather than the prior manager/modules/watchdog split.
+This workspace uses the task architecture in `offboard_core_pkg`:
+`Context`, `MavrosIface`, `Scheduler`, `ITask`, and independent task
+implementations. The workspace also contains `door_navigation`, which provides
+the door perception and geometric path planner.
 
 Its source tree mirrors the reference layout: `include/offboard_core_pkg` holds
 context, scheduler, helpers, planners, tasks, and the MAVROS interface;
@@ -51,12 +51,25 @@ To insert downward-camera alignment between hover and land, set
 `align_down.max_step_m` (maximum horizontal correction per fresh frame, default
 `0.10` m, finite and positive); topic names are
 overridable via `align_down.circle_topic` and `align_down.contour_topic`.
+Fresh circle detections take priority. When circle data is stale, a contour
+within 40 pixels of the most recently received circle point is treated as an
+equivalent circle detection for arrival checking.
 The image's up and left directions must correspond to vehicle forward and
 left; confirm camera orientation, offset signs, and pixel scale in SITL
 before enabling flight. Alignment holds the entry altitude and commands the
 home yaw; body offsets are rotated using the measured current yaw. Lost
 detections hold the current XY at the entry altitude. Alignment
 does not have a timeout and therefore waits for detections before landing.
+At the first fresh circle/contour frame within the arrival tolerance, it checks
+YOLO once: a detection received within 0.5 seconds with confidence strictly
+greater than 0.40 prints `FIND TARGET` and allows the stable-frame check to
+continue. Missing, stale, empty, or insufficient-confidence YOLO data prints
+`NO TARGET` and returns `SUCCESS`, allowing the scheduler to advance to
+the next task without waiting for stable frames. The target check is reset by
+`onEnter`, and is retained across pause/resume and later tolerance crossings.
+`offboard_core_node` and both snake/EGO node executables subscribe to
+`/yolo/detections` by default. The topic can be changed with the
+`yolo.detections_topic` parameter in each node's configuration.
 
 ## YOLO Detection Topic
 
@@ -66,13 +79,19 @@ as `std_msgs/Float32MultiArray`. The data is a flat sequence of alternating
 frame. The topic can be changed with `--topic`. The `offboard_core_node`
 subscriber stores received pairs in `Context::yolo_detections` as
 `YoloDetection { class_id, confidence }`, with a receive timestamp and
-sequence counter. Its topic can be changed with the `yolo.detections_topic`
-parameter. Source ROS 2 Humble before running the script so `rclpy` is available.
+sequence counter. Each node's topic can be changed with the
+`yolo.detections_topic` parameter. Source ROS 2 Humble before running the script
+so `rclpy` is available.
 
 ```bash
 source /opt/ros/humble/setup.bash
 python3 yolov8_seg_usb.py --engine best.engine
 ```
+
+The script subscribes to `/target/debug_image` by default. Start
+`camera_center.launch.py` with `publish_debug: true` so the camera node is the
+only process that opens `/dev/video0`. Use `--image-topic` to select another
+`sensor_msgs/Image` topic.
 
 Inspect the stream with `ros2 topic echo /yolo/detections`.
 
@@ -103,11 +122,17 @@ Its snake and EGO avoidance settings follow
 `config/align_drop_snake_ego.yaml`.
 
 The node prioritizes fresh down-contour detections over obstacle avoidance,
-returns to the interrupted position after alignment, and fails if alignment
-exceeds `align_down.timeout_s` (default `10.0` seconds). Configure camera topics,
-calibration, `align_down.max_step_m`, and detection freshness in `config/snake_ego_avoid.yaml`. After a
-successful alignment it suppresses repeat alignment for the same circle center
-within `align_down.retrigger_radius_m` (default `0.55` m).
+continuously commands the saved pre-alignment position until it is reached, and
+fails if alignment exceeds `align_down.timeout_s` (default `10.0` seconds).
+Configure camera topics, calibration, `align_down.max_step_m`, detection
+freshness, and `align_down.retrigger_radius_m` in
+`config/align_drop_snake_ego.yaml`. After successful alignments, the node keeps
+all completed target positions for the current task run. New contour detections
+are projected into ENU and skipped when they fall within the configured radius
+(default `0.55` m) of any completed target. Circle position is preferred when
+recording a completed target; fresh contour position is the fallback, followed
+by the aircraft position at arrival tolerance. A later `NO TARGET` result does
+not discard the saved position.
 
 ## Flight Recording
 
@@ -151,6 +176,34 @@ ros2 launch offboard_core_pkg ego_test.launch.py
 The defaults in `config/ego_test.yaml` require FAST-LIO and MAVROS local
 coordinates to remain aligned in ENU: `ego.swap_xy=false`, axis signs of `1`,
 and `ego.yaw_align_rad=0`.
+
+## Door Navigation Flight
+
+`door_navigation.launch.py` starts the door planner and
+`door_navigation_node`. The offboard sequence is
+`presetpoint -> set_offboard -> arm -> takeoff -> hover -> door navigation ->
+land`. The task reuses the EGO2D interfaces from `ego_test_node`: it publishes
+goals to `/simple_2d_planner/goal`, reads `/position_cmd` and
+`/fastlio2/lio_odom`, and runs `EgoVelPlanner` to produce MAVROS setpoints.
+For each approach/crossing phase it follows the selected waypoint from
+`/door/path` only while `/door/status` is fresh, reports a geometric reference,
+and marks the current segment clear. It holds position when those checks fail
+and advances to landing after the door planner reports two completed crossings.
+
+```bash
+source /opt/ros/humble/setup.bash
+source /home/jetson/ego_planner_ws/install/setup.bash
+source install/setup.bash
+ros2 launch offboard_core_pkg door_navigation.launch.py
+```
+
+The launch starts the door planner in geometric preview mode so it does not
+publish its own timed trajectory; EGO2D remains the flight trajectory
+controller. FAST-LIO, the EGO2D planner publishing `/position_cmd`, and MAVROS
+must already be running. Configure `door.planning_frame` and the `ego.*` axis
+mapping in `config/door_navigation.yaml` to match those nodes. This launch has
+`auto_start: true` and begins takeoff/control tasks when MAVROS localization is
+available; validate it in SITL before flight.
 
 EGO supplies horizontal motion only. When `EgoGotoTask` begins, it captures
 the current MAVROS ENU altitude and holds that value for the entire EGO phase;

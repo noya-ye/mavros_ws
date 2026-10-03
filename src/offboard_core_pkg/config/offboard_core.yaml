@@ -8,15 +8,16 @@ offboard_core_node:
     command_retry_interval_s: 1.0
 
     takeoff_height_m: 1.2
-    takeoff_tolerance_m: 0.20
+    takeoff_tolerance_m: 0.10
     takeoff_timeout_s: 30.0
     hover_duration_s: 1.0
     land_timeout_s: 15.0
 
     align_down.enabled: true
-    align_down.pixels_per_meter: 600.0
-    align_down.stable_frames: 10
+    align_down.pixels_per_meter: 800.0
+    align_down.stable_frames: 5
     align_down.arrive_distance_m: 0.10
-    align_down.max_step_m: 0.10  # 单帧水平纠偏的最大步长（米）
+    align_down.max_step_m: 0.15  # 单帧水平纠偏的最大步长（米）
     align_down.circle_topic: /target/circle_center
     align_down.contour_topic: /target/contour_center
+    yolo.detections_topic: /yolo/detections

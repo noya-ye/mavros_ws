@@ -2,8 +2,10 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <limits>
 #include <memory>
 #include <stdexcept>
+#include <utility>
 
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/point.hpp>
@@ -11,6 +13,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include <quadrotor_msgs/msg/position_command.hpp>
 #include <rclcpp/rclcpp.hpp>
+#include <std_msgs/msg/float32_multi_array.hpp>
 
 #include "offboard_core_pkg/context.hpp"
 #include "offboard_core_pkg/mavros_iface.hpp"
@@ -44,6 +47,8 @@ public:
       "land_timeout_s", 15.0);
     const double land_retry_s = declare_parameter<double>(
       "land_retry_interval_s", 1.0);
+    const auto yolo_topic = declare_parameter<std::string>(
+      "yolo.detections_topic", "/yolo/detections");
 
     if (rate_hz < 2.0) {
       throw std::invalid_argument("setpoint_rate_hz must be at least 2 Hz");
@@ -111,6 +116,35 @@ public:
         ctx_.down_contour_offset_px = {msg->x, msg->y, 0.0};
         ctx_.down_contour_stamp = std::chrono::steady_clock::now();
         ++ctx_.down_contour_seq;
+      });
+    yolo_sub_ = create_subscription<std_msgs::msg::Float32MultiArray>(
+      yolo_topic, rclcpp::SensorDataQoS(),
+      [this](std_msgs::msg::Float32MultiArray::ConstSharedPtr msg) {
+        if (msg->data.size() % 2 != 0) {
+          RCLCPP_WARN(get_logger(), "Ignoring malformed YOLO detection array");
+          return;
+        }
+
+        std::vector<YoloDetection> detections;
+        detections.reserve(msg->data.size() / 2);
+        for (std::size_t i = 0; i < msg->data.size(); i += 2) {
+          const auto class_id = msg->data[i];
+          const auto confidence = msg->data[i + 1];
+          if (!std::isfinite(class_id) || !std::isfinite(confidence) ||
+              class_id < 0.0F || std::floor(class_id) != class_id ||
+              static_cast<double>(class_id) >
+                static_cast<double>(std::numeric_limits<std::int32_t>::max()) ||
+              confidence < 0.0F || confidence > 1.0F) {
+            RCLCPP_WARN(get_logger(), "Ignoring malformed YOLO detection pair");
+            return;
+          }
+          detections.push_back(
+            {static_cast<std::int32_t>(class_id), confidence});
+        }
+
+        ctx_.yolo_detections = std::move(detections);
+        ctx_.yolo_detections_stamp = std::chrono::steady_clock::now();
+        ++ctx_.yolo_detections_seq;
       });
 
     scheduler_.add(std::make_unique<PresetpointTask>(warmup_s));
@@ -251,6 +285,7 @@ private:
   rclcpp::Subscription<quadrotor_msgs::msg::PositionCommand>::SharedPtr ego_cmd_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr ego_odom_sub_;
   rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr occupancy_sub_;
+  rclcpp::Subscription<std_msgs::msg::Float32MultiArray>::SharedPtr yolo_sub_;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Time last_tick_{0, 0, RCL_ROS_TIME};
 };

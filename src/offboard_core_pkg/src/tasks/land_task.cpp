@@ -64,7 +64,7 @@ ITask::Status LandTask::tick(Context &ctx, MavrosIface &iface, double dt_s) {
   ctx.position_setpoint_enu.x = locked_x_m_;
   ctx.position_setpoint_enu.y = locked_y_m_;
   ctx.position_setpoint_enu.z = approach_height_m_;
-  ctx.yaw_setpoint_enu = ctx.yaw_enu;
+  ctx.yaw_setpoint_enu = ctx.home_yaw_enu;
   ctx.publish_position_setpoint = true;
 
   if (std::abs(ctx.position_enu.z - approach_height_m_) > kLandingApproachToleranceM) {

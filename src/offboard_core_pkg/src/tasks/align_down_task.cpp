@@ -12,6 +12,8 @@ namespace offboard_core_pkg {
 namespace {
 
 constexpr auto kDetectionTimeout = std::chrono::milliseconds(500);
+constexpr float kMinimumTargetConfidence = 0.40F;
+constexpr double kContourCircleEquivalentDistancePx = 40.0;
 
 rclcpp::Logger logger() {
   return rclcpp::get_logger("align_down");
@@ -85,6 +87,9 @@ void AlignDownTask::onEnter(
   ctx.fault.clear();
 
   detection_was_available_ = false;
+  target_check_done_ = false;
+  target_skipped_ = false;
+  reached_arrival_tolerance_ = false;
   last_status_log_ = {};
 
   if (!valid_config_) {
@@ -145,6 +150,9 @@ ITask::Status AlignDownTask::tick(
   if (!valid_config_) {
     return Status::FAILURE;
   }
+  if (target_skipped_) {
+    return Status::SUCCESS;
+  }
 
   /*
    * ---------------------------------------------------------
@@ -196,6 +204,20 @@ ITask::Status AlignDownTask::tick(
   const bool contour =
       ctx.down_contour_seq != 0 &&
       fresh(ctx.down_contour_stamp);
+
+  const bool contour_matches_last_circle =
+      !circle &&
+      contour &&
+      ctx.down_circle_seq != 0 &&
+      std::isfinite(ctx.down_circle_offset_px.x) &&
+      std::isfinite(ctx.down_circle_offset_px.y) &&
+      std::isfinite(ctx.down_contour_offset_px.x) &&
+      std::isfinite(ctx.down_contour_offset_px.y) &&
+      std::hypot(
+          ctx.down_contour_offset_px.x - ctx.down_circle_offset_px.x,
+          ctx.down_contour_offset_px.y - ctx.down_circle_offset_px.y) <
+          kContourCircleEquivalentDistancePx;
+  const bool circle_equivalent = circle || contour_matches_last_circle;
 
 
   /*
@@ -270,17 +292,17 @@ ITask::Status AlignDownTask::tick(
    * 稳定计数清零。
    */
 
-  if (circle != last_was_circle_) {
+  if (circle_equivalent != last_was_circle_) {
 
     stable_count_ = 0;
 
     RCLCPP_INFO(
         logger(),
         "[ALIGN_DOWN] switching detection source to %s",
-        circle ? "circle" : "contour");
+        circle_equivalent ? "circle" : "contour");
   }
 
-  last_was_circle_ = circle;
+  last_was_circle_ = circle_equivalent;
 
 
   /*
@@ -338,15 +360,55 @@ ITask::Status AlignDownTask::tick(
 
 
   /*
-   * ---------------------------------------------------------
-   * 6. 已经进入允许误差范围
-   * ---------------------------------------------------------
-   */
+ * ---------------------------------------------------------
+ * 6. 当前检测源进入允许误差范围后累计 stable
+ * ---------------------------------------------------------
+ */
 
-  if (distance <= arrive_distance_m_) {
+if (distance <= arrive_distance_m_) {
+    reached_arrival_tolerance_ = true;
 
-    // 位置停止移动
-    // yaw 仍然持续锁定 home_yaw
+    // 仅在第一次进入到达范围时确认 YOLO 目标
+    if (!target_check_done_) {
+        const bool yolo_fresh =
+            ctx.yolo_detections_seq != 0 &&
+            fresh(ctx.yolo_detections_stamp);
+
+        const bool target_found =
+            yolo_fresh &&
+            std::any_of(
+                ctx.yolo_detections.begin(),
+                ctx.yolo_detections.end(),
+                [](const YoloDetection &detection) {
+                    return
+                        std::isfinite(detection.confidence) &&
+                        detection.confidence >
+                            kMinimumTargetConfidence;
+                });
+
+        target_check_done_ = true;
+
+        if (!target_found) {
+            target_skipped_ = true;
+            stable_count_ = 0;
+
+            holdPosition(ctx);
+
+            ctx.fault.clear();
+
+            RCLCPP_INFO(
+                logger(),
+                "NO TARGET");
+
+            return Status::SUCCESS;
+        }
+
+        RCLCPP_INFO(
+            logger(),
+            "FIND TARGET");
+    }
+
+    // 检测源已进入范围，不再继续纠偏
     holdPosition(ctx);
 
     ++stable_count_;
@@ -359,46 +421,38 @@ ITask::Status AlignDownTask::tick(
         log_now - last_status_log_ >=
             std::chrono::seconds(1)) {
 
-      RCLCPP_INFO(
-          logger(),
-          "[ALIGN_DOWN] within tolerance: "
-          "source=%s "
-          "offset=(%.1f, %.1f) px "
-          "distance=%.3f m "
-          "stable=%d/%d",
-          circle ? "circle" : "contour",
-          offset.x,
-          offset.y,
-          distance,
-          stable_count_,
-          stable_frames_);
+        RCLCPP_INFO(
+            logger(),
+            "[ALIGN_DOWN] %s within tolerance: "
+            "offset=(%.1f, %.1f) px "
+            "distance=%.3f m "
+            "stable=%d/%d",
+            circle ? "circle" : "contour",
+            offset.x,
+            offset.y,
+            distance,
+            stable_count_,
+            stable_frames_);
 
-      last_status_log_ = log_now;
+        last_status_log_ = log_now;
     }
-
-
-    /*
-     * 连续 stable_frames 帧满足要求
-     * 才真正完成任务。
-     */
 
     if (stable_count_ >= stable_frames_) {
 
-      RCLCPP_INFO(
-          logger(),
-          "[ALIGN_DOWN] alignment complete: "
-          "distance=%.3f m "
-          "stable_frames=%d",
-          distance,
-          stable_count_);
+        RCLCPP_INFO(
+            logger(),
+            "[ALIGN_DOWN] alignment complete: "
+            "%s distance=%.3f m "
+            "stable_frames=%d",
+            circle ? "circle" : "contour",
+            distance,
+            stable_count_);
 
-      return Status::SUCCESS;
+        return Status::SUCCESS;
     }
 
     return Status::RUNNING;
-  }
-
-
+}
   /*
    * ---------------------------------------------------------
    * 7. 尚未到达，开始进行位置纠偏
@@ -409,42 +463,68 @@ ITask::Status AlignDownTask::tick(
 
 
   /*
-   * ---------------------------------------------------------
-   * 8. 最大单帧步长限制
-   * ---------------------------------------------------------
-   *
-   * 原始：
-   *
-   *      [forward, left]
-   *
-   * 假设视觉算出来目标距离飞机 0.8 m，
-   * max_step_m = 0.10 m
-   *
-   * 则：
-   *
-   *      scale = 0.10 / 0.80
-   *
-   * 保持方向不变，
-   * 但是本次只走 0.10 m。
-   */
+ * ---------------------------------------------------------
+ * 8. 自适应单帧步长限制
+ * ---------------------------------------------------------
+ *
+ * 距离目标较远：
+ *     允许较大的步长，加快收敛。
+ *
+ * 距离目标较近：
+ *     自动减小步长，避免过冲和来回振荡。
+ *
+ * 当前建议：
+ *
+ * distance > 0.30 m
+ *     max step = max_step_m_
+ *              = 0.15 m
+ *
+ * 0.15 < distance <= 0.30 m
+ *     max step = 0.08 m
+ *
+ * arrive_distance < distance <= 0.15 m
+ *     max step = 0.04 m
+ *
+ * distance <= arrive_distance
+ *     前面已经进入 stable 逻辑，
+ *     不会运行到这里。
+ */
 
-  const double step_scale =
-      std::min(
-          1.0,
-          max_step_m_ / distance);
+double adaptive_max_step = max_step_m_;
+
+if (distance <= 0.15) {
+
+  adaptive_max_step = 0.04;
+
+} else if (distance <= 0.30) {
+
+  adaptive_max_step = 0.08;
+}
 
 
-  const double step_forward =
-      forward * step_scale;
+/*
+ * adaptive_max_step 只是最大允许步长。
+ *
+ * 如果实际误差比它还小，
+ * 就只走实际误差，不会超出目标。
+ */
+const double step_scale =
+    std::min(
+        1.0,
+        adaptive_max_step / distance);
 
-  const double step_left =
-      left * step_scale;
 
-  const double actual_step =
-      std::hypot(
-          step_forward,
-          step_left);
+const double step_forward =
+    forward * step_scale;
 
+const double step_left =
+    left * step_scale;
+
+
+const double actual_step =
+    std::hypot(
+        step_forward,
+        step_left);
 
   /*
    * ---------------------------------------------------------
@@ -563,6 +643,7 @@ ITask::Status AlignDownTask::tick(
         "offset=(%.1f, %.1f) px "
         "error_body=(%.3f, %.3f) m "
         "distance=%.3f m "
+        "adaptive_max_step=%.3f m "
         "step_body=(%.3f, %.3f) m "
         "step=%.3f m "
         "target=(%.2f, %.2f, %.2f) "
@@ -573,6 +654,7 @@ ITask::Status AlignDownTask::tick(
         forward,
         left,
         distance,
+        adaptive_max_step,   // 新增
         step_forward,
         step_left,
         actual_step,

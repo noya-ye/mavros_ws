@@ -1,0 +1,14 @@
+<?xml version='1.0' encoding='utf-8'?>
+<package format="3">
+  <name>door_navigation</name><version>0.2.0</version>
+  <description>C++ corridor opening recognition and path planning without visualization or a command sender.</description>
+  <maintainer email="maintainer@example.com">Maintainer</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend><depend>nav_msgs</depend><depend>geometry_msgs</depend>
+  <depend>std_msgs</depend><depend>trajectory_msgs</depend>
+  <depend>eigen</depend><depend>libopencv-dev</depend><depend>nlohmann_json</depend>
+  <exec_depend>launch_ros</exec_depend><exec_depend>launch_xml</exec_depend>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

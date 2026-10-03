@@ -29,6 +29,10 @@ public:
 
   void onResume(Context &ctx, MavrosIface &iface) override;
 
+  bool reached_arrival_tolerance() const {
+    return reached_arrival_tolerance_;
+  }
+
 private:
   void holdPosition(Context &ctx) const;
 
@@ -63,6 +67,11 @@ private:
 
   // 是否曾经有有效检测
   bool detection_was_available_{false};
+
+  // 首次进入到达阈值时是否已经完成 YOLO 目标确认
+  bool target_check_done_{false};
+  bool target_skipped_{false};
+  bool reached_arrival_tolerance_{false};
 
   // 日志限频
   std::chrono::steady_clock::time_point last_status_log_{};

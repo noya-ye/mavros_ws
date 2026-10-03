@@ -10,8 +10,11 @@ import cv2
 import numpy as np
 import tensorrt as trt
 import rclpy
+from cv_bridge import CvBridge
 from rclpy.node import Node
+from rclpy.qos import qos_profile_sensor_data
 from std_msgs.msg import Float32MultiArray
+from sensor_msgs.msg import Image
 
 
 DEFAULT_CLASS_NAMES = ("bridge", "car")  # class 0, class 1
@@ -246,16 +249,14 @@ def format_status(detections, class_names, fps, top_k, raw_best):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--engine", type=Path, default=Path(__file__).with_name("best.engine"))
-    parser.add_argument("--camera", type=int, default=0, help="/dev/video index")
-    parser.add_argument("--width", type=int, default=1280)
-    parser.add_argument("--height", type=int, default=720)
-    parser.add_argument("--fps", type=int, default=30)
+    parser.add_argument("--image-topic", default="/target/debug_image",
+                        help="ROS 2 image topic published by the camera node")
     parser.add_argument("--conf", type=float, default=0.25)
     parser.add_argument("--iou", type=float, default=0.45)
     parser.add_argument("--max-det", type=int, default=100)
     parser.add_argument("--names", nargs="*", default=DEFAULT_CLASS_NAMES,
                         help="class names in training order (default: bridge car)")
-    parser.add_argument("--no-display", action="store_true", help="terminal only; no image window")
+    parser.add_argument("--no-display", action="store_true", default=True, help="terminal only; no image window")
     parser.add_argument("--print-interval", type=float, default=1.0,
                         help="minimum seconds between terminal status lines")
     parser.add_argument("--print-top-k", type=int, default=5,
@@ -269,29 +270,18 @@ def main():
     rclpy.init()
     ros_node = Node("yolov8_seg_usb")
     publisher = ros_node.create_publisher(Float32MultiArray, args.topic, 10)
-
-    camera = cv2.VideoCapture(args.camera, cv2.CAP_V4L2)
-    if not camera.isOpened():
-        raise RuntimeError(f"Cannot open USB camera /dev/video{args.camera}")
-    camera.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*"MJPG"))
-    camera.set(cv2.CAP_PROP_FRAME_WIDTH, args.width)
-    camera.set(cv2.CAP_PROP_FRAME_HEIGHT, args.height)
-    camera.set(cv2.CAP_PROP_FPS, args.fps)
-    camera.set(cv2.CAP_PROP_BUFFERSIZE, 1)
-    print(f"Camera: {camera.get(cv2.CAP_PROP_FRAME_WIDTH):.0f}x"
-          f"{camera.get(cv2.CAP_PROP_FRAME_HEIGHT):.0f} @ "
-          f"{camera.get(cv2.CAP_PROP_FPS):.0f} fps")
-
+    bridge = CvBridge()
     try:
         engine = SegmentationEngine(args.engine)
         try:
             previous = time.perf_counter()
             last_print = previous - args.print_interval
             smoothed_fps = 0.0
-            while True:
-                ok, frame = camera.read()
-                if not ok:
-                    raise RuntimeError("USB camera stopped returning frames")
+            running = True
+
+            def process_image(message):
+                nonlocal previous, last_print, smoothed_fps, running
+                frame = bridge.imgmsg_to_cv2(message, desired_encoding="bgr8")
                 image, scale, left, top = letterbox(frame, engine.width, engine.height)
                 outputs = engine.infer(image)
                 detections = decode(outputs, frame.shape, scale, left, top,
@@ -302,7 +292,6 @@ def main():
                 detection_msg.data = [value for class_id, score, _, _ in detections
                                       for value in (float(class_id), score)]
                 publisher.publish(detection_msg)
-                rclpy.spin_once(ros_node, timeout_sec=0.0)
                 now = time.perf_counter()
                 fps = 1.0 / max(now - previous, 1e-6)
                 smoothed_fps = fps if smoothed_fps == 0 else 0.9 * smoothed_fps + 0.1 * fps
@@ -319,13 +308,19 @@ def main():
                                 (255, 255, 255), 2, cv2.LINE_AA)
                     cv2.imshow("YOLOv8 TensorRT Segmentation - press q to quit", frame)
                     if cv2.waitKey(1) & 0xFF == ord("q"):
-                        break
+                        running = False
+
+            ros_node.create_subscription(
+                Image, args.image_topic, process_image, qos_profile_sensor_data
+            )
+            print(f"Subscribing to {args.image_topic}", flush=True)
+            while rclpy.ok() and running:
+                rclpy.spin_once(ros_node, timeout_sec=0.1)
         except KeyboardInterrupt:
             print("\n已停止", flush=True)
         finally:
             engine.close()
     finally:
-        camera.release()
         cv2.destroyAllWindows()
         ros_node.destroy_node()
         rclpy.shutdown()

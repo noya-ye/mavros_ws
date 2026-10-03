@@ -1,0 +1,54 @@
+# 抱机测试专用：仅显示识别和规划；不启动发送节点，不发布可执行时间轨迹。
+# 米为长度单位，秒为时间单位。机头初始朝走廊前方，手动缓慢移动。
+# 仅处理走廊朝向坐标系 x>=0 的前方点；身后点不进入识别、碰撞地图或 RViz 障碍。
+# 稳定识别后锁定门：当前位置直连门前 0.50 m，再沿门法向直行 1.00 m；最多两次穿门。
+# /door/path 是完整几何参考；segment_clear 表示当前段净空检查结果，不代表允许执行。
+door_navigation:
+  ros__parameters:
+    # 抱机预览也记录诊断日志；false 可关闭。空目录使用 ~/.ros/door_navigation。
+    enable_logging: true
+    log_directory: ""
+    # 已按当前 FAST-LIO2 实机接口设置。
+    cloud_topic: /fastlio2/world_cloud
+    odom_topic: /fastlio2/lio_odom
+    # 与点云/里程计的真实世界系一致；RViz 的 Fixed Frame 也要一致。
+    planning_frame: lidar
+    odom_child_frame: body
+    # 预览模式不等待 OFFBOARD/解锁/控制交接，不检查是否跟上时间轨迹。
+    # 抱机到门前/门后点并停稳，也会切换阶段/累计穿门次数；重启节点可重新测试。
+    preview_mode: true
+    require_control_ready: false
+    # true：以当前参考点 Z 进行定高路径预览，抬高/放低后切片随之变化。
+    # false：预览指定 flight_z；必须填写下面目标 Z，并将飞机保持在附近。
+    preview_follow_height: true
+    flight_z: -999.0
+    # 以 LIO 原点为规划参考点；lidar_offset 按实际标定/安装平移修改。
+    body_offset: [0.0, 0.0, 0.0]
+    lidar_offset: [0.0, 0.0, 0.0]
+    # 上下尺寸是占位值，按参考点实际测量；不参考顶部网。
+    body_below: 0.15
+    body_above: 0.15
+    vertical_margin: 0.08
+    # 已按要求使用 25 cm 总膨胀半径，不额外加一格。
+    radius: 0.25
+    margin: 0.0
+    # 两侧墙间距先验：当前接受 2.2 ± 0.5 m，即约 1.7～2.7 m。
+    corridor_width: 2.2
+    corridor_tolerance: 0.5
+    # 局部地图左右各 2 m，给较宽走廊和偏离中心的位置保留范围。
+    lateral_range: 2.0
+    # 门洞几何识别范围；小于机体安全通行宽度的候选仍会被拒绝。
+    door_min: 0.50
+    door_max: 1.20
+    slice_half_thickness: 0.08
+    self_filter_radius: 0.28
+    cache_seconds: 0.6
+    max_age: 0.3
+    sync_tolerance: 0.03
+    stable_frames: 3
+    max_speed: 0.30
+    max_acceleration: 0.30
+    # 保持各 0.50 m：穿门直线总长为两者之和，即 1.00 m。
+    pre_distance: 0.50
+    post_distance: 0.50
+    wall_thickness: 0.15

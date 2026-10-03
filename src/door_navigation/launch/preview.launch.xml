@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='utf-8'?>
+<launch>
+  <arg name="config" default="$(find-pkg-share door_navigation)/config/preview.yaml" />
+  <arg name="use_sim_time" default="false" />
+  <node pkg="door_navigation" exec="door_node" name="door_navigation" output="screen">
+    <param from="$(var config)" />
+    <param name="preview_mode" value="true" />
+    <param name="require_control_ready" value="false" />
+    <param name="use_sim_time" value="$(var use_sim_time)" />
+  </node>
+  </launch>

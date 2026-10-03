@@ -125,10 +125,10 @@ public:
 
 - 构造：`AlignDownTask(double pixels_per_meter, int stable_frames, double arrive_distance_m, double max_step_m)`；比例单位是像素/米，帧数、距离阈值与最大单帧步长必须为正数；浮点参数还需为有限值。
 - `name()`：`"align_down"`。
-- 行为：使用 `Context` 中下视圆心偏差，圆心超过 0.5 秒未更新时回退到轮廓中心。图像上/左分别视作机体前/左，按当前 yaw 转到 ENU，保持偏差方向，将水平纠偏距离限制为 `max_step_m` 后加到当前 XY；Z 固定为进入任务时的高度，yaw setpoint 锁定为 `home_yaw_enu`。超出阈值继续修正；连续收到 `stable_frames` 个阈值内的新检测帧后成功。无新检测时不累计帧数，检测超时后保持当前位置并清零稳定计数。
+- 行为：使用 `Context` 中下视圆心偏差，圆心超过 0.5 秒未更新时回退到轮廓中心。图像上/左分别视作机体前/左，按当前 yaw 转到 ENU，保持偏差方向，将水平纠偏距离限制为 `max_step_m` 后加到当前 XY；Z 固定为进入任务时的高度，yaw setpoint 锁定为 `home_yaw_enu`。超出阈值继续修正；第一次进入阈值时检查 YOLO：接收时间不超过 0.5 秒、序号非零且存在置信度严格大于 0.40 的检测，打印 `FIND TARGET`；否则打印 `NO TARGET`、保持位置并返回 `SUCCESS`，跳过稳定帧等待并继续后续流程。circle 或 contour 当前检测偏差进入到达阈值时均可判定到达。确认只执行一次，`onEnter` 重置，暂停恢复或再次进入阈值不重复确认；确认通过后连续收到 `stable_frames` 个阈值内的新检测帧后成功。无新检测时不累计帧数，检测超时后保持当前位置并清零稳定计数。
 - 失败条件：构造参数无效，设置 `ctx.fault` 后返回 `FAILURE`。无连接/定位或目标暂时丢失则等待，不会误判成功。
 - 生命周期：`onEnter`、`tick`、`onPause`、`onResume`；暂停时保持当前位置，恢复时等待新检测帧重新计数。无公开查询接口。
-- 节点接入：`offboard_core_node` 通过 `align_down.enabled`（默认 true）决定是否在悬停与降落之间插入本任务，并订阅视觉节点的 `/target/circle_center` 和 `/target/contour_center`；`align_down.max_step_m` 默认 0.10 m，组合任务节点也透传此参数。相机需要使图像上/左与机体前/左一致，安装方向不同时需先调整坐标映射。
+- 节点接入：`offboard_core_node` 通过 `align_down.enabled`（默认 true）决定是否在悬停与降落之间插入本任务，并订阅视觉节点的 `/target/circle_center` 和 `/target/contour_center`；circle 优先，circle 数据过期时，与最近 circle 点相距小于 40 像素的 contour 按 circle 等效进行到达判定。`align_down.max_step_m` 默认 0.10 m，组合任务节点也透传此参数。相机需要使图像上/左与机体前/左一致，安装方向不同时需先调整坐标映射。
 
 ### `EgoVelFollowTask`
 
@@ -156,7 +156,7 @@ public:
 - 构造：`AlignDropSnakeEgoTask(rclcpp::Logger, rclcpp::Clock::SharedPtr, PoseStamped publisher, const Config &)`；配置包含蛇形、EGO、避障和 AlignDown 参数，`align_timeout_s` 默认 10 秒。
 - `name()`：`"ALIGN_DROP_SNAKE_EGO"`。
 - 行为：蛇形遍历与 EGO 避障时都检查新鲜的下视轮廓数据；新鲜时先中断当前阶段执行 `AlignDownTask`，成功后返回中断位置，再恢复原蛇形航点或原 EGO 目标。Align 检查优先于障碍触发和 EGO tick。
-- 防重复：触发后锁存至本次 AlignDown 成功或失败。成功时记录新鲜圆心对应的 ENU 目标位置；之后当前圆心距该位置不超过 `align_retrigger_radius_m`（默认 0.55 m）时忽略新鲜轮廓触发，目标移动出该半径后重新允许对齐。若完成时没有新鲜圆心，则不建立位置抑制区。
+- 防重复：触发后锁存至本次 AlignDown 成功或失败。AlignDown 首次进入到达阈值时，优先记录新鲜圆心对应的 ENU 目标位置，其次记录新鲜轮廓投影位置，最后使用此时位于到达阈值内的飞机 ENU 位置估算。每次成功对齐的位置保留在本次任务运行的列表中；新的轮廓位置按像素比例和飞机 yaw 投影到 ENU，距任一已完成位置不超过 `align_retrigger_radius_m`（默认 0.55 m）时跳过重复对齐。`NO TARGET` 不会清除已记录位置。
 - 失败处理：对齐超时或 AlignDown 配置失败时直接以 `FAILURE` 结束；蛇形/EGO 避障故障沿用内部降落处理。
 - 节点接入：`snake_ego_avoid_node` 订阅 `/target/contour_center` 与 `/target/circle_center`；话题、标定比例、稳定帧数、到达阈值和超时均在 `snake_ego_avoid.yaml` 配置。
 

@@ -41,6 +41,7 @@ snake_ego_avoid_node:
     # alignment times out as a task failure after this duration.
     align_down.contour_topic: /target/contour_center
     align_down.circle_topic: /target/circle_center
+    yolo.detections_topic: /yolo/detections
     align_down.pixels_per_meter: 100.0
     align_down.stable_frames: 5
     align_down.arrive_distance_m: 0.1

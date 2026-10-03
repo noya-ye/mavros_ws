@@ -3,6 +3,8 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <rclcpp/rclcpp.hpp>
 
+#include <vector>
+
 #include "offboard_core_pkg/tasks/align_down_task.hpp"
 #include "offboard_core_pkg/tasks/ego_goto_task.hpp"
 #include "offboard_core_pkg/tasks/land_task.hpp"
@@ -52,6 +54,7 @@ private:
                            double x1, double y1) const;
   bool contourFresh(const Context &ctx) const;
   bool circleFresh(const Context &ctx) const;
+  bool contourPositionEnu(const Context &ctx, Vec3 &position) const;
   bool circlePositionEnu(const Context &ctx, Vec3 &position) const;
   bool insideCompletedTargetRadius(const Context &ctx) const;
   bool selectAvoidanceTarget(const Context &ctx);
@@ -78,8 +81,9 @@ private:
   Vec3 resume_position_;
   double resume_yaw_{0.0};
   bool alignment_latched_{false};
-  bool completed_target_valid_{false};
-  Vec3 completed_target_enu_;
+  bool alignment_target_valid_{false};
+  Vec3 alignment_target_enu_;
+  std::vector<Vec3> completed_targets_enu_;
 };
 
 }  // namespace offboard_core_pkg
