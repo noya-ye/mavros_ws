@@ -126,6 +126,16 @@ Its snake and EGO avoidance settings follow
 `config/snake_ego_avoid.yaml`; alignment settings are in
 `config/align_drop_snake_ego.yaml`.
 
+When an obstacle enters the speed-dependent braking distance, the task sends
+the selected waypoint to EGO immediately while retaining position-only flight
+setpoints for braking. It hands flight control to EGO once the aircraft is
+within `avoidance.ego_handoff_distance_m` of the detected obstacle, regardless of
+remaining speed. Tune `avoidance.braking_deceleration_mps2` and
+`avoidance.braking_control_delay_s` to measured position-control behavior;
+`avoidance.target_clearance_m` controls the occupied-grid radius used to
+reject waypoint targets. The task checks target clearance but does not perform
+an additional path collision check. EGO emergency stop remains enabled.
+
 The node checks fresh down-circle and down-contour detections, as well as
 RedCross detections when enabled, before obstacle avoidance. RedCross has
 priority when both target types are fresh; an active alignment is not

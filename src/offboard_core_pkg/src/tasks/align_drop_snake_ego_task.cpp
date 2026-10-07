@@ -87,6 +87,9 @@ const char *AlignDropSnakeEgoTask::phaseName() const {
     case Phase::SNAKE:
       return "SNAKE";
 
+    case Phase::BRAKING:
+      return "BRAKING";
+
     case Phase::AVOIDING:
       return "AVOIDING";
 
@@ -128,6 +131,8 @@ void AlignDropSnakeEgoTask::onEnter(
 
   avoidance_target_index_ = 0;
   avoidance_elapsed_s_ = 0.0;
+  braking_elapsed_s_ = 0.0;
+  braking_initial_speed_mps_ = 0.0;
   align_elapsed_s_ = 0.0;
   align_loss_elapsed_s_ = 0.0;
   alignment_entry_target_valid_ = false;
@@ -316,7 +321,8 @@ ITask::Status AlignDropSnakeEgoTask::tick(
         ctx.position_enu.x,
         ctx.position_enu.y,
         waypoint.x,
-        waypoint.y)) {
+        waypoint.y,
+        &braking_obstacle_position_)) {
 
       if (!selectAvoidanceTarget(ctx)) {
 
@@ -348,8 +354,21 @@ ITask::Status AlignDropSnakeEgoTask::tick(
 
 
       beginAvoidance(ctx, iface);
-
-      phase_ = Phase::AVOIDING;
+      braking_start_position_ = ctx.position_enu;
+      const double speed = std::hypot(
+        ctx.velocity_enu.x, ctx.velocity_enu.y);
+      braking_initial_speed_mps_ = std::isfinite(speed) ? speed : 0.0;
+      if (braking_initial_speed_mps_ > 1e-3) {
+        braking_direction_x_ =
+          ctx.velocity_enu.x / braking_initial_speed_mps_;
+        braking_direction_y_ =
+          ctx.velocity_enu.y / braking_initial_speed_mps_;
+      } else {
+        braking_direction_x_ = 0.0;
+        braking_direction_y_ = 0.0;
+      }
+      braking_elapsed_s_ = 0.0;
+      phase_ = Phase::BRAKING;
 
       return Status::RUNNING;
     }
@@ -373,6 +392,62 @@ ITask::Status AlignDropSnakeEgoTask::tick(
     }
 
     return status;
+  }
+
+
+  if (phase_ == Phase::BRAKING) {
+    SnakeGridTask::WaypointInfo target;
+    if (!snake_.waypointAt(avoidance_target_index_, target)) {
+      phase_ = Phase::AVOIDING;
+    } else {
+      const double remaining = std::hypot(
+        braking_obstacle_position_.x - ctx.position_enu.x,
+        braking_obstacle_position_.y - ctx.position_enu.y);
+      if (remaining <= std::max(0.0, cfg_.ego_handoff_distance_m)) {
+        phase_ = Phase::AVOIDING;
+        RCLCPP_INFO(
+          logger_,
+          "[ALIGN_DROP_SNAKE_EGO] braking-to-EGO handoff at "
+          "obstacle distance %.2f m (limit %.2f m)",
+          remaining, cfg_.ego_handoff_distance_m);
+      } else {
+        braking_elapsed_s_ += dt;
+        const double delay = std::max(0.0, cfg_.braking_control_delay_s);
+        const double deceleration = std::max(
+          1e-3, cfg_.braking_deceleration_mps2);
+        const double moving_time = std::max(0.0, braking_elapsed_s_ - delay);
+        const double braking_time = std::min(
+          moving_time,
+          braking_initial_speed_mps_ / deceleration);
+        const double delay_travel =
+          braking_initial_speed_mps_ *
+          std::min(braking_elapsed_s_, delay);
+        const double stopping_distance =
+          delay_travel +
+          braking_initial_speed_mps_ * braking_time -
+          0.5 * deceleration * braking_time * braking_time;
+        const double kinematic_stop_distance =
+          braking_initial_speed_mps_ * delay +
+          braking_initial_speed_mps_ * braking_initial_speed_mps_ /
+            (2.0 * deceleration);
+        const double available_distance = std::max(
+          0.0, remaining - std::max(0.0, cfg_.ego_handoff_distance_m));
+        const double travel = std::clamp(
+          stopping_distance, 0.0,
+          std::min(kinematic_stop_distance, available_distance));
+        ctx.position_setpoint_enu = {
+          braking_start_position_.x + braking_direction_x_ * travel,
+          braking_start_position_.y + braking_direction_y_ * travel,
+          braking_start_position_.z};
+        ctx.velocity_setpoint_enu = {0.0, 0.0, 0.0};
+        ctx.acceleration_setpoint_enu = {0.0, 0.0, 0.0};
+        ctx.setpoint_mode = SetpointMode::POSITION;
+        ctx.use_position_velocity_acceleration = false;
+        ctx.publish_position_setpoint = true;
+        ctx.yaw_setpoint_enu = ctx.yaw_enu;
+        return Status::RUNNING;
+      }
+    }
   }
 
 
@@ -1547,31 +1622,34 @@ bool AlignDropSnakeEgoTask::occupiedAt(
         ctx.occupancy_grid_resolution));
 
 
-  if (
-    ix < 0 ||
-    iy < 0 ||
-    ix >=
-      static_cast<int>(
-        ctx.occupancy_grid_width) ||
-    iy >=
-      static_cast<int>(
-        ctx.occupancy_grid_height)) {
-
-    return false;
+  const int cell_radius = static_cast<int>(std::ceil(
+    std::max(0.0, cfg_.target_clearance_m) /
+    ctx.occupancy_grid_resolution));
+  for (int dy = -cell_radius; dy <= cell_radius; ++dy) {
+    for (int dx = -cell_radius; dx <= cell_radius; ++dx) {
+      const double cell_distance = std::hypot(
+        dx * ctx.occupancy_grid_resolution,
+        dy * ctx.occupancy_grid_resolution);
+      if (cell_distance > cfg_.target_clearance_m +
+          std::sqrt(2.0) * ctx.occupancy_grid_resolution) {
+        continue;
+      }
+      const int cell_x = ix + dx;
+      const int cell_y = iy + dy;
+      if (cell_x < 0 || cell_y < 0 ||
+          cell_x >= static_cast<int>(ctx.occupancy_grid_width) ||
+          cell_y >= static_cast<int>(ctx.occupancy_grid_height)) {
+        return true;
+      }
+      const auto index = static_cast<std::size_t>(cell_y) *
+        ctx.occupancy_grid_width + static_cast<std::size_t>(cell_x);
+      if (index >= ctx.occupancy_grid_data.size() ||
+          ctx.occupancy_grid_data[index] >= cfg_.occupied_threshold) {
+        return true;
+      }
+    }
   }
-
-
-  const auto index =
-    static_cast<std::size_t>(iy) *
-      ctx.occupancy_grid_width +
-    static_cast<std::size_t>(ix);
-
-
-  return
-    index <
-      ctx.occupancy_grid_data.size() &&
-    ctx.occupancy_grid_data[index] >=
-      cfg_.occupied_threshold;
+  return false;
 }
 
 
@@ -1584,7 +1662,8 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
   double x0,
   double y0,
   double x1,
-  double y1) const {
+  double y1,
+  Vec3 *nearest_obstacle) const {
 
   if (!obstacleDataFresh(ctx)) {
     return false;
@@ -1595,12 +1674,20 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
     ctx.occupancy_grid_resolution;
 
 
-  const double margin =
-    std::max(
-      0.0,
-      cfg_.trigger_distance_m) +
-    std::sqrt(2.0) *
-      resolution;
+  const double speed = std::hypot(
+    ctx.velocity_enu.x, ctx.velocity_enu.y);
+  const double finite_speed = std::isfinite(speed) ? speed : 0.0;
+  const double deceleration = std::max(
+    1e-3, cfg_.braking_deceleration_mps2);
+  const double braking_distance =
+    finite_speed * std::max(0.0, cfg_.braking_control_delay_s) +
+    finite_speed * finite_speed / (2.0 * deceleration) +
+    std::max(0.0, cfg_.target_clearance_m) +
+    std::sqrt(2.0) * resolution +
+    std::max(0.0, cfg_.trigger_distance_m);
+  const double corridor_margin =
+    std::max(0.0, cfg_.target_clearance_m) +
+    std::sqrt(2.0) * resolution;
 
 
   const int ix0 =
@@ -1608,7 +1695,7 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
       std::floor(
         (
           std::min(x0, x1) -
-          margin -
+          corridor_margin -
           ctx.occupancy_grid_origin_x
         ) /
         resolution));
@@ -1619,7 +1706,7 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
       std::floor(
         (
           std::max(x0, x1) +
-          margin -
+          corridor_margin -
           ctx.occupancy_grid_origin_x
         ) /
         resolution));
@@ -1630,7 +1717,7 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
       std::floor(
         (
           std::min(y0, y1) -
-          margin -
+          corridor_margin -
           ctx.occupancy_grid_origin_y
         ) /
         resolution));
@@ -1641,12 +1728,14 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
       std::floor(
         (
           std::max(y0, y1) +
-          margin -
+          corridor_margin -
           ctx.occupancy_grid_origin_y
         ) /
         resolution));
 
 
+  double nearest_distance = std::numeric_limits<double>::infinity();
+  Vec3 nearest_position;
   for (
     int iy =
       std::max(0, iy0);
@@ -1701,6 +1790,7 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
           resolution;
 
 
+      const double distance_from_start = std::hypot(cx - x0, cy - y0);
       if (
         pointSegmentDistance(
           cx,
@@ -1708,15 +1798,23 @@ bool AlignDropSnakeEgoTask::obstacleNearSegment(
           x0,
           y0,
           x1,
-          y1) <= margin) {
-
-        return true;
+          y1) <= corridor_margin &&
+        distance_from_start <= braking_distance &&
+        distance_from_start < nearest_distance) {
+        nearest_distance = distance_from_start;
+        nearest_position = {cx, cy, ctx.position_enu.z};
       }
     }
   }
 
 
-  return false;
+  if (!std::isfinite(nearest_distance)) {
+    return false;
+  }
+  if (nearest_obstacle) {
+    *nearest_obstacle = nearest_position;
+  }
+  return true;
 }
 
 

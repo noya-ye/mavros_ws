@@ -193,6 +193,54 @@ static void exerciseDetectionLoss(bool red_cross, bool recover) {
   assert(ctx.position_setpoint_enu.x > 0.2);
 }
 
+static void exerciseObstacleBrakingHandoff() {
+  Context ctx;
+  ctx.connected = true;
+  ctx.position_valid = true;
+  ctx.position_enu = {0.0, 0.0, 1.0};
+  ctx.velocity_enu = {0.0, 1.0, 0.0};
+
+  AlignDropSnakeEgoTask::Config cfg;
+  cfg.snake.x_cells = 1;
+  cfg.snake.y_cells = 2;
+  cfg.snake.cell_size = 1.2;
+  cfg.snake.include_start_cell = false;
+  cfg.trigger_distance_m = 0.1;
+  cfg.ego_handoff_distance_m = 0.12;
+  cfg.braking_deceleration_mps2 = 0.5;
+  cfg.braking_control_delay_s = 0.2;
+  cfg.target_clearance_m = 0.2;
+
+  ctx.occupancy_grid_resolution = 0.1;
+  ctx.occupancy_grid_origin_x = -10.0;
+  ctx.occupancy_grid_origin_y = -10.0;
+  ctx.occupancy_grid_width = 200;
+  ctx.occupancy_grid_height = 200;
+  ctx.occupancy_grid_data.assign(40000, 0);
+  ctx.occupancy_grid_data[104 * 200 + 100] = 100;
+  ctx.occupancy_grid_valid = true;
+
+  MavrosIface iface;
+  auto clock = std::make_shared<rclcpp::Clock>(RCL_SYSTEM_TIME);
+  ctx.occupancy_grid_stamp_us = static_cast<std::uint64_t>(
+    clock->now().nanoseconds() / 1000ULL);
+  AlignDropSnakeEgoTask task(
+    rclcpp::get_logger("obstacle_braking_test"), clock, nullptr, cfg);
+  task.onEnter(ctx, iface);
+
+  assert(task.tick(ctx, iface, 0.05) == ITask::Status::RUNNING);
+  assert(task.tick(ctx, iface, 0.05) == ITask::Status::RUNNING);
+  assert(ctx.setpoint_mode == SetpointMode::POSITION);
+  assert(std::abs(ctx.position_setpoint_enu.x) < 1e-9);
+  assert(std::abs(ctx.position_setpoint_enu.y - 0.05) < 1e-6);
+
+  // Handoff is obstacle-distance-gated even when measured speed remains high.
+  ctx.position_enu.y = 0.36;
+  assert(task.tick(ctx, iface, 0.05) == ITask::Status::RUNNING);
+  assert(ctx.setpoint_mode == SetpointMode::POSITION);
+  assert(std::abs(ctx.position_setpoint_enu.y - 0.36) < 1e-9);
+}
+
 int main(int argc, char **argv) {
   rclcpp::init(argc, argv);
   exerciseFlow(true);
@@ -201,5 +249,6 @@ int main(int argc, char **argv) {
   exerciseDetectionLoss(false, true);
   exerciseDetectionLoss(true, false);
   exerciseDetectionLoss(true, true);
+  exerciseObstacleBrakingHandoff();
   rclcpp::shutdown();
 }

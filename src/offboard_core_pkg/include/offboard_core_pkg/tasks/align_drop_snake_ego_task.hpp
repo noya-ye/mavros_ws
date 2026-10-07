@@ -21,6 +21,10 @@ public:
     SnakeGridTask::Config snake;
     EgoGotoTask::Config ego;
     double trigger_distance_m{0.8};
+    double ego_handoff_distance_m{0.8};
+    double braking_deceleration_mps2{0.5};
+    double braking_control_delay_s{0.2};
+    double target_clearance_m{0.35};
     double occupancy_timeout_s{0.5};
     double avoidance_timeout_s{30.0};
     int occupied_threshold{50};
@@ -62,7 +66,7 @@ public:
 
 private:
   enum class Phase {
-    SNAKE, AVOIDING, ALIGNING, ALIGNING_RED, DROPPING,
+    SNAKE, BRAKING, AVOIDING, ALIGNING, ALIGNING_RED, DROPPING,
     RETURNING, LANDING, FINISHED, FAILED
   };
   enum class ResumePhase { SNAKE, AVOIDING };
@@ -72,7 +76,8 @@ private:
   bool obstacleDataFresh(const Context &ctx) const;
   bool occupiedAt(const Context &ctx, double x, double y) const;
   bool obstacleNearSegment(const Context &ctx, double x0, double y0,
-                           double x1, double y1) const;
+                           double x1, double y1,
+                           Vec3 *nearest_obstacle) const;
   bool contourFresh(const Context &ctx) const;
   bool circleFresh(const Context &ctx) const;
   bool redCrossFresh(const Context &ctx) const;
@@ -103,6 +108,12 @@ private:
   ResumePhase resume_phase_{ResumePhase::SNAKE};
   std::size_t avoidance_target_index_{0};
   double avoidance_elapsed_s_{0.0};
+  Vec3 braking_start_position_;
+  double braking_direction_x_{0.0};
+  double braking_direction_y_{0.0};
+  double braking_initial_speed_mps_{0.0};
+  double braking_elapsed_s_{0.0};
+  Vec3 braking_obstacle_position_;
   double align_elapsed_s_{0.0};
   double align_loss_elapsed_s_{0.0};
   Vec3 alignment_entry_target_;

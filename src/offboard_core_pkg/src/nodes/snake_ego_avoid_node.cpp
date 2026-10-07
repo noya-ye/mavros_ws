@@ -68,6 +68,14 @@ public:
     configureEgo(cfg);
     cfg.trigger_distance_m = declare_parameter<double>(
       "avoidance.trigger_distance_m", 0.01);
+    cfg.ego_handoff_distance_m = declare_parameter<double>(
+      "avoidance.ego_handoff_distance_m", 0.8);
+    cfg.braking_deceleration_mps2 = declare_parameter<double>(
+      "avoidance.braking_deceleration_mps2", 0.5);
+    cfg.braking_control_delay_s = declare_parameter<double>(
+      "avoidance.braking_control_delay_s", 0.2);
+    cfg.target_clearance_m = declare_parameter<double>(
+      "avoidance.target_clearance_m", 0.35);
     cfg.occupancy_timeout_s = declare_parameter<double>(
       "avoidance.occupancy_timeout_s", 0.5);
     cfg.avoidance_timeout_s = declare_parameter<double>(
