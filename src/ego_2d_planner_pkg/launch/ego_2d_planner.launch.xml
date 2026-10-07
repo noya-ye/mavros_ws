@@ -1,0 +1,19 @@
+<launch>
+  <arg name="config" default="$(find-pkg-share ego_2d_planner_pkg)/config/ego_2d_planner.yaml"/>
+  <arg name="use_sim_time" default="false"/>
+  <arg name="use_rviz" default="false"/>
+  <arg name="use_traj_server" default="true"/>
+  <arg name="rviz_config" default="$(find-pkg-share ego_2d_planner_pkg)/rviz/ego_2d_planner.rviz"/>
+
+  <node pkg="ego_2d_planner_pkg" exec="ego_replan_fsm_2d_node" name="ego_replan_fsm_2d_node" output="screen">
+    <param from="$(var config)"/>
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+  </node>
+  <node if="$(var use_traj_server)" pkg="ego_2d_planner_pkg" exec="traj_server_2d_node" name="traj_server_2d_node" output="screen">
+    <param from="$(var config)"/>
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+  </node>
+  <node if="$(var use_rviz)" pkg="rviz2" exec="rviz2" name="rviz2" args="-d $(var rviz_config)" output="screen">
+    <param name="use_sim_time" value="$(var use_sim_time)"/>
+  </node>
+</launch>

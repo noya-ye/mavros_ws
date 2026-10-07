@@ -1,0 +1,33 @@
+cloud_self_filter_node:
+  ros__parameters:
+    cloud_in: "/fastlio2/world_cloud"
+    cloud_out: "/cloud_registered_filtered"
+    odom_topic: "/fastlio2/lio_odom"
+
+    use_odom: true
+
+    # 过滤飞机自身附近点云
+    enable_self_filter: true
+    self_filter_radius: 0.1
+
+    # 距离过滤，基于当前 odom 位置
+    enable_range_filter: true
+    min_range: 0.10
+    max_range: 6.00
+
+    # 按 world_cloud 的 z 值过滤高度，删除离地 2m 以上的点
+    enable_z_filter: true
+    z_relative_to_odom: false
+    min_z_keep: 0.0
+    max_z_keep: 2.0
+
+    # 体素降采样
+    enable_voxel_filter: false
+    voxel_leaf_size: 0.00
+
+    # 半径离群点过滤，专门去孤立噪声
+    enable_radius_filter: false
+    radius_filter_radius: 0.22
+    radius_filter_min_neighbors: 2
+
+    print_debug: false

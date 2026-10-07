@@ -1,0 +1,97 @@
+ego_replan_fsm_2d_node:
+  ros__parameters:
+    frame_id: "lidar"
+    cloud_topic: "/cloud_registered_filtered"
+    odom_topic: "/fastlio2/lio_odom"
+    goal_topic: "/simple_2d_planner/goal"
+
+    grid_map/resolution: 0.05
+    grid_map/map_size_x: 10.0
+    grid_map/map_size_y: 10.0
+    # world: absolute z; planning_height: offsets from manager/fixed_z.
+    grid_map/cloud_z_reference: "world"
+    grid_map/cloud_min_z: 0.10
+    grid_map/cloud_max_z: 2.0
+    grid_map/inflate_radius: 0.45
+    grid_map/occupied_threshold: 50
+
+    # Persistent occupied cache.
+    # Once a world-grid cell is observed as occupied continuously long enough,
+    # it remains occupied during this node's lifetime and is used for planning.
+    grid_map/persistent_cache_enable: true
+    grid_map/persistent_confirm_s: 1.0
+    grid_map/persistent_miss_tolerance_s: 0.35
+    grid_map/persistent_min_observations: 3
+
+    # Diff-Planner FSM; external topics and map semantics are retained.
+    fsm/planning_rate: 10.0
+    fsm/thresh_replan_time: 0.80
+    fsm/thresh_replan_dist: 0.80
+    fsm/thresh_no_replan_dist: 0.35  # Legacy; use periodic_replan_dist below.
+    fsm/target_reached_tol: 0.25
+    fsm/near_goal_dist: 0.80
+    fsm/periodic_replan_dist: 0.80
+    fsm/emergency_time: 0.80
+    fsm/max_fsm_plan_failures: 3
+
+    search/astar_max_iter: 30000
+
+    manager/control_points_distance: 0.25  # Legacy compatibility; unused by MINCO.
+    manager/bspline_sample_step: 0.05
+    manager/collision_check_step: 0.05  # Legacy compatibility; unused by MINCO.
+    manager/fallback_to_raw_path: false   # EGO-style: never use raw path as normal success
+    manager/hover_if_plan_failed: true
+    manager/lookahead_dist: 0.35
+    manager/fixed_z: 1.0
+
+    optimization/enable: true
+    optimization/max_iter: 100
+    optimization/step_size: 0.035  # Legacy compatibility; unused by MINCO.
+    optimization/max_update: 0.05  # Legacy compatibility; unused by MINCO.
+    optimization/dist0: 0.05
+    optimization/max_vel: 0.35
+    optimization/max_acc: 0.8
+    optimization/knot_span: 0.60  # Legacy compatibility; unused by MINCO.
+    optimization/lambda_smooth: 0.3
+    optimization/lambda_collision: 4.5  # Legacy compatibility; unused by MINCO.
+    optimization/lambda_feasibility: 0.2  # Legacy compatibility; unused by MINCO.
+    optimization/lambda_fitness: 3.0
+
+    # Rebound retries: each failed attempt becomes more obstacle-avoiding.
+    optimization/max_rebound_attempts: 4
+    optimization/retry_collision_scale: 1.6
+    optimization/retry_smooth_scale: 0.75
+    optimization/retry_dist0_scale: 1.08  # Legacy compatibility; unused by MINCO.
+
+    # New executable core: Diff-Planner MINCO + L-BFGS, XY variables only.
+    diff/piece_length: 0.50
+    diff/samples_per_piece: 16
+    diff/max_evaluations: 240
+    diff/max_solve_ms: 60.0
+    diff/weight_time: 0.20
+    diff/weight_collision: 2000.0
+    diff/weight_feasibility: 100.0
+    fsm/max_tracking_error: 0.50
+
+traj_server_2d_node:
+  ros__parameters:
+    # Exact quintic trajectory; update planner and server together.
+    polynomial_topic: "/ego_2d_planner/polynomial_2d"
+    odom_topic: "/fastlio2/lio_odom"
+    cmd_topic: "/position_cmd"
+    frame_id: "lidar"
+
+    # Yaw latches first valid odometry; yaw_dot is always zero.
+    cmd_rate_hz: 50.0
+    fixed_z: 1.0
+    use_msg_z: true
+    max_vel: 0.35
+    max_acc: 0.8
+
+    pos_gain_x: 0.0
+    pos_gain_y: 0.0
+    pos_gain_z: 0.0
+    vel_gain_x: 0.0
+    vel_gain_y: 0.0
+    vel_gain_z: 0.0
+

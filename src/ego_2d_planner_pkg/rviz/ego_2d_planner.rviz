@@ -1,0 +1,380 @@
+Panels:
+  - Class: rviz_common/Displays
+    Help Height: 78
+    Name: Displays
+    Property Tree Widget:
+      Expanded:
+        - /Global Options1
+        - /Status1
+        - /Grid1
+        - /TF1
+        - /FAST-LIO PointCloud1
+        - /EGO 2D OccupancyGrid1
+        - /Odometry1
+        - /Raw Path - AStar2D1
+        - /Smooth Path - Bspline Optimized1
+        - /Selected Path - Executing1
+        - /Local Goal Marker1
+      Splitter Ratio: 0.5
+    Tree Height: 720
+  - Class: rviz_common/Selection
+    Name: Selection
+  - Class: rviz_common/Tool Properties
+    Expanded:
+      - /2D Goal Pose1
+      - /Publish Point1
+    Name: Tool Properties
+    Splitter Ratio: 0.5
+  - Class: rviz_common/Views
+    Expanded:
+      - /Current View1
+    Name: Views
+    Splitter Ratio: 0.5
+  - Class: rviz_common/Time
+    Experimental: false
+    Name: Time
+    SyncMode: 0
+    SyncSource: ""
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Enabled: true
+      Alpha: 0.35
+      Cell Size: 0.5
+      Color: 160; 160; 160
+      Line Style:
+        Line Width: 0.03
+        Value: Lines
+      Normal Cell Count: 0
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Plane: XY
+      Plane Cell Count: 40
+      Reference Frame: <Fixed Frame>
+      Value: true
+
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: true
+      Frame Timeout: 15
+      Frames:
+        All Enabled: true
+      Marker Scale: 0.6
+      Show Arrows: true
+      Show Axes: true
+      Show Names: true
+      Tree:
+        {}
+      Update Interval: 0
+      Value: true
+
+    - Class: rviz_default_plugins/Axes
+      Name: World Axes
+      Enabled: true
+      Length: 1.0
+      Radius: 0.03
+      Reference Frame: <Fixed Frame>
+      Value: true
+
+    - Class: rviz_default_plugins/PointCloud2
+      Name: FAST-LIO PointCloud
+      Enabled: true
+      Topic:
+        Value: /cloud_registered_filtered
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+      Alpha: 0.55
+      Autocompute Intensity Bounds: true
+      Autocompute Value Bounds:
+        Max Value: 10
+        Min Value: -10
+        Value: true
+      Axis: Z
+      Channel Name: z
+      Color: 220; 220; 220
+      Color Transformer: AxisColor
+      Decay Time: 5
+      Invert Rainbow: false
+      Max Color: 255; 255; 255
+      Max Intensity: 4096
+      Min Color: 80; 80; 80
+      Min Intensity: 0
+      Position Transformer: XYZ
+      Selectable: true
+      Size (Pixels): 3
+      Size (m): 0.025
+      Style: Points
+      Use Fixed Frame: true
+      Use rainbow: true
+      Value: true
+
+    - Class: rviz_default_plugins/Map
+      Name: EGO 2D OccupancyGrid
+      Enabled: true
+      Topic:
+        Value: /ego_2d_planner/occupancy_grid
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Alpha: 0.55
+      Color Scheme: map
+      Draw Behind: false
+      Value: true
+
+    - Class: rviz_default_plugins/Odometry
+      Name: Odometry
+      Enabled: true
+      Topic:
+        Value: /Odometry
+        Depth: 10
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Best Effort
+      Angle Tolerance: 0.1
+      Axes:
+        Alpha: 1
+        Length: 0.45
+        Radius: 0.035
+      Color: 255; 255; 0
+      Covariance:
+        Orientation:
+          Alpha: 0.5
+          Color: 255; 255; 127
+          Color Style: Unique
+          Frame: Local
+          Offset: 1
+          Scale: 1
+          Value: false
+        Position:
+          Alpha: 0.3
+          Color: 204; 51; 204
+          Scale: 1
+          Value: false
+        Value: false
+      Keep: 200
+      Position Tolerance: 0.05
+      Shape: Arrow
+      Value: true
+
+    - Class: rviz_default_plugins/Path
+      Name: Raw Path - AStar2D
+      Enabled: true
+      Topic:
+        Value: /ego_2d_planner/raw_path
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Alpha: 0.8
+      Buffer Length: 1
+      Color: 255; 170; 0
+      Line Style: Lines
+      Line Width: 0.06
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0.03
+      Pose Color: 255; 170; 0
+      Pose Style: None
+      Radius: 0.03
+      Shaft Length: 0.1
+      Shaft Radius: 0.03
+      Head Length: 0.1
+      Head Radius: 0.05
+      Value: true
+
+    - Class: rviz_default_plugins/Path
+      Name: Smooth Path - Bspline Optimized
+      Enabled: true
+      Topic:
+        Value: /ego_2d_planner/smooth_path
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Alpha: 1
+      Buffer Length: 1
+      Color: 0; 255; 255
+      Line Style: Lines
+      Line Width: 0.08
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0.08
+      Pose Color: 0; 255; 255
+      Pose Style: None
+      Radius: 0.03
+      Shaft Length: 0.1
+      Shaft Radius: 0.03
+      Head Length: 0.1
+      Head Radius: 0.05
+      Value: true
+
+    - Class: rviz_default_plugins/Path
+      Name: Selected Path - Executing
+      Enabled: true
+      Topic:
+        Value: /ego_2d_planner/selected_path
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Alpha: 1
+      Buffer Length: 1
+      Color: 0; 255; 0
+      Line Style: Lines
+      Line Width: 0.10
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0.13
+      Pose Color: 0; 255; 0
+      Pose Style: None
+      Radius: 0.04
+      Shaft Length: 0.1
+      Shaft Radius: 0.03
+      Head Length: 0.1
+      Head Radius: 0.05
+      Value: true
+
+    - Class: rviz_default_plugins/Pose
+      Name: Final Goal Pose
+      Enabled: true
+      Topic:
+        Value: /simple_2d_planner/goal
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Alpha: 1
+      Axes Length: 0.45
+      Axes Radius: 0.04
+      Color: 255; 0; 255
+      Head Length: 0.25
+      Head Radius: 0.08
+      Shaft Length: 0.5
+      Shaft Radius: 0.04
+      Shape: Arrow
+      Value: true
+
+    - Class: rviz_default_plugins/Pose
+      Name: Local Goal Pose
+      Enabled: true
+      Topic:
+        Value: /simple_2d_planner/local_goal
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Alpha: 1
+      Axes Length: 0.35
+      Axes Radius: 0.035
+      Color: 255; 0; 0
+      Head Length: 0.25
+      Head Radius: 0.09
+      Shaft Length: 0.45
+      Shaft Radius: 0.045
+      Shape: Arrow
+      Value: true
+
+    - Class: rviz_default_plugins/Marker
+      Name: Local Goal Marker
+      Enabled: true
+      Marker Topic:
+        Value: /ego_2d_planner/local_goal_marker
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+      Namespaces:
+        {}
+      Queue Size: 10
+      Value: true
+  Enabled: true
+  Global Options:
+    Background Color: 35; 35; 35
+    Fixed Frame: camera_init
+    Frame Rate: 30
+  Name: root
+  Tools:
+    - Class: rviz_default_plugins/Interact
+      Hide Inactive Objects: true
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+    - Class: rviz_default_plugins/FocusCamera
+    - Class: rviz_default_plugins/Measure
+      Line color: 128; 128; 0
+    - Class: rviz_default_plugins/SetInitialPose
+      Topic:
+        Value: /initialpose
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+    - Class: rviz_default_plugins/SetGoal
+      Topic:
+        Value: /simple_2d_planner/goal
+        Depth: 1
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+    - Class: rviz_default_plugins/PublishPoint
+      Single click: true
+      Topic:
+        Value: /clicked_point
+        Depth: 5
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Reliability Policy: Reliable
+  Transformation:
+    Current:
+      Class: rviz_default_plugins/TF
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 10
+      Enable Stereo Rendering:
+        Stereo Eye Separation: 0.06
+        Stereo Focal Distance: 1
+        Swap Stereo Eyes: false
+        Value: false
+      Focal Point:
+        X: 0
+        Y: 0
+        Z: 0
+      Focal Shape Fixed Size: true
+      Focal Shape Size: 0.05
+      Invert Z Axis: false
+      Name: Current View
+      Near Clip Distance: 0.01
+      Pitch: 1.5708
+      Target Frame: <Fixed Frame>
+      Value: Orbit (rviz)
+      Yaw: 0
+    Saved: ~
+Window Geometry:
+  Displays:
+    collapsed: false
+  Height: 1000
+  Hide Left Dock: false
+  Hide Right Dock: false
+  QMainWindow State: 000000ff00000000fd0000000400000000000001f400000388fc0200000008fb000000100044006900730070006c006100790073010000003d00000388000000c900fffffffb0000001200530065006c0065006300740069006f006e0100000000000000000000000000000000fb0000001e0054006f006f006c002000500072006f00700065007200740069006500730100000000000000000000000000000000fb0000000a005600690065007700730100000000000000000000000000000000fb0000000800540069006d0065010000000000000000000000000000000000000005a00000038800000004000000040000000800000008fc0000000100000002000000010000000a0054006f006f006c00730100000000ffffffff0000000000000000
+  Selection:
+    collapsed: true
+  Time:
+    collapsed: false
+  Tool Properties:
+    collapsed: true
+  Views:
+    collapsed: false
+  Width: 1600
+  X: 60
+  Y: 60

@@ -1,0 +1,9 @@
+std_msgs/Header header
+builtin_interfaces/Time start_time
+int32 traj_id
+int32 order
+float64 knot_span
+float64 duration
+float64 fixed_z
+geometry_msgs/Point[] pos_pts
+float64[] knots
