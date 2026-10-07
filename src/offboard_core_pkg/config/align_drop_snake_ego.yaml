@@ -26,11 +26,7 @@ align_drop_snake_ego_node:
     snake.arrive_z_m: 0.15
     snake.include_start_cell: true
 
-    avoidance.trigger_distance_m: 0.1
-    avoidance.ego_handoff_distance_m: 0.4
-    avoidance.braking_deceleration_mps2: 0.5
-    avoidance.braking_control_delay_s: 0.2
-    avoidance.target_clearance_m: 0.1
+    avoidance.trigger_distance_m: 0.10
     avoidance.occupancy_timeout_s: 0.5
     avoidance.timeout_s: 30.0
     avoidance.occupied_threshold: 50
