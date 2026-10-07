@@ -33,6 +33,10 @@ public:
     return reached_arrival_tolerance_;
   }
 
+  bool target_confirmed() const {
+    return target_check_done_ && !target_skipped_;
+  }
+
 private:
   void holdPosition(Context &ctx) const;
 
@@ -72,6 +76,10 @@ private:
   bool target_check_done_{false};
   bool target_skipped_{false};
   bool reached_arrival_tolerance_{false};
+
+  // 连续低置信度 YOLO 帧计数，以及最近一次已检查的帧序号
+  int low_confidence_yolo_frames_{0};
+  uint64_t last_yolo_check_seq_{0};
 
   // 日志限频
   std::chrono::steady_clock::time_point last_status_log_{};

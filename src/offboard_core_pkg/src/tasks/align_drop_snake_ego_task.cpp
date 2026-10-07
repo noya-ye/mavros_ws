@@ -59,6 +59,17 @@ AlignDropSnakeEgoTask::AlignDropSnakeEgoTask(
     cfg.align_stable_frames,
     cfg.align_arrive_distance_m,
     cfg.align_max_step_m),
+  red_cross_(
+    cfg.red_cross_pixels_per_meter,
+    cfg.red_cross_stable_frames,
+    cfg.red_cross_arrive_distance_m,
+    cfg.red_cross_max_step_m),
+  down_drop_(
+    logger,
+    cfg.drop_height_m,
+    cfg.drop_targets[0],
+    cfg.drop_serial_device,
+    cfg.drop_serial_baud_rate),
   land_(
     cfg.landing_timeout_s,
     cfg.landing_retry_interval_s) {}
@@ -82,11 +93,20 @@ const char *AlignDropSnakeEgoTask::phaseName() const {
     case Phase::ALIGNING:
       return "ALIGNING";
 
+    case Phase::ALIGNING_RED:
+      return "ALIGNING_RED";
+
+    case Phase::DROPPING:
+      return "DROPPING";
+
     case Phase::RETURNING:
       return "RETURNING";
 
     case Phase::LANDING:
       return "LANDING";
+
+    case Phase::FINISHED:
+      return "FINISHED";
 
     case Phase::FAILED:
       return "FAILED";
@@ -109,10 +129,17 @@ void AlignDropSnakeEgoTask::onEnter(
   avoidance_target_index_ = 0;
   avoidance_elapsed_s_ = 0.0;
   align_elapsed_s_ = 0.0;
+  align_loss_elapsed_s_ = 0.0;
+  alignment_entry_target_valid_ = false;
+  lost_target_cooldown_s_ = 0.0;
+  align_trigger_cooldown_s_ = 0.0;
+  drop_target_index_ = 0;
+  finish_after_return_ = false;
 
   failure_reason_.clear();
 
   alignment_latched_ = false;
+  red_cross_completed_ = false;
   alignment_target_valid_ = false;
   completed_targets_enu_.clear();
 
@@ -151,6 +178,7 @@ ITask::Status AlignDropSnakeEgoTask::tick(
     std::isfinite(dt_s) ? dt_s : 0.0,
     0.0,
     0.2);
+  align_trigger_cooldown_s_ = std::max(0.0, align_trigger_cooldown_s_ - dt);
 
   // --------------------------------------------------------------------------
   // 独立状态
@@ -159,12 +187,17 @@ ITask::Status AlignDropSnakeEgoTask::tick(
   if (phase_ == Phase::FAILED) {
     return Status::FAILURE;
   }
+  if (phase_ == Phase::FINISHED) {
+    return Status::SUCCESS;
+  }
 
   if (phase_ == Phase::LANDING) {
     return tickLanding(ctx, iface, dt);
   }
 
-  if (phase_ == Phase::ALIGNING) {
+  if (phase_ == Phase::ALIGNING ||
+      phase_ == Phase::ALIGNING_RED ||
+      phase_ == Phase::DROPPING) {
     return tickAlignment(ctx, iface, dt);
   }
 
@@ -174,19 +207,31 @@ ITask::Status AlignDropSnakeEgoTask::tick(
 
 
   // --------------------------------------------------------------------------
-  // 检测到轮廓 -> 触发下视纠偏
+  // 检测到下视 circle/contour 或 RedCross -> 触发对应纠偏
   // --------------------------------------------------------------------------
 
-  if (contourFresh(ctx) &&
-      !alignment_latched_ &&
-      !insideCompletedTargetRadius(ctx)) {
+  lost_target_cooldown_s_ = std::max(0.0, lost_target_cooldown_s_ - dt);
+
+  const bool red_cross_trigger =
+    cfg_.red_cross_enabled &&
+    !red_cross_completed_ &&
+    redCrossFresh(ctx);
+  const bool down_trigger =
+    align_trigger_cooldown_s_ <= 0.0 &&
+    (circleFresh(ctx) || contourFresh(ctx)) &&
+    !insideCompletedDownTargetRadius(ctx);
+
+  if (!alignment_latched_ && (red_cross_trigger || down_trigger)) {
 
     beginAlignment(
       ctx,
       iface,
       phase_ == Phase::AVOIDING
         ? ResumePhase::AVOIDING
-        : ResumePhase::SNAKE);
+        : ResumePhase::SNAKE,
+      red_cross_trigger
+        ? AlignmentSource::RED_CROSS
+        : AlignmentSource::DOWN);
 
     return Status::RUNNING;
   }
@@ -407,7 +452,8 @@ ITask::Status AlignDropSnakeEgoTask::tick(
 void AlignDropSnakeEgoTask::beginAlignment(
   Context &ctx,
   MavrosIface &iface,
-  ResumePhase resume_phase) {
+  ResumePhase resume_phase,
+  AlignmentSource source) {
 
   // ==========================================================================
   // 修改 1：
@@ -444,6 +490,11 @@ void AlignDropSnakeEgoTask::beginAlignment(
 
   resume_position_ = ctx.position_enu;
   resume_yaw_ = ctx.yaw_enu;
+  alignment_entry_target_valid_ = source == AlignmentSource::RED_CROSS
+    ? redCrossPositionEnu(ctx, alignment_entry_target_)
+    : (circlePositionEnu(ctx, alignment_entry_target_) ||
+       contourPositionEnu(ctx, alignment_entry_target_));
+  align_loss_elapsed_s_ = 0.0;
 
 
   RCLCPP_INFO(
@@ -467,7 +518,13 @@ void AlignDropSnakeEgoTask::beginAlignment(
   }
 
 
-  align_.onEnter(ctx, iface);
+  if (source == AlignmentSource::RED_CROSS) {
+    red_cross_.onEnter(ctx, iface);
+    phase_ = Phase::ALIGNING_RED;
+  } else {
+    align_.onEnter(ctx, iface);
+    phase_ = Phase::ALIGNING;
+  }
 
   alignment_target_valid_ = false;
 
@@ -475,12 +532,10 @@ void AlignDropSnakeEgoTask::beginAlignment(
 
   alignment_latched_ = true;
 
-  phase_ = Phase::ALIGNING;
-
-
   RCLCPP_INFO(
     logger_,
-    "[ALIGN_DROP_SNAKE_EGO] alignment triggered in %s",
+    "[ALIGN_DROP_SNAKE_EGO] %s alignment triggered in %s",
+    source == AlignmentSource::RED_CROSS ? "red-cross" : "down",
     resume_phase_ == ResumePhase::AVOIDING
       ? "EGO"
       : "snake");
@@ -496,24 +551,71 @@ ITask::Status AlignDropSnakeEgoTask::tickAlignment(
   MavrosIface &iface,
   double dt_s) {
 
+  if (phase_ == Phase::DROPPING) {
+    const auto status = down_drop_.tick(ctx, iface, dt_s);
+    if (status == Status::FAILURE) {
+      down_drop_.onExit(ctx, iface);
+      phase_ = Phase::FAILED;
+      RCLCPP_ERROR(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] DownDrop failed: %s",
+        ctx.fault.c_str());
+      return Status::FAILURE;
+    }
+    if (status == Status::SUCCESS) {
+      down_drop_.onExit(ctx, iface);
+      finish_after_return_ = drop_target_index_ >= cfg_.drop_targets.size();
+      phase_ = Phase::RETURNING;
+      ctx.position_setpoint_enu = resume_position_;
+      ctx.yaw_setpoint_enu = resume_yaw_;
+      ctx.publish_position_setpoint = true;
+      ctx.setpoint_mode = SetpointMode::POSITION;
+      ctx.use_position_velocity_acceleration = false;
+      RCLCPP_INFO(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] drop completed; returning to alignment entry pose%s",
+        finish_after_return_ ? " before task completion" : "");
+    }
+    return Status::RUNNING;
+  }
+
   align_elapsed_s_ += dt_s;
+
+  const bool red_cross_alignment = phase_ == Phase::ALIGNING_RED;
+  const double timeout_s = red_cross_alignment
+    ? cfg_.red_cross_timeout_s
+    : cfg_.align_timeout_s;
+
+  const bool detection_fresh = red_cross_alignment
+    ? redCrossFresh(ctx)
+    : (circleFresh(ctx) || contourFresh(ctx));
+  align_loss_elapsed_s_ = detection_fresh ? 0.0 : align_loss_elapsed_s_ + dt_s;
+  const bool detection_lost = align_loss_elapsed_s_ >= cfg_.align_loss_timeout_s;
 
 
   // --------------------------------------------------------------------------
   // 对准超时
   // --------------------------------------------------------------------------
 
-  if (align_elapsed_s_ >=
-      cfg_.align_timeout_s) {
-
-    align_.onExit(ctx, iface);
+  if (detection_lost || align_elapsed_s_ >= timeout_s) {
 
     // Abandon this attempt and return to the saved entry pose. Suppress this
     // target after returning so a still-fresh detection cannot retrigger it.
     Vec3 target;
-    if (circlePositionEnu(ctx, target) ||
-        contourPositionEnu(ctx, target)) {
-      completed_targets_enu_.push_back(target);
+    if (red_cross_alignment) {
+      red_cross_.onExit(ctx, iface);
+    } else {
+      align_.onExit(ctx, iface);
+      if (circlePositionEnu(ctx, target) ||
+          contourPositionEnu(ctx, target)) {
+        completed_targets_enu_.push_back(target);
+      }
+    }
+
+    if (detection_lost && !red_cross_alignment && alignment_entry_target_valid_) {
+      lost_target_ = alignment_entry_target_;
+      // Count the cooldown only after return, while the route is running.
+      lost_target_cooldown_s_ = cfg_.align_loss_retry_cooldown_s;
     }
 
     phase_ = Phase::RETURNING;
@@ -533,11 +635,21 @@ ITask::Status AlignDropSnakeEgoTask::tickAlignment(
     ctx.use_position_velocity_acceleration =
       false;
 
-    RCLCPP_WARN(
+    if (detection_lost) {
+      RCLCPP_WARN(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] %s detection lost continuously for %.2f s; "
+        "abandoning alignment after %.2f s and returning to the alignment entry pose",
+        red_cross_alignment ? "red-cross" : "down",
+        align_loss_elapsed_s_, align_elapsed_s_);
+    } else {
+      RCLCPP_WARN(
       logger_,
-      "[ALIGN_DROP_SNAKE_EGO] down alignment timed out after %.1f s; "
+      "[ALIGN_DROP_SNAKE_EGO] %s alignment timed out after %.1f s; "
       "returning to the alignment entry pose",
+      red_cross_alignment ? "red-cross" : "down",
       align_elapsed_s_);
+    }
 
     return Status::RUNNING;
   }
@@ -546,6 +658,37 @@ ITask::Status AlignDropSnakeEgoTask::tickAlignment(
   // --------------------------------------------------------------------------
   // 对准任务
   // --------------------------------------------------------------------------
+
+  if (red_cross_alignment) {
+    const auto status = red_cross_.tick(ctx, iface, dt_s);
+    if (status == Status::FAILURE) {
+      red_cross_.onExit(ctx, iface);
+      ctx.fault = "red-cross alignment failed";
+      phase_ = Phase::FAILED;
+      RCLCPP_ERROR(logger_, "[ALIGN_DROP_SNAKE_EGO] %s", ctx.fault.c_str());
+      return Status::FAILURE;
+    }
+    if (status == Status::SUCCESS) {
+      red_cross_.onExit(ctx, iface);
+      red_cross_completed_ = true;
+      RCLCPP_INFO(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] red-cross alignment succeeded; "
+        "further red-cross triggers disabled for this task run");
+      alignment_latched_ = false;
+      const auto &drop_target = cfg_.drop_targets[drop_target_index_];
+      down_drop_.setTarget(drop_target);
+      ++drop_target_index_;
+      down_drop_.onEnter(ctx, iface);
+      phase_ = Phase::DROPPING;
+      RCLCPP_INFO(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] starting DownDrop target=%d "
+        "offset=(%.2f, %.2f)",
+        drop_target.id, drop_target.offset_x, drop_target.offset_y);
+    }
+    return Status::RUNNING;
+  }
 
   const auto status =
     align_.tick(ctx, iface, dt_s);
@@ -580,6 +723,7 @@ ITask::Status AlignDropSnakeEgoTask::tickAlignment(
         alignment_target_enu_.z);
     }
   }
+  // 三重兜底：有 circle 目标、没有 circle 但有 contour 目标、没有任何目标但当前位置有效。用于去重
 
 
   if (status == Status::FAILURE) {
@@ -605,6 +749,10 @@ ITask::Status AlignDropSnakeEgoTask::tickAlignment(
   // ==========================================================================
 
   if (status == Status::SUCCESS) {
+
+    if (phase_ == Phase::ALIGNING) {
+      align_trigger_cooldown_s_ = cfg_.align_trigger_cooldown_s;
+    }
 
     Vec3 target;
 
@@ -667,7 +815,22 @@ ITask::Status AlignDropSnakeEgoTask::tickAlignment(
     // 退出 AlignDownTask
     // ------------------------------------------------------------------------
 
+    const bool target_confirmed = align_.target_confirmed();
     align_.onExit(ctx, iface);
+
+    if (target_confirmed) {
+      const auto &drop_target = cfg_.drop_targets[drop_target_index_];
+      down_drop_.setTarget(drop_target);
+      ++drop_target_index_;
+      down_drop_.onEnter(ctx, iface);
+      phase_ = Phase::DROPPING;
+      RCLCPP_INFO(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] AlignDown confirmed target; "
+        "starting DownDrop target=%d offset=(%.2f, %.2f)",
+        drop_target.id, drop_target.offset_x, drop_target.offset_y);
+      return Status::RUNNING;
+    }
 
 
     // =========================================================================
@@ -879,6 +1042,14 @@ ITask::Status AlignDropSnakeEgoTask::tickReturn(
 
     alignment_latched_ = false;
 
+    if (finish_after_return_) {
+      phase_ = Phase::FINISHED;
+      RCLCPP_INFO(
+        logger_,
+        "[ALIGN_DROP_SNAKE_EGO] all configured DownDrop targets completed");
+      return Status::SUCCESS;
+    }
+
 
     // ========================================================================
     // 修改 5：
@@ -1019,6 +1190,14 @@ void AlignDropSnakeEgoTask::onExit(
     align_.onExit(ctx, iface);
   }
 
+  if (phase_ == Phase::ALIGNING_RED) {
+    red_cross_.onExit(ctx, iface);
+  }
+
+  if (phase_ == Phase::DROPPING) {
+    down_drop_.onExit(ctx, iface);
+  }
+
   if (phase_ == Phase::LANDING) {
     land_.onExit(ctx, iface);
   }
@@ -1052,6 +1231,22 @@ bool AlignDropSnakeEgoTask::contourFresh(
         std::max(
           0.0,
           cfg_.contour_timeout_s));
+}
+
+
+bool AlignDropSnakeEgoTask::redCrossFresh(
+  const Context &ctx) const {
+
+  if (ctx.red_cross_seq == 0 ||
+      ctx.red_cross_stamp == std::chrono::steady_clock::time_point{}) {
+    return false;
+  }
+
+  const auto now = std::chrono::steady_clock::now();
+  return ctx.red_cross_stamp <= now &&
+         now - ctx.red_cross_stamp <=
+           std::chrono::duration<double>(
+             std::max(0.0, cfg_.contour_timeout_s));
 }
 
 
@@ -1179,37 +1374,88 @@ bool AlignDropSnakeEgoTask::contourPositionEnu(
 }
 
 
+bool AlignDropSnakeEgoTask::redCrossPositionEnu(
+  const Context &ctx,
+  Vec3 &position) const {
+
+  if (!redCrossFresh(ctx) ||
+      !ctx.position_valid ||
+      !ctx.finitePosition() ||
+      !std::isfinite(ctx.yaw_enu) ||
+      !std::isfinite(ctx.red_cross_offset_px.x) ||
+      !std::isfinite(ctx.red_cross_offset_px.y) ||
+      !std::isfinite(cfg_.red_cross_pixels_per_meter) ||
+      cfg_.red_cross_pixels_per_meter <= 0.0) {
+    return false;
+  }
+
+  const double forward =
+    ctx.red_cross_offset_px.x / cfg_.red_cross_pixels_per_meter;
+  const double left =
+    ctx.red_cross_offset_px.y / cfg_.red_cross_pixels_per_meter;
+  const double c = std::cos(ctx.yaw_enu);
+  const double s = std::sin(ctx.yaw_enu);
+  position = {
+    ctx.position_enu.x + c * forward - s * left,
+    ctx.position_enu.y + s * forward + c * left,
+    ctx.position_enu.z
+  };
+  return true;
+}
+
+
 // ============================================================================
 // Completed target suppression
 // ============================================================================
 
-bool AlignDropSnakeEgoTask::insideCompletedTargetRadius(
+bool AlignDropSnakeEgoTask::insideCompletedDownTargetRadius(
   const Context &ctx) const {
 
-  Vec3 current_target;
+  std::array<Vec3, 2> current_targets{};
+  std::array<const char *, 2> source_names{};
+  std::size_t target_count = 0;
 
-  if (!contourPositionEnu(ctx, current_target)) {
+  if (circlePositionEnu(ctx, current_targets[target_count])) {
+    source_names[target_count++] = "circle";
+  }
+  if (contourPositionEnu(ctx, current_targets[target_count])) {
+    source_names[target_count++] = "contour";
+  }
+
+  if (target_count == 0) {
 
     return false;
   }
 
   double nearest_distance = std::numeric_limits<double>::infinity();
+  const char *nearest_source = "unknown";
 
-  for (const auto &completed_target : completed_targets_enu_) {
-    const double distance = std::hypot(
-        current_target.x - completed_target.x,
-        current_target.y - completed_target.y);
-    nearest_distance = std::min(nearest_distance, distance);
-    if (distance <= cfg_.align_retrigger_radius_m) {
-      RCLCPP_INFO_THROTTLE(
-        logger_,
-        *clock_,
-        2000,
-        "[ALIGN_DROP_SNAKE_EGO] skipping completed target: "
-        "distance=%.2f m radius=%.2f m",
-        distance,
-        cfg_.align_retrigger_radius_m);
+  for (std::size_t i = 0; i < target_count; ++i) {
+    if (lost_target_cooldown_s_ > 0.0 &&
+        std::hypot(current_targets[i].x - lost_target_.x,
+                   current_targets[i].y - lost_target_.y) <= cfg_.align_retrigger_radius_m) {
       return true;
+    }
+    for (const auto &completed_target : completed_targets_enu_) {
+      const double distance = std::hypot(
+          current_targets[i].x - completed_target.x,
+          current_targets[i].y - completed_target.y);
+      if (distance < nearest_distance) {
+        nearest_distance = distance;
+        nearest_source = source_names[i];
+      }
+      if (distance <= cfg_.align_retrigger_radius_m) {
+        RCLCPP_INFO_THROTTLE(
+          logger_,
+          *clock_,
+          2000,
+          "[ALIGN_DROP_SNAKE_EGO] skipping completed target: "
+          "source=%s distance=%.3f m radius=%.3f m",
+          source_names[i],
+          distance,
+          cfg_.align_retrigger_radius_m);
+        return true;
+      }
     }
   }
 
@@ -1218,8 +1464,9 @@ bool AlignDropSnakeEgoTask::insideCompletedTargetRadius(
       logger_,
       *clock_,
       2000,
-      "[ALIGN_DROP_SNAKE_EGO] new contour candidate: "
-      "nearest completed target=%.2f m radius=%.2f m",
+      "[ALIGN_DROP_SNAKE_EGO] new target candidate: "
+      "source=%s nearest completed target=%.3f m radius=%.3f m",
+      nearest_source,
       nearest_distance,
       cfg_.align_retrigger_radius_m);
   }

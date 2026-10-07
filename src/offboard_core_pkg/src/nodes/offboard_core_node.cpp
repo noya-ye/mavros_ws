@@ -35,6 +35,10 @@ public:
       "align_down.circle_topic", "/target/circle_center");
     const auto contour_topic = declare_parameter<std::string>(
       "align_down.contour_topic", "/target/contour_center");
+    const auto red_cross_align_enabled = declare_parameter<bool>(
+      "red_cross_align.enabled", false);
+    const auto red_cross_topic = declare_parameter<std::string>(
+      "red_cross_align.topic", "/target/red_cross_center");
     const auto yolo_topic = declare_parameter<std::string>(
       "yolo.detections_topic", "/yolo/detections");
     const auto land_timeout_s = declare_parameter<double>("land_timeout_s", 15.0);
@@ -58,6 +62,20 @@ public:
           ctx_.down_contour_offset_px = {msg->x, msg->y, 0.0};
           ctx_.down_contour_stamp = std::chrono::steady_clock::now();
           ++ctx_.down_contour_seq;
+        });
+    }
+    if (red_cross_align_enabled) {
+      if (!std::isfinite(pixels_per_meter) || pixels_per_meter <= 0.0 ||
+          stable_frames <= 0 || !std::isfinite(arrive_distance_m) ||
+          arrive_distance_m <= 0.0 || !std::isfinite(max_step_m) ||
+          max_step_m <= 0.0) {
+        throw std::invalid_argument("red_cross_align parameters are invalid");
+      }
+      red_cross_sub_ = create_subscription<geometry_msgs::msg::Point>(
+        red_cross_topic, 10, [this](geometry_msgs::msg::Point::ConstSharedPtr msg) {
+          ctx_.red_cross_offset_px = {msg->x, msg->y, 0.0};
+          ctx_.red_cross_stamp = std::chrono::steady_clock::now();
+          ++ctx_.red_cross_seq;
         });
     }
     yolo_sub_ = create_subscription<std_msgs::msg::Float32MultiArray>(
@@ -99,6 +117,10 @@ public:
       scheduler_.add(std::make_unique<AlignDownTask>(
         pixels_per_meter, stable_frames, arrive_distance_m, max_step_m));
     }
+    if (red_cross_align_enabled) {
+      scheduler_.add(std::make_unique<RedCrossAlignTask>(
+        pixels_per_meter, stable_frames, arrive_distance_m, max_step_m));
+    }
     scheduler_.add(std::make_unique<LandTask>(land_timeout_s, command_retry_s));
     scheduler_.reset();
 
@@ -119,6 +141,7 @@ private:
   Scheduler scheduler_;
   rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr circle_sub_;
   rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr contour_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr red_cross_sub_;
   rclcpp::Subscription<std_msgs::msg::Float32MultiArray>::SharedPtr yolo_sub_;
   rclcpp::TimerBase::SharedPtr timer_;
   rclcpp::Time last_tick_{0, 0, RCL_ROS_TIME};

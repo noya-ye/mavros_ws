@@ -13,11 +13,13 @@ offboard_core_node:
     hover_duration_s: 1.0
     land_timeout_s: 15.0
 
-    align_down.enabled: true
+    align_down.enabled: false
     align_down.pixels_per_meter: 800.0
     align_down.stable_frames: 5
     align_down.arrive_distance_m: 0.10
     align_down.max_step_m: 0.15  # 单帧水平纠偏的最大步长（米）
     align_down.circle_topic: /target/circle_center
     align_down.contour_topic: /target/contour_center
+    red_cross_align.enabled: true
+    red_cross_align.topic: /target/red_cross_center
     yolo.detections_topic: /yolo/detections

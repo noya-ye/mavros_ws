@@ -1,0 +1,250 @@
+{
+  "duration_s": 52.75587087,
+  "topics": {
+    "/mavros/state": {
+      "count": 63,
+      "start_s": 0.004367464,
+      "end_s": 52.085568856,
+      "median_hz": 1.0000701254172313
+    },
+    "/mavros/local_position/pose": {
+      "count": 1583,
+      "start_s": 0.005587296,
+      "end_s": 52.742331515,
+      "median_hz": 30.1818533628832
+    },
+    "/mavros/local_position/velocity_local": {
+      "count": 1583,
+      "start_s": 0.005607841,
+      "end_s": 52.74238915,
+      "median_hz": 30.15004713658365
+    },
+    "/fastlio2/lio_odom": {
+      "count": 527,
+      "start_s": 0.040540486,
+      "end_s": 52.678458203,
+      "median_hz": 9.980377181208944
+    },
+    "/ego_2d_planner/occupancy_grid": {
+      "count": 527,
+      "start_s": 0.041999849,
+      "end_s": 52.680379921,
+      "median_hz": 9.994823680815598
+    },
+    "/simple_2d_planner/goal": {
+      "count": 1,
+      "start_s": 19.138446064,
+      "end_s": 19.138446064,
+      "median_hz": null
+    },
+    "/ego_2d_planner/emergency_stop": {
+      "count": 362,
+      "start_s": 19.437279878,
+      "end_s": 52.739190043,
+      "median_hz": 10.003391750007202
+    },
+    "/position_cmd": {
+      "count": 2020,
+      "start_s": 19.438331197,
+      "end_s": 52.75587087,
+      "median_hz": 50.191984340107645
+    },
+    "/mavros/setpoint_raw/local": {
+      "count": 592,
+      "start_s": 19.488476082,
+      "end_s": 49.041188336,
+      "median_hz": 19.997497913062684
+    }
+  },
+  "speed_mps": {
+    "planner": {
+      "p50": 0.0,
+      "p90": 0.0,
+      "max": 0.0
+    },
+    "aircraft": {
+      "p50": 0.03271515719645994,
+      "p90": 0.12008343756679513,
+      "max": 1.2154566620629492
+    }
+  },
+  "raw_setpoint_execution_window": {
+    "start_s": 19.488476082,
+    "end_s": 49.041188336,
+    "planner_speed_mps": {
+      "p50": 0.0,
+      "p90": 0.0,
+      "max": 0.0
+    },
+    "planner_acceleration_mps2": {
+      "p50": 0.0,
+      "p90": 0.0,
+      "max": 0.0
+    },
+    "aircraft_speed_mps": {
+      "p50": 0.04010844454825993,
+      "p90": 0.08404001258738142,
+      "max": 0.569307874538688
+    },
+    "trajectory_ids": [
+      0
+    ]
+  },
+  "emergency_events": [
+    {
+      "issue_s": 19.4370596408844,
+      "hold_xy": [
+        -0.4371718209434391,
+        3.058216368734747
+      ]
+    }
+  ],
+  "occupancy_grid": {
+    "count": 527,
+    "occupied_cells_p50_p90_max": [
+      1209.0,
+      1333.0,
+      1373.0
+    ],
+    "known_cell_fraction_p50": 1.0,
+    "goal_cell_values": [
+      [
+        0.041999849,
+        100
+      ],
+      [
+        5.275385509,
+        100
+      ],
+      [
+        10.486331364,
+        100
+      ],
+      [
+        15.659713174,
+        100
+      ],
+      [
+        20.897932084,
+        100
+      ],
+      [
+        26.094839222,
+        100
+      ],
+      [
+        31.258541515,
+        100
+      ],
+      [
+        36.503296128,
+        100
+      ],
+      [
+        41.666504191,
+        100
+      ],
+      [
+        46.893429305,
+        100
+      ],
+      [
+        52.085538742,
+        100
+      ]
+    ],
+    "aircraft_cell_values": [
+      [
+        0.041999849,
+        0
+      ],
+      [
+        5.275385509,
+        0
+      ],
+      [
+        10.486331364,
+        0
+      ],
+      [
+        15.659713174,
+        0
+      ],
+      [
+        20.897932084,
+        0
+      ],
+      [
+        26.094839222,
+        0
+      ],
+      [
+        31.258541515,
+        0
+      ],
+      [
+        36.503296128,
+        0
+      ],
+      [
+        41.666504191,
+        0
+      ],
+      [
+        46.893429305,
+        0
+      ],
+      [
+        52.085538742,
+        0
+      ]
+    ]
+  },
+  "goal": {
+    "frame_id": "lidar",
+    "x": -0.24941217969058171,
+    "y": 5.269512984339082,
+    "z": 1.1139940575416856
+  },
+  "goal_grid_context": {
+    "sample_s": 0.041999849,
+    "frame_id": "lidar",
+    "resolution_m": 0.10000000149011612,
+    "width": 250,
+    "height": 250,
+    "origin_xy": [
+      -12.5780394993066,
+      -11.781669723258313
+    ],
+    "goal_cell_xy": [
+      123,
+      170
+    ],
+    "occupied_cells_within_0_5m": 67,
+    "goal_cell": 100
+  },
+  "state_changes": [
+    [
+      0.004367464,
+      false,
+      "OFFBOARD"
+    ],
+    [
+      11.082025561,
+      true,
+      "OFFBOARD"
+    ],
+    [
+      44.082568138,
+      true,
+      "AUTO.LAND"
+    ],
+    [
+      50.085123126,
+      false,
+      "OFFBOARD"
+    ]
+  ],
+  "selected_path_message_count": 0,
+  "path_pose_count_values": []
+}

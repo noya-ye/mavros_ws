@@ -17,7 +17,7 @@ public:
     double cmd_timeout_s{0.5};
     double odom_timeout_s{0.5};
     double max_step_m{0.10};
-    double kp_xy{1.0};
+    double kp_xy{0.7};
     double kp_z{1.0};
     double max_cmd_xy_m{0.30};
     double max_cmd_z_m{0.15};
@@ -25,9 +25,9 @@ public:
     bool use_acceleration_ff{false};
     double vel_ff_scale{0.5};
     double acc_ff_scale{0.0};
-    double max_vel_xy_mps{0.5};
+    double max_vel_xy_mps{1.0};
     double max_vel_z_mps{0.3};
-    double max_acc_xy_mps2{0.6};
+    double max_acc_xy_mps2{2.0};
     double max_acc_z_mps2{0.4};
     double err_xy_hold_m{2.0};
     double err_z_hold_m{1.0};

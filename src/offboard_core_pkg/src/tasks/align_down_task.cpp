@@ -1,3 +1,11 @@
+// 下视纠偏task
+// 纠偏逻辑：
+// 1. 优先使用 circle 检测源，
+//    circle 不可用时才使用 contour。
+// 2. 当检测源进入允许误差范围后，
+//    连续 stable_frames_ 帧都在范围内才算完成。
+// 3. 误差大范围时，允许较大步长；误差小范围时，自动减小步长，避免过冲和来回振荡。
+
 #include "offboard_core_pkg/tasks/align_down_task.hpp"
 
 #include <algorithm>
@@ -12,7 +20,8 @@ namespace offboard_core_pkg {
 namespace {
 
 constexpr auto kDetectionTimeout = std::chrono::milliseconds(500);
-constexpr float kMinimumTargetConfidence = 0.40F;
+constexpr float kMinimumTargetConfidence = 0.30F;
+constexpr int kRequiredLowConfidenceFrames = 2;
 constexpr double kContourCircleEquivalentDistancePx = 40.0;
 
 rclcpp::Logger logger() {
@@ -90,6 +99,8 @@ void AlignDownTask::onEnter(
   target_check_done_ = false;
   target_skipped_ = false;
   reached_arrival_tolerance_ = false;
+  low_confidence_yolo_frames_ = 0;
+  last_yolo_check_seq_ = 0;
   last_status_log_ = {};
 
   if (!valid_config_) {
@@ -368,44 +379,60 @@ ITask::Status AlignDownTask::tick(
 if (distance <= arrive_distance_m_) {
     reached_arrival_tolerance_ = true;
 
-    // 仅在第一次进入到达范围时确认 YOLO 目标
+    // 仅在第一次进入到达范围后确认 YOLO 目标。
+    // 每个新帧只检查一次；连续两个低于阈值的帧才判定无目标。
     if (!target_check_done_) {
         const bool yolo_fresh =
             ctx.yolo_detections_seq != 0 &&
             fresh(ctx.yolo_detections_stamp);
 
-        const bool target_found =
-            yolo_fresh &&
-            std::any_of(
+        if (yolo_fresh &&
+            ctx.yolo_detections_seq != last_yolo_check_seq_) {
+            last_yolo_check_seq_ = ctx.yolo_detections_seq;
+
+            const bool target_found = std::any_of(
                 ctx.yolo_detections.begin(),
                 ctx.yolo_detections.end(),
                 [](const YoloDetection &detection) {
                     return
                         std::isfinite(detection.confidence) &&
-                        detection.confidence >
+                        detection.confidence >=
                             kMinimumTargetConfidence;
                 });
 
-        target_check_done_ = true;
+            if (target_found) {
+                target_check_done_ = true;
 
-        if (!target_found) {
-            target_skipped_ = true;
-            stable_count_ = 0;
+                RCLCPP_INFO(
+                    logger(),
+                    "FIND TARGET");
+            } else {
+                ++low_confidence_yolo_frames_;
 
-            holdPosition(ctx);
+                if (low_confidence_yolo_frames_ >=
+                    kRequiredLowConfidenceFrames) {
+                    target_check_done_ = true;
+                    target_skipped_ = true;
+                    stable_count_ = 0;
 
-            ctx.fault.clear();
+                    holdPosition(ctx);
 
-            RCLCPP_INFO(
-                logger(),
-                "NO TARGET");
+                    ctx.fault.clear();
 
-            return Status::SUCCESS;
+                    RCLCPP_INFO(
+                        logger(),
+                        "NO TARGET");
+
+                    return Status::SUCCESS;
+                }
+            }
         }
 
-        RCLCPP_INFO(
-            logger(),
-            "FIND TARGET");
+        // 尚未收到目标确认或两个低置信度帧，保持位置等待下一帧。
+        if (!target_check_done_) {
+            holdPosition(ctx);
+            return Status::RUNNING;
+        }
     }
 
     // 检测源已进入范围，不再继续纠偏

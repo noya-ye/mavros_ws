@@ -94,6 +94,8 @@ int main() {
   ctx.yolo_detections_stamp = std::chrono::steady_clock::now();
   ++ctx.yolo_detections_seq;
   frame(0.0, 0.0);
+  assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::RUNNING);
+  frame(0.0, 0.0);
   assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::SUCCESS);
   assert(no_target.reached_arrival_tolerance());
   assert(ctx.fault.empty());
@@ -142,22 +144,29 @@ int main() {
   assert(contour_only.tick(contour_only_ctx, iface, 0.05) ==
          ITask::Status::SUCCESS);
 
-  for (int scenario = 0; scenario < 6; ++scenario) {
-    no_target.onEnter(ctx, iface);
-    ctx.yolo_detections = {{0, 0.99F}};
-    ctx.yolo_detections_stamp = std::chrono::steady_clock::now();
-    ctx.yolo_detections_seq = 1;
-    if (scenario == 0) ctx.yolo_detections[0].confidence = 0.40F;
-    if (scenario == 1) ctx.yolo_detections[0].confidence = 0.39F;
-    if (scenario == 2) ctx.yolo_detections_stamp -= std::chrono::seconds(1);
-    if (scenario == 3) ctx.yolo_detections_stamp += std::chrono::seconds(1);
-    if (scenario == 4) ctx.yolo_detections_seq = 0;
-    if (scenario == 5) ctx.yolo_detections[0].confidence =
-        std::numeric_limits<float>::quiet_NaN();
-    frame(0.0, 0.0);
-    assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::SUCCESS);
-    assert(ctx.fault.empty());
-  }
+  no_target.onEnter(ctx, iface);
+  ctx.yolo_detections = {{0, 0.29F}};
+  ctx.yolo_detections_stamp = std::chrono::steady_clock::now();
+  ctx.yolo_detections_seq = 10;
+  frame(0.0, 0.0);
+  assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::RUNNING);
+  assert(!no_target.target_confirmed());
+  ctx.yolo_detections_stamp = std::chrono::steady_clock::now();
+  ++ctx.yolo_detections_seq;
+  frame(0.0, 0.0);
+  assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::SUCCESS);
+  assert(!no_target.target_confirmed());
+
+  no_target.onEnter(ctx, iface);
+  ctx.yolo_detections = {{0, 0.30F}};
+  ctx.yolo_detections_stamp = std::chrono::steady_clock::now();
+  ++ctx.yolo_detections_seq;
+  frame(0.0, 0.0);
+  assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::RUNNING);
+  assert(no_target.target_confirmed());
+  frame(0.0, 0.0);
+  assert(no_target.tick(ctx, iface, 0.05) == ITask::Status::SUCCESS);
+  assert(ctx.fault.empty());
 
   no_target.onEnter(ctx, iface);
   ctx.yolo_detections = {{0, 0.20F}, {1, 0.41F}};

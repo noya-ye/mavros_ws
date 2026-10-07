@@ -21,6 +21,10 @@ DownDropTask::~DownDropTask() = default;
 
 std::string DownDropTask::name() const { return "down_drop"; }
 
+void DownDropTask::setTarget(obj_id target) {
+  target_ = target;
+}
+
 const char *DownDropTask::phaseName() const {
   switch (phase_) {
     case Phase::DOWN: return "DOWN";
@@ -89,20 +93,20 @@ ITask::Status DownDropTask::tick(Context &ctx, MavrosIface &iface, double dt_s) 
   }
 
   if (phase_ == Phase::DROP) {
-    std::string error;
-    if (!serial_->open(&error)) {
-      fail(ctx, "cannot open serial device: " + error);
-      return Status::FAILURE;
-    }
-    constexpr char command = 'a';
-    if (!serial_->send(&command, sizeof(command), &error)) {
-      serial_->close();
-      fail(ctx, "cannot send drop command: " + error);
-      return Status::FAILURE;
-    }
-    serial_->close();
-    phase_ = Phase::FINISHED;
-    RCLCPP_INFO(logger_, "[DOWN_DROP] target=%d drop command sent", target_.id);
+    // std::string error;
+    // if (!serial_->open(&error)) {
+    //   fail(ctx, "cannot open serial device: " + error);
+    //   return Status::FAILURE;
+    // }
+    // constexpr char command = 'a';
+    // if (!serial_->send(&command, sizeof(command), &error)) {
+    //   serial_->close();
+    //   fail(ctx, "cannot send drop command: " + error);
+    //   return Status::FAILURE;
+    // }
+    // serial_->close();
+    // phase_ = Phase::FINISHED;
+    // RCLCPP_INFO(logger_, "[DOWN_DROP] target=%d drop command sent", target_.id);
     return Status::SUCCESS;
   }
 

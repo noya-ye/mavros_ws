@@ -31,6 +31,7 @@ class CameraCenterNode(Node):
         # 中心点话题
         self.declare_parameter("circle_topic", "/target/circle_center")
         self.declare_parameter("contour_topic", "/target/contour_center")
+        self.declare_parameter("red_cross_topic", "/target/red_cross_center")
 
         # Debug 图话题
         self.declare_parameter("debug_topic", "/target/debug_image")
@@ -45,6 +46,7 @@ class CameraCenterNode(Node):
 
         circle_topic = self.get_parameter("circle_topic").value
         contour_topic = self.get_parameter("contour_topic").value
+        red_cross_topic = self.get_parameter("red_cross_topic").value
         debug_topic = self.get_parameter("debug_topic").value
 
         self.display = self.get_parameter("display").value
@@ -80,6 +82,12 @@ class CameraCenterNode(Node):
         self.contour_publisher = self.create_publisher(
             Point,
             contour_topic,
+            10
+        )
+
+        self.red_cross_publisher = self.create_publisher(
+            Point,
+            red_cross_topic,
             10
         )
 
@@ -197,6 +205,13 @@ class CameraCenterNode(Node):
             self.circle_publisher.publish(
                 circle_point
             )
+
+        if detection.red_cross_center is not None:
+            red_cross_point = self.make_point(
+                detection.red_cross_center,
+                frame.shape
+            )
+            self.red_cross_publisher.publish(red_cross_point)
 
         # =========================
         # Debug 图

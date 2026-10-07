@@ -92,18 +92,86 @@ public:
     cfg.align_timeout_s = declare_parameter<double>("align_down.timeout_s", 10.0);
     cfg.contour_timeout_s = declare_parameter<double>(
       "align_down.detection_timeout_s", 0.5);
+    cfg.align_loss_timeout_s = declare_parameter<double>(
+      "align_down.loss_timeout_s", 1.0);
+    cfg.align_loss_retry_cooldown_s = declare_parameter<double>(
+      "align_down.loss_retry_cooldown_s", 3.0);
+    cfg.align_trigger_cooldown_s = declare_parameter<double>(
+      "align_down.trigger_cooldown_s", 2.0);
     cfg.align_retrigger_radius_m = declare_parameter<double>(
       "align_down.retrigger_radius_m", 0.55);
+    cfg.red_cross_enabled = declare_parameter<bool>(
+      "red_cross_align.enabled", false);
+    const auto red_cross_topic = declare_parameter<std::string>(
+      "red_cross_align.topic", "/target/red_cross_center");
+    cfg.red_cross_pixels_per_meter = declare_parameter<double>(
+      "red_cross_align.pixels_per_meter", 100.0);
+    cfg.red_cross_stable_frames = declare_parameter<int>(
+      "red_cross_align.stable_frames", 5);
+    cfg.red_cross_arrive_distance_m = declare_parameter<double>(
+      "red_cross_align.arrive_distance_m", 0.1);
+    cfg.red_cross_max_step_m = declare_parameter<double>(
+      "red_cross_align.max_step_m", 0.10);
+    cfg.red_cross_timeout_s = declare_parameter<double>(
+      "red_cross_align.timeout_s", 10.0);
+    cfg.drop_height_m = declare_parameter<double>("down_drop.land_height_m", 0.1);
+    for (std::size_t i = 0; i < cfg.drop_targets.size(); ++i) {
+      const auto prefix = "down_drop.targets.id" + std::to_string(i);
+      cfg.drop_targets[i].id = declare_parameter<int>(
+        prefix + ".id", static_cast<int>(i));
+      cfg.drop_targets[i].offset_x = declare_parameter<double>(
+        prefix + ".offset_x_m", 0.0);
+      cfg.drop_targets[i].offset_y = declare_parameter<double>(
+        prefix + ".offset_y_m", 0.0);
+    }
+    cfg.drop_serial_device = declare_parameter<std::string>(
+      "down_drop.serial_device", "/dev/ttyUSB0");
+    const auto drop_baud_rate = declare_parameter<int>("down_drop.baud_rate", 115200);
+    if (drop_baud_rate <= 0 ||
+        static_cast<std::uint64_t>(drop_baud_rate) >
+          std::numeric_limits<unsigned int>::max()) {
+      throw std::invalid_argument("down_drop.baud_rate is invalid");
+    }
+    cfg.drop_serial_baud_rate = static_cast<unsigned int>(drop_baud_rate);
     if (!std::isfinite(cfg.align_max_step_m) || cfg.align_max_step_m <= 0.0) {
       throw std::invalid_argument("align_down.max_step_m must be positive");
     }
     if (!std::isfinite(cfg.align_timeout_s) || cfg.align_timeout_s <= 0.0) {
       throw std::invalid_argument("align_down.timeout_s must be positive");
     }
+    if (!std::isfinite(cfg.align_loss_timeout_s) || cfg.align_loss_timeout_s <= 0.0 ||
+        !std::isfinite(cfg.align_loss_retry_cooldown_s) ||
+        cfg.align_loss_retry_cooldown_s < 0.0 ||
+        !std::isfinite(cfg.align_trigger_cooldown_s) ||
+        cfg.align_trigger_cooldown_s < 0.0) {
+      throw std::invalid_argument("align_down loss timeout/cooldown parameters are invalid");
+    }
     if (!std::isfinite(cfg.align_retrigger_radius_m) ||
         cfg.align_retrigger_radius_m < 0.0) {
       throw std::invalid_argument(
         "align_down.retrigger_radius_m must be non-negative");
+    }
+    if (cfg.red_cross_enabled &&
+        (!std::isfinite(cfg.red_cross_pixels_per_meter) ||
+         cfg.red_cross_pixels_per_meter <= 0.0 ||
+         cfg.red_cross_stable_frames <= 0 ||
+         !std::isfinite(cfg.red_cross_arrive_distance_m) ||
+         cfg.red_cross_arrive_distance_m <= 0.0 ||
+         !std::isfinite(cfg.red_cross_max_step_m) ||
+         cfg.red_cross_max_step_m <= 0.0 ||
+         !std::isfinite(cfg.red_cross_timeout_s) ||
+         cfg.red_cross_timeout_s <= 0.0)) {
+      throw std::invalid_argument("red_cross_align parameters are invalid");
+    }
+    const bool invalid_drop_target = std::any_of(
+      cfg.drop_targets.begin(), cfg.drop_targets.end(),
+      [](const DownDropTask::obj_id &target) {
+        return !std::isfinite(target.offset_x) ||
+               !std::isfinite(target.offset_y);
+      });
+    if (!std::isfinite(cfg.drop_height_m) || invalid_drop_target ||
+        cfg.drop_serial_device.empty()) {
+      throw std::invalid_argument("down_drop parameters are invalid");
     }
     circle_sub_ = create_subscription<geometry_msgs::msg::Point>(
       circle_topic, 10, [this](geometry_msgs::msg::Point::ConstSharedPtr msg) {
@@ -117,6 +185,15 @@ public:
         ctx_.down_contour_stamp = std::chrono::steady_clock::now();
         ++ctx_.down_contour_seq;
       });
+    if (cfg.red_cross_enabled) {
+      red_cross_sub_ = create_subscription<geometry_msgs::msg::Point>(
+        red_cross_topic, 10,
+        [this](geometry_msgs::msg::Point::ConstSharedPtr msg) {
+          ctx_.red_cross_offset_px = {msg->x, msg->y, 0.0};
+          ctx_.red_cross_stamp = std::chrono::steady_clock::now();
+          ++ctx_.red_cross_seq;
+        });
+    }
     yolo_sub_ = create_subscription<std_msgs::msg::Float32MultiArray>(
       yolo_topic, rclcpp::SensorDataQoS(),
       [this](std_msgs::msg::Float32MultiArray::ConstSharedPtr msg) {
@@ -282,6 +359,7 @@ private:
   rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr goal_pub_;
   rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr circle_sub_;
   rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr contour_sub_;
+  rclcpp::Subscription<geometry_msgs::msg::Point>::SharedPtr red_cross_sub_;
   rclcpp::Subscription<quadrotor_msgs::msg::PositionCommand>::SharedPtr ego_cmd_sub_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr ego_odom_sub_;
   rclcpp::Subscription<nav_msgs::msg::OccupancyGrid>::SharedPtr occupancy_sub_;

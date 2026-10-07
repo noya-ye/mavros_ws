@@ -24,6 +24,7 @@ public:
   ~DownDropTask() override;
 
   std::string name() const override;
+  void setTarget(obj_id target);
   void onEnter(Context &ctx, MavrosIface &iface) override;
   Status tick(Context &ctx, MavrosIface &iface, double dt_s) override;
   void onExit(Context &ctx, MavrosIface &iface) override;

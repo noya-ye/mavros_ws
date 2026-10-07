@@ -18,6 +18,7 @@ add_library(${PROJECT_NAME} SHARED
   src/planners/tsp_min_snap_planner.cpp
   src/tasks/arm_task.cpp
   src/tasks/align_down_task.cpp
+  src/tasks/red_cross_align_task.cpp
   src/tasks/down_drop_task.cpp
   src/tasks/align_drop_snake_ego_task.cpp
   src/tasks/hover_task.cpp
@@ -28,6 +29,7 @@ add_library(${PROJECT_NAME} SHARED
   src/tasks/goto_task.cpp
   src/tasks/snake_grid_task.cpp
   src/tasks/ego_goto_task.cpp
+  src/tasks/corridor_door_task.cpp
   src/tasks/door_navigation_task.cpp
   src/tasks/snake_ego_avoid_task.cpp
 )
@@ -45,6 +47,21 @@ if(BUILD_TESTING)
   target_include_directories(align_down_task_test PRIVATE include)
   ament_target_dependencies(align_down_task_test rclcpp)
   add_test(NAME align_down_task_test COMMAND align_down_task_test)
+  add_executable(red_cross_align_task_test test/red_cross_align_task_test.cpp
+    src/tasks/red_cross_align_task.cpp)
+  target_compile_features(red_cross_align_task_test PRIVATE cxx_std_17)
+  target_include_directories(red_cross_align_task_test PRIVATE include)
+  ament_target_dependencies(red_cross_align_task_test rclcpp)
+  add_test(NAME red_cross_align_task_test COMMAND red_cross_align_task_test)
+  add_executable(align_drop_snake_ego_task_test
+    test/align_drop_snake_ego_task_test.cpp)
+  target_compile_features(align_drop_snake_ego_task_test PRIVATE cxx_std_17)
+  target_include_directories(align_drop_snake_ego_task_test PRIVATE include)
+  target_link_libraries(align_drop_snake_ego_task_test ${PROJECT_NAME})
+  ament_target_dependencies(align_drop_snake_ego_task_test
+    rclcpp geometry_msgs nav_msgs quadrotor_msgs)
+  add_test(NAME align_drop_snake_ego_task_test
+    COMMAND align_drop_snake_ego_task_test)
 endif()
 
 add_executable(offboard_core_node src/nodes/offboard_core_node.cpp)
@@ -67,6 +84,10 @@ add_executable(door_navigation_node src/nodes/door_navigation_node.cpp)
 target_link_libraries(door_navigation_node ${PROJECT_NAME} nlohmann_json::nlohmann_json)
 ament_target_dependencies(door_navigation_node ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs std_msgs)
 
+add_executable(corridor_door_node src/nodes/corridor_door_node.cpp)
+target_link_libraries(corridor_door_node ${PROJECT_NAME})
+ament_target_dependencies(corridor_door_node ament_index_cpp rclcpp geometry_msgs nav_msgs quadrotor_msgs)
+
 add_executable(snake_ego_avoid_node src/nodes/snake_ego_avoid_node.cpp)
 target_link_libraries(snake_ego_avoid_node ${PROJECT_NAME})
 ament_target_dependencies(snake_ego_avoid_node
@@ -81,7 +102,7 @@ ament_target_dependencies(align_drop_snake_ego_node
 add_executable(lidar_to_px4_bridge src/bridge/lidar_to_px4_bridge.cpp)
 ament_target_dependencies(lidar_to_px4_bridge rclcpp geometry_msgs nav_msgs)
 
-install(TARGETS ${PROJECT_NAME} offboard_core_node snake_node ego_goto_node ego_test_node door_navigation_node
+install(TARGETS ${PROJECT_NAME} offboard_core_node snake_node ego_goto_node ego_test_node door_navigation_node corridor_door_node
   snake_ego_avoid_node align_drop_snake_ego_node lidar_to_px4_bridge
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib

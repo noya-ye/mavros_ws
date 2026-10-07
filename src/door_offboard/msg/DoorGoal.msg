@@ -1,0 +1,8 @@
+std_msgs/Header header
+uint64 session_id
+uint64 goal_id
+bool valid
+bool complete
+string stage
+string reason
+geometry_msgs/Point target

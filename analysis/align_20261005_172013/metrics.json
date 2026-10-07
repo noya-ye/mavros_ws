@@ -1,0 +1,1181 @@
+{
+  "start": "17:20:13.175",
+  "end": "17:24:14.454",
+  "attempts": [
+    {
+      "start": 48.50713229179382,
+      "start_clock": "17:21:01.683",
+      "end": 48.806801319122314,
+      "end_clock": "17:21:01.982",
+      "result": "[INFO] [1791192061.982768265] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(2.29, 3.01, 1.12)",
+      "return_end": 51.90481901168823,
+      "return_clock": "17:21:05.080",
+      "duration_s": 0.2996690273284912,
+      "detection_counts": {
+        "/target/contour_center": 5,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "last_detection_clock": {
+        "/target/contour_center": "17:21:01.976"
+      }
+    },
+    {
+      "start": 54.503682136535645,
+      "start_clock": "17:21:07.679",
+      "end": 69.54648876190186,
+      "end_clock": "17:21:22.722",
+      "result": "[WARN] [1791192082.722455841] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment timed out after 15.0 s; returning to the alignment entry pose",
+      "return_end": 69.59658408164978,
+      "return_clock": "17:21:22.772",
+      "duration_s": 15.042806625366211,
+      "detection_counts": {
+        "/target/contour_center": 0,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "lio_xy_range_after_1s_m": [
+        0.24314623178162043,
+        0.18314700672793194
+      ]
+    },
+    {
+      "start": 70.0465452671051,
+      "start_clock": "17:21:23.222",
+      "end": 81.04233574867249,
+      "end_clock": "17:21:34.218",
+      "result": "[INFO] [1791192094.218302804] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(2.36, 3.43, 1.12)",
+      "return_end": 83.24142360687256,
+      "return_clock": "17:21:36.417",
+      "duration_s": 10.995790481567383,
+      "detection_counts": {
+        "/target/contour_center": 272,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "last_detection_clock": {
+        "/target/contour_center": "17:21:34.190"
+      },
+      "lio_xy_range_after_1s_m": [
+        0.11794755063605855,
+        0.879895243021942
+      ]
+    },
+    {
+      "start": 91.08928155899048,
+      "start_clock": "17:21:44.265",
+      "end": 97.53743577003479,
+      "end_clock": "17:21:50.713",
+      "result": "[INFO] [1791192110.713402756] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(3.89, 6.61, 1.14)",
+      "return_end": 99.08694767951965,
+      "return_clock": "17:21:52.262",
+      "duration_s": 6.4481542110443115,
+      "detection_counts": {
+        "/target/contour_center": 190,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "last_detection_clock": {
+        "/target/contour_center": "17:21:50.701"
+      },
+      "lio_xy_range_after_1s_m": [
+        0.3217259232494989,
+        0.03752790222278346
+      ]
+    },
+    {
+      "start": 124.3321213722229,
+      "start_clock": "17:22:17.508",
+      "end": 131.33099341392517,
+      "end_clock": "17:22:24.506",
+      "result": "[INFO] [1791192144.506960284] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(4.01, 1.21, 1.13)",
+      "return_end": 133.231271982193,
+      "return_clock": "17:22:26.407",
+      "duration_s": 6.9988720417022705,
+      "detection_counts": {
+        "/target/contour_center": 205,
+        "/target/circle_center": 20,
+        "/target/red_cross_center": 0
+      },
+      "last_detection_clock": {
+        "/target/contour_center": "17:22:24.486",
+        "/target/circle_center": "17:22:24.486"
+      },
+      "lio_xy_range_after_1s_m": [
+        0.1143156703430428,
+        0.5395966716128662
+      ]
+    },
+    {
+      "start": 182.17819905281067,
+      "start_clock": "17:23:15.354",
+      "end": 183.57657194137573,
+      "end_clock": "17:23:16.752",
+      "result": "[INFO] [1791192196.752538855] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(7.21, 1.41, 1.12)",
+      "return_end": 191.0261480808258,
+      "return_clock": "17:23:24.202",
+      "duration_s": 1.3983728885650635,
+      "detection_counts": {
+        "/target/contour_center": 34,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "last_detection_clock": {
+        "/target/contour_center": "17:23:16.730"
+      },
+      "lio_xy_range_after_1s_m": [
+        0.04849775673477996,
+        0.011089054579035418
+      ]
+    },
+    {
+      "start": 193.97621202468872,
+      "start_clock": "17:23:27.152",
+      "end": 194.2263147830963,
+      "end_clock": "17:23:27.402",
+      "result": "[INFO] [1791192207.402281851] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(7.11, 3.15, 1.10)",
+      "return_end": 197.87596106529236,
+      "return_clock": "17:23:31.051",
+      "duration_s": 0.2501027584075928,
+      "detection_counts": {
+        "/target/contour_center": 3,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "last_detection_clock": {
+        "/target/contour_center": "17:23:27.392"
+      }
+    },
+    {
+      "start": 200.42605018615723,
+      "start_clock": "17:23:33.602",
+      "end": 215.47554111480713,
+      "end_clock": "17:23:48.651",
+      "result": "[WARN] [1791192228.651508044] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment timed out after 15.0 s; returning to the alignment entry pose",
+      "duration_s": 15.049490928649902,
+      "detection_counts": {
+        "/target/contour_center": 0,
+        "/target/circle_center": 0,
+        "/target/red_cross_center": 0
+      },
+      "lio_xy_range_after_1s_m": [
+        0.183245593816169,
+        0.25944056424175166
+      ]
+    }
+  ],
+  "goals": [
+    [
+      100.08769655227661,
+      3.5354185096665742,
+      3.646166702958072,
+      1.1085967998185309
+    ],
+    [
+      117.13362455368042,
+      3.544467370030717,
+      1.2214868368622143,
+      1.1131761777803604
+    ],
+    [
+      133.23187232017517,
+      3.512770245480941,
+      1.1219349776251024,
+      1.1281964848569623
+    ],
+    [
+      147.47946977615356,
+      4.740431786651821,
+      5.861916165398968,
+      1.1258261773742042
+    ],
+    [
+      168.9281554222107,
+      5.887333552413506,
+      0.10353304781264461,
+      1.1208961524451648
+    ]
+  ],
+  "counts": {
+    "/target/contour_center": 1978,
+    "/target/circle_center": 51,
+    "/target/red_cross_center": 42
+  },
+  "events": [
+    {
+      "t": 22.55754542350769,
+      "clock": "17:20:35.733",
+      "text": "[INFO] [1791192035.733512370] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] started"
+    },
+    {
+      "t": 48.50690054893494,
+      "clock": "17:21:01.682",
+      "text": "[INFO] [1791192061.682867627] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(2.261, 2.806, 1.111) yaw=-0.017"
+    },
+    {
+      "t": 48.50709891319275,
+      "clock": "17:21:01.683",
+      "text": "[INFO] [1791192061.683065944] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.11 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 48.50713229179382,
+      "clock": "17:21:01.683",
+      "text": "[INFO] [1791192061.683099205] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 48.556713581085205,
+      "clock": "17:21:01.732",
+      "text": "[INFO] [1791192061.732680601] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 48.55677890777588,
+      "clock": "17:21:01.732",
+      "text": "[INFO] [1791192061.732745875] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(10.0, 156.0) px error_body=(0.020, 0.312) m distance=0.313 m adaptive_max_step=0.150 m step_body=(0.010, 0.150) m step=0.150 m target=(2.28, 3.02, 1.11) yaw=-0.020 -> locked=-0.005"
+    },
+    {
+      "t": 48.80661106109619,
+      "clock": "17:21:01.982",
+      "text": "[INFO] [1791192061.982578103] [align_down]: NO TARGET"
+    },
+    {
+      "t": 48.80667996406555,
+      "clock": "17:21:01.982",
+      "text": "[INFO] [1791192061.982646831] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] captured contour target on arrival: ENU=(2.29, 3.01, 1.12)"
+    },
+    {
+      "t": 48.806801319122314,
+      "clock": "17:21:01.982",
+      "text": "[INFO] [1791192061.982768265] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(2.29, 3.01, 1.12)"
+    },
+    {
+      "t": 48.806825160980225,
+      "clock": "17:21:01.982",
+      "text": "[INFO] [1791192061.982792027] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returning to saved position=(2.26, 2.81, 1.11), yaw=-0.017"
+    },
+    {
+      "t": 48.85648989677429,
+      "clock": "17:21:02.032",
+      "text": "[INFO] [1791192062.032456903] [align_drop_snake_ego_node]: [RETURN] current=(2.276, 3.109, 1.126) saved=(2.261, 2.806, 1.111) error_xy=0.303 error_z=0.015 distance=0.303"
+    },
+    {
+      "t": 49.9059522151947,
+      "clock": "17:21:03.081",
+      "text": "[INFO] [1791192063.081919258] [align_drop_snake_ego_node]: [RETURN] current=(2.331, 3.000, 1.110) saved=(2.261, 2.806, 1.111) error_xy=0.206 error_z=0.001 distance=0.206"
+    },
+    {
+      "t": 50.9553005695343,
+      "clock": "17:21:04.131",
+      "text": "[INFO] [1791192064.131267525] [align_drop_snake_ego_node]: [RETURN] current=(2.423, 2.870, 1.146) saved=(2.261, 2.806, 1.111) error_xy=0.174 error_z=0.035 distance=0.177"
+    },
+    {
+      "t": 51.90481901168823,
+      "clock": "17:21:05.080",
+      "text": "[INFO] [1791192065.080785953] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; resuming snake route"
+    },
+    {
+      "t": 51.904953718185425,
+      "clock": "17:21:05.080",
+      "text": "[INFO] [1791192065.080920632] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.120 m error_z=0.043 m; resuming snake route"
+    },
+    {
+      "t": 51.9547655582428,
+      "clock": "17:21:05.130",
+      "text": "[INFO] [1791192065.130732608] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.277 m radius=0.900 m"
+    },
+    {
+      "t": 54.003737449645996,
+      "clock": "17:21:07.179",
+      "text": "[INFO] [1791192067.179704416] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.660 m radius=0.900 m"
+    },
+    {
+      "t": 54.50346112251282,
+      "clock": "17:21:07.679",
+      "text": "[INFO] [1791192067.679428094] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=0.927 m radius=0.900 m"
+    },
+    {
+      "t": 54.50360655784607,
+      "clock": "17:21:07.679",
+      "text": "[INFO] [1791192067.679573649] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(2.274, 4.257, 1.102) yaw=-0.058"
+    },
+    {
+      "t": 54.50366163253784,
+      "clock": "17:21:07.679",
+      "text": "[INFO] [1791192067.679628501] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.10 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 54.503682136535645,
+      "clock": "17:21:07.679",
+      "text": "[INFO] [1791192067.679649066] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 54.553380489349365,
+      "clock": "17:21:07.729",
+      "text": "[INFO] [1791192067.729347424] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 54.95316195487976,
+      "clock": "17:21:08.129",
+      "text": "[WARN] [1791192068.129128997] [align_down]: [ALIGN_DOWN] down-facing detection timed out; holding position"
+    },
+    {
+      "t": 69.54648876190186,
+      "clock": "17:21:22.722",
+      "text": "[WARN] [1791192082.722455841] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment timed out after 15.0 s; returning to the alignment entry pose"
+    },
+    {
+      "t": 69.59645414352417,
+      "clock": "17:21:22.772",
+      "text": "[INFO] [1791192082.772421158] [align_drop_snake_ego_node]: [RETURN] current=(2.295, 4.356, 1.113) saved=(2.274, 4.257, 1.102) error_xy=0.102 error_z=0.010 distance=0.102"
+    },
+    {
+      "t": 69.59658408164978,
+      "clock": "17:21:22.772",
+      "text": "[INFO] [1791192082.772551089] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; resuming snake route"
+    },
+    {
+      "t": 69.5966477394104,
+      "clock": "17:21:22.772",
+      "text": "[INFO] [1791192082.772614775] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.102 m error_z=0.010 m; resuming snake route"
+    },
+    {
+      "t": 69.94628691673279,
+      "clock": "17:21:23.122",
+      "text": "[INFO] [1791192083.122253803] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.887 m radius=0.900 m"
+    },
+    {
+      "t": 70.04631757736206,
+      "clock": "17:21:23.222",
+      "text": "[INFO] [1791192083.222284534] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=0.906 m radius=0.900 m"
+    },
+    {
+      "t": 70.04645442962646,
+      "clock": "17:21:23.222",
+      "text": "[INFO] [1791192083.222421311] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(2.296, 4.348, 1.117) yaw=0.059"
+    },
+    {
+      "t": 70.04651618003845,
+      "clock": "17:21:23.222",
+      "text": "[INFO] [1791192083.222483078] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.12 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 70.0465452671051,
+      "clock": "17:21:23.222",
+      "text": "[INFO] [1791192083.222512346] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 70.0962643623352,
+      "clock": "17:21:23.272",
+      "text": "[INFO] [1791192083.272231319] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 70.096346616745,
+      "clock": "17:21:23.272",
+      "text": "[INFO] [1791192083.272313654] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(52.0, -227.0) px error_body=(0.104, -0.454) m distance=0.466 m adaptive_max_step=0.150 m step_body=(0.033, -0.146) m step=0.150 m target=(2.34, 4.21, 1.12) yaw=0.069 -> locked=-0.005"
+    },
+    {
+      "t": 70.69603776931763,
+      "clock": "17:21:23.872",
+      "text": "[WARN] [1791192083.872004833] [align_down]: [ALIGN_DOWN] down-facing detection timed out; holding position"
+    },
+    {
+      "t": 70.99591326713562,
+      "clock": "17:21:24.171",
+      "text": "[INFO] [1791192084.171880153] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 71.54567742347717,
+      "clock": "17:21:24.721",
+      "text": "[WARN] [1791192084.721644458] [align_down]: [ALIGN_DOWN] down-facing detection timed out; holding position"
+    },
+    {
+      "t": 71.84630370140076,
+      "clock": "17:21:25.022",
+      "text": "[INFO] [1791192085.022270568] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 71.84639525413513,
+      "clock": "17:21:25.022",
+      "text": "[INFO] [1791192085.022362117] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(63.0, -243.0) px error_body=(0.126, -0.486) m distance=0.502 m adaptive_max_step=0.150 m step_body=(0.038, -0.145) m step=0.150 m target=(2.33, 4.18, 1.12) yaw=0.043 -> locked=-0.005"
+    },
+    {
+      "t": 72.89515900611877,
+      "clock": "17:21:26.071",
+      "text": "[INFO] [1791192086.071126085] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(49.0, -245.0) px error_body=(0.098, -0.490) m distance=0.500 m adaptive_max_step=0.150 m step_body=(0.029, -0.147) m step=0.150 m target=(2.35, 4.11, 1.12) yaw=0.113 -> locked=-0.005"
+    },
+    {
+      "t": 73.94477915763855,
+      "clock": "17:21:27.120",
+      "text": "[INFO] [1791192087.120746114] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(38.0, -196.0) px error_body=(0.076, -0.392) m distance=0.399 m adaptive_max_step=0.150 m step_body=(0.029, -0.147) m step=0.150 m target=(2.35, 3.99, 1.12) yaw=0.023 -> locked=-0.005"
+    },
+    {
+      "t": 74.99436640739441,
+      "clock": "17:21:28.170",
+      "text": "[INFO] [1791192088.170333346] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(23.0, -146.0) px error_body=(0.046, -0.292) m distance=0.296 m adaptive_max_step=0.080 m step_body=(0.012, -0.079) m step=0.080 m target=(2.32, 3.92, 1.12) yaw=-0.009 -> locked=-0.005"
+    },
+    {
+      "t": 76.04398250579834,
+      "clock": "17:21:29.219",
+      "text": "[INFO] [1791192089.219949531] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(18.0, -116.0) px error_body=(0.036, -0.232) m distance=0.235 m adaptive_max_step=0.080 m step_body=(0.012, -0.079) m step=0.080 m target=(2.28, 3.81, 1.12) yaw=0.055 -> locked=-0.005"
+    },
+    {
+      "t": 77.09359908103943,
+      "clock": "17:21:30.269",
+      "text": "[INFO] [1791192090.269566022] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(24.0, -97.0) px error_body=(0.048, -0.194) m distance=0.200 m adaptive_max_step=0.080 m step_body=(0.019, -0.078) m step=0.080 m target=(2.23, 3.71, 1.12) yaw=0.033 -> locked=-0.005"
+    },
+    {
+      "t": 78.14320921897888,
+      "clock": "17:21:31.319",
+      "text": "[INFO] [1791192091.319176215] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(92.0, -155.0) px error_body=(0.184, -0.310) m distance=0.360 m adaptive_max_step=0.150 m step_body=(0.077, -0.129) m step=0.150 m target=(2.28, 3.60, 1.12) yaw=-0.013 -> locked=-0.005"
+    },
+    {
+      "t": 79.19284725189209,
+      "clock": "17:21:32.368",
+      "text": "[INFO] [1791192092.368814229] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(88.0, -125.0) px error_body=(0.176, -0.250) m distance=0.306 m adaptive_max_step=0.150 m step_body=(0.086, -0.123) m step=0.150 m target=(2.33, 3.52, 1.12) yaw=-0.025 -> locked=-0.005"
+    },
+    {
+      "t": 80.242436170578,
+      "clock": "17:21:33.418",
+      "text": "[INFO] [1791192093.418403086] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(34.0, -91.0) px error_body=(0.068, -0.182) m distance=0.194 m adaptive_max_step=0.080 m step_body=(0.028, -0.075) m step=0.080 m target=(2.31, 3.51, 1.12) yaw=-0.018 -> locked=-0.005"
+    },
+    {
+      "t": 81.04215884208679,
+      "clock": "17:21:34.218",
+      "text": "[INFO] [1791192094.218125775] [align_down]: NO TARGET"
+    },
+    {
+      "t": 81.04224181175232,
+      "clock": "17:21:34.218",
+      "text": "[INFO] [1791192094.218208788] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] captured contour target on arrival: ENU=(2.36, 3.43, 1.12)"
+    },
+    {
+      "t": 81.04233574867249,
+      "clock": "17:21:34.218",
+      "text": "[INFO] [1791192094.218302804] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(2.36, 3.43, 1.12)"
+    },
+    {
+      "t": 81.04236197471619,
+      "clock": "17:21:34.218",
+      "text": "[INFO] [1791192094.218328971] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returning to saved position=(2.30, 4.35, 1.12), yaw=0.059"
+    },
+    {
+      "t": 81.09218883514404,
+      "clock": "17:21:34.268",
+      "text": "[INFO] [1791192094.268155918] [align_drop_snake_ego_node]: [RETURN] current=(2.295, 3.532, 1.124) saved=(2.296, 4.348, 1.117) error_xy=0.816 error_z=0.007 distance=0.816"
+    },
+    {
+      "t": 82.14180207252502,
+      "clock": "17:21:35.317",
+      "text": "[INFO] [1791192095.317769029] [align_drop_snake_ego_node]: [RETURN] current=(2.249, 3.982, 1.148) saved=(2.296, 4.348, 1.117) error_xy=0.369 error_z=0.032 distance=0.370"
+    },
+    {
+      "t": 83.1914930343628,
+      "clock": "17:21:36.367",
+      "text": "[INFO] [1791192096.367459912] [align_drop_snake_ego_node]: [RETURN] current=(2.217, 4.256, 1.109) saved=(2.296, 4.348, 1.117) error_xy=0.122 error_z=0.008 distance=0.122"
+    },
+    {
+      "t": 83.24142360687256,
+      "clock": "17:21:36.417",
+      "text": "[INFO] [1791192096.417390679] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; resuming snake route"
+    },
+    {
+      "t": 83.24160575866699,
+      "clock": "17:21:36.417",
+      "text": "[INFO] [1791192096.417572701] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.118 m error_z=0.010 m; resuming snake route"
+    },
+    {
+      "t": 83.59137225151062,
+      "clock": "17:21:36.767",
+      "text": "[INFO] [1791192096.767339194] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.828 m radius=0.900 m"
+    },
+    {
+      "t": 91.08910036087036,
+      "clock": "17:21:44.265",
+      "text": "[INFO] [1791192104.265067232] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=3.479 m radius=0.900 m"
+    },
+    {
+      "t": 91.08922481536865,
+      "clock": "17:21:44.265",
+      "text": "[INFO] [1791192104.265191677] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(3.426, 6.965, 1.100) yaw=-0.066"
+    },
+    {
+      "t": 91.08926630020142,
+      "clock": "17:21:44.265",
+      "text": "[INFO] [1791192104.265233393] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.10 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 91.08928155899048,
+      "clock": "17:21:44.265",
+      "text": "[INFO] [1791192104.265248621] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 91.1390368938446,
+      "clock": "17:21:44.315",
+      "text": "[INFO] [1791192104.315003845] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 91.13908672332764,
+      "clock": "17:21:44.315",
+      "text": "[INFO] [1791192104.315053815] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(127.0, -140.0) px error_body=(0.254, -0.280) m distance=0.378 m adaptive_max_step=0.150 m step_body=(0.101, -0.111) m step=0.150 m target=(3.53, 6.80, 1.10) yaw=-0.067 -> locked=-0.005"
+    },
+    {
+      "t": 92.1891462802887,
+      "clock": "17:21:45.365",
+      "text": "[INFO] [1791192105.365113199] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(125.0, -13.0) px error_body=(0.250, -0.026) m distance=0.251 m adaptive_max_step=0.080 m step_body=(0.080, -0.008) m step=0.080 m target=(3.60, 6.67, 1.10) yaw=-0.029 -> locked=-0.005"
+    },
+    {
+      "t": 93.2384819984436,
+      "clock": "17:21:46.414",
+      "text": "[INFO] [1791192106.414448939] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(119.0, -8.0) px error_body=(0.238, -0.016) m distance=0.239 m adaptive_max_step=0.080 m step_body=(0.080, -0.005) m step=0.080 m target=(3.64, 6.69, 1.10) yaw=-0.053 -> locked=-0.005"
+    },
+    {
+      "t": 94.28818106651306,
+      "clock": "17:21:47.464",
+      "text": "[INFO] [1791192107.464147977] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(107.0, -13.0) px error_body=(0.214, -0.026) m distance=0.216 m adaptive_max_step=0.080 m step_body=(0.079, -0.010) m step=0.080 m target=(3.65, 6.66, 1.10) yaw=-0.005 -> locked=-0.005"
+    },
+    {
+      "t": 95.28910279273987,
+      "clock": "17:21:48.465",
+      "text": "[INFO] [1791192108.465069844] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(72.0, -36.0) px error_body=(0.144, -0.072) m distance=0.161 m adaptive_max_step=0.080 m step_body=(0.072, -0.036) m step=0.080 m target=(3.71, 6.62, 1.10) yaw=0.052 -> locked=-0.005"
+    },
+    {
+      "t": 96.33767318725586,
+      "clock": "17:21:49.513",
+      "text": "[INFO] [1791192109.513640250] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(56.0, -41.0) px error_body=(0.112, -0.082) m distance=0.139 m adaptive_max_step=0.040 m step_body=(0.032, -0.024) m step=0.040 m target=(3.75, 6.65, 1.10) yaw=0.099 -> locked=-0.005"
+    },
+    {
+      "t": 97.38745450973511,
+      "clock": "17:21:50.563",
+      "text": "[INFO] [1791192110.563421394] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(39.0, -48.0) px error_body=(0.078, -0.096) m distance=0.124 m adaptive_max_step=0.040 m step_body=(0.025, -0.031) m step=0.040 m target=(3.82, 6.67, 1.10) yaw=0.077 -> locked=-0.005"
+    },
+    {
+      "t": 97.5372838973999,
+      "clock": "17:21:50.713",
+      "text": "[INFO] [1791192110.713250858] [align_down]: NO TARGET"
+    },
+    {
+      "t": 97.5373547077179,
+      "clock": "17:21:50.713",
+      "text": "[INFO] [1791192110.713321784] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] captured contour target on arrival: ENU=(3.89, 6.61, 1.14)"
+    },
+    {
+      "t": 97.53743577003479,
+      "clock": "17:21:50.713",
+      "text": "[INFO] [1791192110.713402756] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(3.89, 6.61, 1.14)"
+    },
+    {
+      "t": 97.53746271133423,
+      "clock": "17:21:50.713",
+      "text": "[INFO] [1791192110.713429693] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returning to saved position=(3.43, 6.97, 1.10), yaw=-0.066"
+    },
+    {
+      "t": 97.58735179901123,
+      "clock": "17:21:50.763",
+      "text": "[INFO] [1791192110.763318717] [align_drop_snake_ego_node]: [RETURN] current=(3.813, 6.702, 1.139) saved=(3.426, 6.965, 1.100) error_xy=0.468 error_z=0.039 distance=0.470"
+    },
+    {
+      "t": 98.63704562187195,
+      "clock": "17:21:51.813",
+      "text": "[INFO] [1791192111.813012550] [align_drop_snake_ego_node]: [RETURN] current=(3.623, 6.875, 1.123) saved=(3.426, 6.965, 1.100) error_xy=0.216 error_z=0.023 distance=0.217"
+    },
+    {
+      "t": 99.08694767951965,
+      "clock": "17:21:52.262",
+      "text": "[INFO] [1791192112.262914716] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; resuming snake route"
+    },
+    {
+      "t": 99.08706831932068,
+      "clock": "17:21:52.263",
+      "text": "[INFO] [1791192112.263035230] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.115 m error_z=0.016 m; resuming snake route"
+    },
+    {
+      "t": 99.13693332672119,
+      "clock": "17:21:52.312",
+      "text": "[INFO] [1791192112.312900343] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.209 m radius=0.900 m"
+    },
+    {
+      "t": 100.0867350101471,
+      "clock": "17:21:53.262",
+      "text": "[WARN] [1791192113.262701950] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skip occupied cell=(3,4)"
+    },
+    {
+      "t": 100.08687925338745,
+      "clock": "17:21:53.262",
+      "text": "[WARN] [1791192113.262846331] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] obstacle detected; diverting from waypoint=(3,3) to index=24"
+    },
+    {
+      "t": 100.08717656135559,
+      "clock": "17:21:53.263",
+      "text": "[INFO] [1791192113.263143507] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO target waypoint=(3,3), ENU=(3.51, 3.60, 1.11)"
+    },
+    {
+      "t": 101.13759732246399,
+      "clock": "17:21:54.313",
+      "text": "[INFO] [1791192114.313564236] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.125 m radius=0.900 m"
+    },
+    {
+      "t": 103.18598461151123,
+      "clock": "17:21:56.361",
+      "text": "[INFO] [1791192116.361951505] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.136 m radius=0.900 m"
+    },
+    {
+      "t": 105.23550820350647,
+      "clock": "17:21:58.411",
+      "text": "[INFO] [1791192118.411475290] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.414 m radius=0.900 m"
+    },
+    {
+      "t": 117.08319807052612,
+      "clock": "17:22:10.259",
+      "text": "[INFO] [1791192130.259165134] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO avoidance reached index=24; resuming snake route"
+    },
+    {
+      "t": 117.1331536769867,
+      "clock": "17:22:10.309",
+      "text": "[WARN] [1791192130.309120655] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skip occupied cell=(3,2)"
+    },
+    {
+      "t": 117.13327527046204,
+      "clock": "17:22:10.309",
+      "text": "[WARN] [1791192130.309242330] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] obstacle detected; diverting from waypoint=(3,1) to index=26"
+    },
+    {
+      "t": 117.1335391998291,
+      "clock": "17:22:10.309",
+      "text": "[INFO] [1791192130.309506187] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO target waypoint=(3,1), ENU=(3.51, 1.20, 1.11)"
+    },
+    {
+      "t": 124.33195686340332,
+      "clock": "17:22:17.507",
+      "text": "[INFO] [1791192137.507923793] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=2.275 m radius=0.900 m"
+    },
+    {
+      "t": 124.33207201957703,
+      "clock": "17:22:17.508",
+      "text": "[INFO] [1791192137.508038943] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(4.208, 2.111, 1.114) yaw=-0.056"
+    },
+    {
+      "t": 124.33210825920105,
+      "clock": "17:22:17.508",
+      "text": "[INFO] [1791192137.508075161] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.11 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 124.3321213722229,
+      "clock": "17:22:17.508",
+      "text": "[INFO] [1791192137.508088247] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in EGO"
+    },
+    {
+      "t": 124.38197016716003,
+      "clock": "17:22:17.557",
+      "text": "[INFO] [1791192137.557937078] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 124.38203382492065,
+      "clock": "17:22:17.558",
+      "text": "[INFO] [1791192137.558000716] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(-56.0, -263.0) px error_body=(-0.112, -0.526) m distance=0.538 m adaptive_max_step=0.150 m step_body=(-0.031, -0.147) m step=0.150 m target=(4.17, 1.96, 1.11) yaw=-0.059 -> locked=-0.005"
+    },
+    {
+      "t": 125.43175745010376,
+      "clock": "17:22:18.607",
+      "text": "[INFO] [1791192138.607724384] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(-12.0, -174.0) px error_body=(-0.024, -0.348) m distance=0.349 m adaptive_max_step=0.150 m step_body=(-0.010, -0.150) m step=0.150 m target=(4.14, 1.71, 1.11) yaw=-0.115 -> locked=-0.005"
+    },
+    {
+      "t": 126.48167634010315,
+      "clock": "17:22:19.657",
+      "text": "[INFO] [1791192139.657643308] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(2.0, -123.0) px error_body=(0.004, -0.246) m distance=0.246 m adaptive_max_step=0.080 m step_body=(0.001, -0.080) m step=0.080 m target=(4.12, 1.62, 1.11) yaw=-0.086 -> locked=-0.005"
+    },
+    {
+      "t": 127.53186559677124,
+      "clock": "17:22:20.707",
+      "text": "[INFO] [1791192140.707832469] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(-6.0, -112.0) px error_body=(-0.012, -0.224) m distance=0.224 m adaptive_max_step=0.080 m step_body=(-0.004, -0.080) m step=0.080 m target=(4.08, 1.54, 1.11) yaw=-0.052 -> locked=-0.005"
+    },
+    {
+      "t": 128.5812771320343,
+      "clock": "17:22:21.757",
+      "text": "[INFO] [1791192141.757244226] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(1.0, -102.0) px error_body=(0.002, -0.204) m distance=0.204 m adaptive_max_step=0.080 m step_body=(0.001, -0.080) m step=0.080 m target=(4.05, 1.47, 1.11) yaw=-0.059 -> locked=-0.005"
+    },
+    {
+      "t": 129.38121390342712,
+      "clock": "17:22:22.557",
+      "text": "[INFO] [1791192142.557180902] [align_down]: [ALIGN_DOWN] switching detection source to circle"
+    },
+    {
+      "t": 129.68112349510193,
+      "clock": "17:22:22.857",
+      "text": "[INFO] [1791192142.857090575] [align_down]: [ALIGN_DOWN] correcting: source=circle offset=(-22.0, -121.0) px error_body=(-0.044, -0.242) m distance=0.246 m adaptive_max_step=0.080 m step_body=(-0.014, -0.079) m step=0.080 m target=(4.04, 1.38, 1.11) yaw=0.013 -> locked=-0.005"
+    },
+    {
+      "t": 130.8809564113617,
+      "clock": "17:22:24.056",
+      "text": "[INFO] [1791192144.056923303] [align_down]: [ALIGN_DOWN] correcting: source=circle offset=(-23.0, -74.0) px error_body=(-0.046, -0.148) m distance=0.155 m adaptive_max_step=0.080 m step_body=(-0.024, -0.076) m step=0.080 m target=(4.03, 1.28, 1.11) yaw=0.020 -> locked=-0.005"
+    },
+    {
+      "t": 131.33088541030884,
+      "clock": "17:22:24.506",
+      "text": "[INFO] [1791192144.506852331] [align_down]: NO TARGET"
+    },
+    {
+      "t": 131.33094334602356,
+      "clock": "17:22:24.506",
+      "text": "[INFO] [1791192144.506910339] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] captured circle target on arrival: ENU=(4.01, 1.21, 1.13)"
+    },
+    {
+      "t": 131.33099341392517,
+      "clock": "17:22:24.506",
+      "text": "[INFO] [1791192144.506960284] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(4.01, 1.21, 1.13)"
+    },
+    {
+      "t": 131.3310112953186,
+      "clock": "17:22:24.506",
+      "text": "[INFO] [1791192144.506978170] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returning to saved position=(4.21, 2.11, 1.11), yaw=-0.056"
+    },
+    {
+      "t": 131.38092255592346,
+      "clock": "17:22:24.556",
+      "text": "[INFO] [1791192144.556889549] [align_drop_snake_ego_node]: [RETURN] current=(4.063, 1.312, 1.134) saved=(4.208, 2.111, 1.114) error_xy=0.812 error_z=0.020 distance=0.812"
+    },
+    {
+      "t": 132.43084383010864,
+      "clock": "17:22:25.606",
+      "text": "[INFO] [1791192145.606810797] [align_drop_snake_ego_node]: [RETURN] current=(4.164, 1.739, 1.144) saved=(4.208, 2.111, 1.114) error_xy=0.375 error_z=0.030 distance=0.376"
+    },
+    {
+      "t": 133.231271982193,
+      "clock": "17:22:26.407",
+      "text": "[INFO] [1791192146.407239039] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; restarting EGO avoidance"
+    },
+    {
+      "t": 133.23157954216003,
+      "clock": "17:22:26.407",
+      "text": "[INFO] [1791192146.407546582] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.117 m error_z=0.000 m; resuming EGO avoidance"
+    },
+    {
+      "t": 133.28083872795105,
+      "clock": "17:22:26.456",
+      "text": "[INFO] [1791192146.456805630] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.394 m radius=0.900 m"
+    },
+    {
+      "t": 135.33043503761292,
+      "clock": "17:22:28.506",
+      "text": "[INFO] [1791192148.506401987] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.238 m radius=0.900 m"
+    },
+    {
+      "t": 137.3311643600464,
+      "clock": "17:22:30.507",
+      "text": "[INFO] [1791192150.507131286] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.274 m radius=0.900 m"
+    },
+    {
+      "t": 137.68019723892212,
+      "clock": "17:22:30.856",
+      "text": "[INFO] [1791192150.856164162] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO avoidance reached index=26; resuming snake route"
+    },
+    {
+      "t": 139.37988901138306,
+      "clock": "17:22:32.555",
+      "text": "[INFO] [1791192152.555856016] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.534 m radius=0.900 m"
+    },
+    {
+      "t": 144.12961387634277,
+      "clock": "17:22:37.305",
+      "text": "[INFO] [1791192157.305580939] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.399 m radius=0.900 m"
+    },
+    {
+      "t": 147.47900795936584,
+      "clock": "17:22:40.654",
+      "text": "[WARN] [1791192160.654974925] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] obstacle detected; diverting from waypoint=(4,5) to index=33"
+    },
+    {
+      "t": 147.4794466495514,
+      "clock": "17:22:40.655",
+      "text": "[INFO] [1791192160.655413601] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO target waypoint=(4,5), ENU=(4.71, 6.00, 1.11)"
+    },
+    {
+      "t": 157.97811818122864,
+      "clock": "17:22:51.154",
+      "text": "[INFO] [1791192171.154085206] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO avoidance reached index=33; resuming snake route"
+    },
+    {
+      "t": 159.0279552936554,
+      "clock": "17:22:52.203",
+      "text": "[INFO] [1791192172.203922254] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.576 m radius=0.900 m"
+    },
+    {
+      "t": 161.07789492607117,
+      "clock": "17:22:54.253",
+      "text": "[INFO] [1791192174.253862015] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.645 m radius=0.900 m"
+    },
+    {
+      "t": 168.92730140686035,
+      "clock": "17:23:02.103",
+      "text": "[WARN] [1791192182.103268435] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] obstacle detected; diverting from waypoint=(5,0) to index=41"
+    },
+    {
+      "t": 168.92774939537048,
+      "clock": "17:23:02.103",
+      "text": "[INFO] [1791192182.103716470] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO target waypoint=(5,0), ENU=(5.91, -0.00, 1.11)"
+    },
+    {
+      "t": 178.72673058509827,
+      "clock": "17:23:11.902",
+      "text": "[INFO] [1791192191.902697650] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] EGO avoidance reached index=41; resuming snake route"
+    },
+    {
+      "t": 182.1766014099121,
+      "clock": "17:23:15.352",
+      "text": "[INFO] [1791192195.352568489] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=3.217 m radius=0.900 m"
+    },
+    {
+      "t": 182.17807364463806,
+      "clock": "17:23:15.354",
+      "text": "[INFO] [1791192195.354040740] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(7.025, 1.128, 1.114) yaw=-0.020"
+    },
+    {
+      "t": 182.17817521095276,
+      "clock": "17:23:15.354",
+      "text": "[INFO] [1791192195.354142271] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.11 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 182.17819905281067,
+      "clock": "17:23:15.354",
+      "text": "[INFO] [1791192195.354166142] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 182.22652077674866,
+      "clock": "17:23:15.402",
+      "text": "[INFO] [1791192195.402487760] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 182.22660279273987,
+      "clock": "17:23:15.402",
+      "text": "[INFO] [1791192195.402569868] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(91.0, 134.0) px error_body=(0.182, 0.268) m distance=0.324 m adaptive_max_step=0.150 m step_body=(0.084, 0.124) m step=0.150 m target=(7.12, 1.31, 1.11) yaw=-0.020 -> locked=-0.005"
+    },
+    {
+      "t": 182.4764907360077,
+      "clock": "17:23:15.652",
+      "text": "[INFO] [1791192195.652457634] [align_down]: [ALIGN_DOWN] switching detection source to circle"
+    },
+    {
+      "t": 182.676509141922,
+      "clock": "17:23:15.852",
+      "text": "[INFO] [1791192195.852476207] [align_down]: [ALIGN_DOWN] switching detection source to contour"
+    },
+    {
+      "t": 183.22652173042297,
+      "clock": "17:23:16.402",
+      "text": "[INFO] [1791192196.402488766] [align_down]: FIND TARGET"
+    },
+    {
+      "t": 183.22660732269287,
+      "clock": "17:23:16.402",
+      "text": "[INFO] [1791192196.402574266] [align_down]: [ALIGN_DOWN] contour within tolerance: offset=(50.0, 20.0) px distance=0.108 m stable=1/2"
+    },
+    {
+      "t": 183.22664737701416,
+      "clock": "17:23:16.402",
+      "text": "[INFO] [1791192196.402614296] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] captured contour target on arrival: ENU=(7.21, 1.41, 1.12)"
+    },
+    {
+      "t": 183.57649111747742,
+      "clock": "17:23:16.752",
+      "text": "[INFO] [1791192196.752458154] [align_down]: [ALIGN_DOWN] alignment complete: contour distance=0.081 m stable_frames=2"
+    },
+    {
+      "t": 183.57657194137573,
+      "clock": "17:23:16.752",
+      "text": "[INFO] [1791192196.752538855] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(7.21, 1.41, 1.12)"
+    },
+    {
+      "t": 183.57666563987732,
+      "clock": "17:23:16.752",
+      "text": "[INFO] [1791192196.752632514] [align_drop_snake_ego_node]: [DOWN_DROP] target=0 phase=DOWN height=0.10"
+    },
+    {
+      "t": 183.57670044898987,
+      "clock": "17:23:16.752",
+      "text": "[INFO] [1791192196.752667457] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] AlignDown confirmed target; starting DownDrop target=0 offset=(0.00, 0.10)"
+    },
+    {
+      "t": 188.2262556552887,
+      "clock": "17:23:21.402",
+      "text": "[INFO] [1791192201.402222583] [align_drop_snake_ego_node]: [DOWN_DROP] phase=MOVE offset=(0.00, 0.10)"
+    },
+    {
+      "t": 189.07625532150269,
+      "clock": "17:23:22.252",
+      "text": "[INFO] [1791192202.252222210] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] drop completed; returning to alignment entry pose"
+    },
+    {
+      "t": 189.12624216079712,
+      "clock": "17:23:22.302",
+      "text": "[INFO] [1791192202.302209255] [align_drop_snake_ego_node]: [RETURN] current=(7.231, 1.372, 0.165) saved=(7.025, 1.128, 1.114) error_xy=0.320 error_z=0.950 distance=1.002"
+    },
+    {
+      "t": 190.12630128860474,
+      "clock": "17:23:23.302",
+      "text": "[INFO] [1791192203.302268325] [align_drop_snake_ego_node]: [RETURN] current=(7.145, 1.246, 0.763) saved=(7.025, 1.128, 1.114) error_xy=0.168 error_z=0.351 distance=0.389"
+    },
+    {
+      "t": 191.0261480808258,
+      "clock": "17:23:24.202",
+      "text": "[INFO] [1791192204.202115034] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; resuming snake route"
+    },
+    {
+      "t": 191.0262749195099,
+      "clock": "17:23:24.202",
+      "text": "[INFO] [1791192204.202241973] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.031 m error_z=0.145 m; resuming snake route"
+    },
+    {
+      "t": 191.07619953155518,
+      "clock": "17:23:24.252",
+      "text": "[INFO] [1791192204.252166530] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.150 m radius=0.900 m"
+    },
+    {
+      "t": 193.1260895729065,
+      "clock": "17:23:26.302",
+      "text": "[INFO] [1791192206.302056477] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.459 m radius=0.900 m"
+    },
+    {
+      "t": 193.97605347633362,
+      "clock": "17:23:27.152",
+      "text": "[INFO] [1791192207.152020528] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=1.888 m radius=0.900 m"
+    },
+    {
+      "t": 193.97616171836853,
+      "clock": "17:23:27.152",
+      "text": "[INFO] [1791192207.152128588] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(6.993, 2.958, 1.083) yaw=0.035"
+    },
+    {
+      "t": 193.97619795799255,
+      "clock": "17:23:27.152",
+      "text": "[INFO] [1791192207.152165003] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.08 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 193.97621202468872,
+      "clock": "17:23:27.152",
+      "text": "[INFO] [1791192207.152179082] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 194.02603340148926,
+      "clock": "17:23:27.202",
+      "text": "[INFO] [1791192207.202000270] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 194.0260934829712,
+      "clock": "17:23:27.202",
+      "text": "[INFO] [1791192207.202060396] [align_down]: [ALIGN_DOWN] correcting: source=contour offset=(37.0, 154.0) px error_body=(0.074, 0.308) m distance=0.317 m adaptive_max_step=0.150 m step_body=(0.035, 0.146) m step=0.150 m target=(7.02, 3.17, 1.08) yaw=0.048 -> locked=-0.005"
+    },
+    {
+      "t": 194.22612118721008,
+      "clock": "17:23:27.402",
+      "text": "[INFO] [1791192207.402088098] [align_down]: NO TARGET"
+    },
+    {
+      "t": 194.22622108459473,
+      "clock": "17:23:27.402",
+      "text": "[INFO] [1791192207.402188095] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] captured contour target on arrival: ENU=(7.11, 3.15, 1.10)"
+    },
+    {
+      "t": 194.2263147830963,
+      "clock": "17:23:27.402",
+      "text": "[INFO] [1791192207.402281851] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] alignment succeeded; target ENU=(7.11, 3.15, 1.10)"
+    },
+    {
+      "t": 194.22636485099792,
+      "clock": "17:23:27.402",
+      "text": "[INFO] [1791192207.402331834] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returning to saved position=(6.99, 2.96, 1.08), yaw=0.035"
+    },
+    {
+      "t": 194.27603316307068,
+      "clock": "17:23:27.452",
+      "text": "[INFO] [1791192207.452000259] [align_drop_snake_ego_node]: [RETURN] current=(7.003, 3.228, 1.098) saved=(6.993, 2.958, 1.083) error_xy=0.270 error_z=0.016 distance=0.271"
+    },
+    {
+      "t": 195.3259892463684,
+      "clock": "17:23:28.501",
+      "text": "[INFO] [1791192208.501956270] [align_drop_snake_ego_node]: [RETURN] current=(7.038, 3.205, 1.095) saved=(6.993, 2.958, 1.083) error_xy=0.251 error_z=0.012 distance=0.251"
+    },
+    {
+      "t": 196.37598323822021,
+      "clock": "17:23:29.551",
+      "text": "[INFO] [1791192209.551950284] [align_drop_snake_ego_node]: [RETURN] current=(7.158, 3.016, 1.092) saved=(6.993, 2.958, 1.083) error_xy=0.176 error_z=0.009 distance=0.176"
+    },
+    {
+      "t": 197.37598419189453,
+      "clock": "17:23:30.551",
+      "text": "[INFO] [1791192210.551951263] [align_drop_snake_ego_node]: [RETURN] current=(7.143, 2.984, 1.089) saved=(6.993, 2.958, 1.083) error_xy=0.153 error_z=0.006 distance=0.153"
+    },
+    {
+      "t": 197.87596106529236,
+      "clock": "17:23:31.051",
+      "text": "[INFO] [1791192211.051928023] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] return completed; resuming snake route"
+    },
+    {
+      "t": 197.87612652778625,
+      "clock": "17:23:31.052",
+      "text": "[INFO] [1791192211.052093554] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] returned to saved position: error_xy=0.119 m error_z=0.010 m; resuming snake route"
+    },
+    {
+      "t": 197.92596411705017,
+      "clock": "17:23:31.101",
+      "text": "[INFO] [1791192211.101930990] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.097 m radius=0.900 m"
+    },
+    {
+      "t": 199.97595119476318,
+      "clock": "17:23:33.151",
+      "text": "[INFO] [1791192213.151918221] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] skipping completed target: source=contour distance=0.555 m radius=0.900 m"
+    },
+    {
+      "t": 200.425843000412,
+      "clock": "17:23:33.601",
+      "text": "[INFO] [1791192213.601809958] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] new target candidate: source=contour nearest completed target=0.909 m radius=0.900 m"
+    },
+    {
+      "t": 200.42597126960754,
+      "clock": "17:23:33.601",
+      "text": "[INFO] [1791192213.601938178] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] saving resume pose: position=(7.068, 4.408, 1.124) yaw=0.130"
+    },
+    {
+      "t": 200.42602229118347,
+      "clock": "17:23:33.601",
+      "text": "[INFO] [1791192213.601989377] [align_down]: [ALIGN_DOWN] started: pixels_per_meter=500.00 stable_frames=2 arrive_distance=0.120 m max_step=0.150 m hold_height=1.12 m locked_yaw=-0.005 rad"
+    },
+    {
+      "t": 200.42605018615723,
+      "clock": "17:23:33.602",
+      "text": "[INFO] [1791192213.602017056] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment triggered in snake"
+    },
+    {
+      "t": 200.47585487365723,
+      "clock": "17:23:33.651",
+      "text": "[INFO] [1791192213.651821942] [align_down]: [ALIGN_DOWN] fresh contour detection available"
+    },
+    {
+      "t": 200.92580938339233,
+      "clock": "17:23:34.101",
+      "text": "[WARN] [1791192214.101776453] [align_down]: [ALIGN_DOWN] down-facing detection timed out; holding position"
+    },
+    {
+      "t": 215.47554111480713,
+      "clock": "17:23:48.651",
+      "text": "[WARN] [1791192228.651508044] [align_drop_snake_ego_node]: [ALIGN_DROP_SNAKE_EGO] down alignment timed out after 15.0 s; returning to the alignment entry pose"
+    },
+    {
+      "t": 215.52550339698792,
+      "clock": "17:23:48.701",
+      "text": "[INFO] [1791192228.701470437] [align_drop_snake_ego_node]: [RETURN] current=(7.273, 4.831, -0.785) saved=(7.068, 4.408, 1.124) error_xy=0.470 error_z=1.909 distance=1.966"
+    },
+    {
+      "t": 216.5255150794983,
+      "clock": "17:23:49.701",
+      "text": "[INFO] [1791192229.701481996] [align_drop_snake_ego_node]: [RETURN] current=(7.269, 4.830, -0.720) saved=(7.068, 4.408, 1.124) error_xy=0.467 error_z=1.844 distance=1.902"
+    },
+    {
+      "t": 217.57545375823975,
+      "clock": "17:23:50.751",
+      "text": "[INFO] [1791192230.751420629] [align_drop_snake_ego_node]: [RETURN] current=(7.269, 4.828, -0.680) saved=(7.068, 4.408, 1.124) error_xy=0.466 error_z=1.803 distance=1.863"
+    },
+    {
+      "t": 218.57547903060913,
+      "clock": "17:23:51.751",
+      "text": "[INFO] [1791192231.751445916] [align_drop_snake_ego_node]: [RETURN] current=(7.270, 4.829, -0.664) saved=(7.068, 4.408, 1.124) error_xy=0.467 error_z=1.788 distance=1.848"
+    },
+    {
+      "t": 219.62543892860413,
+      "clock": "17:23:52.801",
+      "text": "[INFO] [1791192232.801405906] [align_drop_snake_ego_node]: [RETURN] current=(7.271, 4.830, -0.663) saved=(7.068, 4.408, 1.124) error_xy=0.468 error_z=1.787 distance=1.847"
+    },
+    {
+      "t": 220.62545728683472,
+      "clock": "17:23:53.801",
+      "text": "[INFO] [1791192233.801424206] [align_drop_snake_ego_node]: [RETURN] current=(7.272, 4.831, -0.666) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.790 distance=1.850"
+    },
+    {
+      "t": 221.62759613990784,
+      "clock": "17:23:54.803",
+      "text": "[INFO] [1791192234.803563178] [align_drop_snake_ego_node]: [RETURN] current=(7.272, 4.832, -0.670) saved=(7.068, 4.408, 1.124) error_xy=0.470 error_z=1.794 distance=1.854"
+    },
+    {
+      "t": 222.6754288673401,
+      "clock": "17:23:55.851",
+      "text": "[INFO] [1791192235.851395786] [align_drop_snake_ego_node]: [RETURN] current=(7.271, 4.831, -0.671) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.795 distance=1.855"
+    },
+    {
+      "t": 223.72539639472961,
+      "clock": "17:23:56.901",
+      "text": "[INFO] [1791192236.901363348] [align_drop_snake_ego_node]: [RETURN] current=(7.271, 4.831, -0.671) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.795 distance=1.855"
+    },
+    {
+      "t": 224.72540187835693,
+      "clock": "17:23:57.901",
+      "text": "[INFO] [1791192237.901368925] [align_drop_snake_ego_node]: [RETURN] current=(7.275, 4.830, -0.671) saved=(7.068, 4.408, 1.124) error_xy=0.470 error_z=1.795 distance=1.855"
+    },
+    {
+      "t": 225.77536630630493,
+      "clock": "17:23:58.951",
+      "text": "[INFO] [1791192238.951333200] [align_drop_snake_ego_node]: [RETURN] current=(7.273, 4.831, -0.672) saved=(7.068, 4.408, 1.124) error_xy=0.470 error_z=1.795 distance=1.856"
+    },
+    {
+      "t": 226.82542300224304,
+      "clock": "17:24:00.001",
+      "text": "[INFO] [1791192240.001390087] [align_drop_snake_ego_node]: [RETURN] current=(7.272, 4.830, -0.673) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.797 distance=1.857"
+    },
+    {
+      "t": 227.87541460990906,
+      "clock": "17:24:01.051",
+      "text": "[INFO] [1791192241.051381587] [align_drop_snake_ego_node]: [RETURN] current=(7.271, 4.829, -0.673) saved=(7.068, 4.408, 1.124) error_xy=0.467 error_z=1.797 distance=1.857"
+    },
+    {
+      "t": 228.87543511390686,
+      "clock": "17:24:02.051",
+      "text": "[INFO] [1791192242.051402018] [align_drop_snake_ego_node]: [RETURN] current=(7.272, 4.830, -0.673) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.796 distance=1.857"
+    },
+    {
+      "t": 229.8754448890686,
+      "clock": "17:24:03.051",
+      "text": "[INFO] [1791192243.051411807] [align_drop_snake_ego_node]: [RETURN] current=(7.272, 4.832, -0.672) saved=(7.068, 4.408, 1.124) error_xy=0.471 error_z=1.796 distance=1.856"
+    },
+    {
+      "t": 230.92530298233032,
+      "clock": "17:24:04.101",
+      "text": "[INFO] [1791192244.101270019] [align_drop_snake_ego_node]: [RETURN] current=(7.273, 4.831, -0.672) saved=(7.068, 4.408, 1.124) error_xy=0.470 error_z=1.795 distance=1.856"
+    },
+    {
+      "t": 231.92530512809753,
+      "clock": "17:24:05.101",
+      "text": "[INFO] [1791192245.101271995] [align_drop_snake_ego_node]: [RETURN] current=(7.273, 4.830, -0.672) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.795 distance=1.856"
+    },
+    {
+      "t": 232.97534942626953,
+      "clock": "17:24:06.151",
+      "text": "[INFO] [1791192246.151316476] [align_drop_snake_ego_node]: [RETURN] current=(7.271, 4.832, -0.671) saved=(7.068, 4.408, 1.124) error_xy=0.470 error_z=1.795 distance=1.856"
+    },
+    {
+      "t": 234.02530598640442,
+      "clock": "17:24:07.201",
+      "text": "[INFO] [1791192247.201273019] [align_drop_snake_ego_node]: [RETURN] current=(7.273, 4.830, -0.670) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.794 distance=1.854"
+    },
+    {
+      "t": 235.02533435821533,
+      "clock": "17:24:08.201",
+      "text": "[INFO] [1791192248.201301416] [align_drop_snake_ego_node]: [RETURN] current=(7.274, 4.829, -0.670) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.794 distance=1.854"
+    },
+    {
+      "t": 236.0753173828125,
+      "clock": "17:24:09.251",
+      "text": "[INFO] [1791192249.251284271] [align_drop_snake_ego_node]: [RETURN] current=(7.275, 4.831, -0.669) saved=(7.068, 4.408, 1.124) error_xy=0.471 error_z=1.793 distance=1.854"
+    },
+    {
+      "t": 237.12537384033203,
+      "clock": "17:24:10.301",
+      "text": "[INFO] [1791192250.301340858] [align_drop_snake_ego_node]: [RETURN] current=(7.273, 4.830, -0.668) saved=(7.068, 4.408, 1.124) error_xy=0.469 error_z=1.792 distance=1.852"
+    },
+    {
+      "t": 238.13869094848633,
+      "clock": "17:24:11.314",
+      "text": "[INFO] [1791192251.314657950] [rclcpp]: signal_handler(SIGINT/SIGTERM)"
+    }
+  ],
+  "limitations": [
+    "No camera images, YOLO, MAVROS pose, setpoints or task-state topic in bag.",
+    "LIO coordinates differ from MAVROS ENU; event ordering and motion are comparable.",
+    "Point messages have no acquisition timestamp; camera delay cannot be measured."
+  ]
+}

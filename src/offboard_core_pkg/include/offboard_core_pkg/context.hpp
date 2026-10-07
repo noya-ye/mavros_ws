@@ -66,6 +66,11 @@ struct Context {
   std::uint64_t down_circle_seq{0};
   std::uint64_t down_contour_seq{0};
 
+  // Red-cross image-center offset: x is up and y is left (pixels).
+  Vec3 red_cross_offset_px;
+  std::chrono::steady_clock::time_point red_cross_stamp;
+  std::uint64_t red_cross_seq{0};
+
   // YOLO detections received as alternating class_id/confidence values.
   std::vector<YoloDetection> yolo_detections;
   std::chrono::steady_clock::time_point yolo_detections_stamp;

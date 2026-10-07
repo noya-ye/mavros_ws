@@ -60,6 +60,11 @@ before enabling flight. Alignment holds the entry altitude and commands the
 home yaw; body offsets are rotated using the measured current yaw. Lost
 detections hold the current XY at the entry altitude. Alignment
 does not have a timeout and therefore waits for detections before landing.
+An optional single-topic red-cross alignment can run after AlignDown and before
+landing by setting `red_cross_align.enabled: true`; it consumes
+`/target/red_cross_center` (configurable with `red_cross_align.topic`) and
+reuses the same pixel calibration, stability, arrival, and step parameters.
+`camera_center_node` publishes this topic when a red-cross detection is present.
 At the first fresh circle/contour frame within the arrival tolerance, it checks
 YOLO once: a detection received within 0.5 seconds with confidence strictly
 greater than 0.40 prints `FIND TARGET` and allows the stable-frame check to
@@ -121,11 +126,13 @@ Its snake and EGO avoidance settings follow
 `config/snake_ego_avoid.yaml`; alignment settings are in
 `config/align_drop_snake_ego.yaml`.
 
-The node prioritizes fresh down-contour detections over obstacle avoidance,
-continuously commands the saved pre-alignment position until it is reached, and
-fails if alignment exceeds `align_down.timeout_s` (default `10.0` seconds).
-Configure camera topics, calibration, `align_down.max_step_m`, detection
-freshness, and `align_down.retrigger_radius_m` in
+The node checks fresh down-circle and down-contour detections, as well as
+RedCross detections when enabled, before obstacle avoidance. RedCross has
+priority when both target types are fresh; an active alignment is not
+interrupted by another target. On alignment timeout, it returns to the saved
+pre-alignment position and resumes the interrupted route. Configure camera
+topics, calibration, `align_down.max_step_m`, detection freshness, and
+`align_down.retrigger_radius_m` in
 `config/align_drop_snake_ego.yaml`. After successful alignments, the node keeps
 all completed target positions for the current task run. New contour detections
 are projected into ENU and skipped when they fall within the configured radius
@@ -133,6 +140,45 @@ are projected into ENU and skipped when they fall within the configured radius
 recording a completed target; fresh contour position is the fallback, followed
 by the aircraft position at arrival tolerance. A later `NO TARGET` result does
 not discard the saved position.
+For down-target suppression, both fresh circle and contour projections are
+checked; either projection inside the radius suppresses a new alignment.
+
+After a down alignment succeeds, `align_down.trigger_cooldown_s` (default
+`2.0` s) delays the next down alignment trigger. The interval starts when the
+alignment task succeeds, so time spent aligning does not count toward it. Set
+the parameter to `0.0` to disable this cooldown.
+
+Both down and RedCross alignment abandon an attempt after detections remain
+stale for `align_down.loss_timeout_s` (default `1.0` s), return to the saved
+entry pose, and resume the route. With the `0.5` s detection freshness window,
+this is approximately `1.5` s after the last detection. A fresh detection for
+the active alignment source resets this loss timer; another source does not.
+For down alignment, the entry target estimate is suppressed within `align_down.retrigger_radius_m`
+for `align_down.loss_retry_cooldown_s` (default `3.0` s) of resumed route time,
+then becomes eligible again. This does not mark an abandoned target completed.
+The total alignment timeout still applies while detections continue, and loss
+handling does not interrupt a drop already in progress. Restart the node after
+changing these startup parameters.
+
+`align_drop_snake_ego_node` can also align `/target/red_cross_center` when
+`red_cross_align.enabled` is true. Its pixel scale, stable-frame count, arrival
+tolerance, step limit, and timeout are independent from `align_down.*`. If
+RedCross and down circle/contour detections are both fresh when an alignment
+begins, RedCross is selected; an active calibration is not interrupted by the
+other target.
+RedCross has one target per task run: after its first successful alignment,
+further RedCross triggers are disabled until a new task run or node restart.
+Before that success, fresh RedCross detections can trigger regardless of
+circle/contour completed-target radii or loss cooldowns. A timeout or detection
+loss does not count as success, so RedCross can retry after returning. RedCross
+positions are never added to the circle/contour suppression list.
+Successful RedCross calibration, or AlignDown success with a confirmed YOLO
+target, runs `DownDropTask`; on success the task returns to the saved pose and
+resumes snake coverage or EGO avoidance. The three DownDrop attempts use IDs
+0, 1, and 2 with their configured offsets in order. After ID 2 completes and
+the aircraft returns to the saved pose, the combined task finishes. Configure
+these values in `config/align_drop_snake_ego.yaml` under `red_cross_align.*`
+and `down_drop.*`.
 
 ## Flight Recording
 
@@ -175,7 +221,13 @@ ros2 launch offboard_core_pkg ego_test.launch.py
 
 The defaults in `config/ego_test.yaml` require FAST-LIO and MAVROS local
 coordinates to remain aligned in ENU: `ego.swap_xy=false`, axis signs of `1`,
-and `ego.yaw_align_rad=0`.
+and `ego.yaw_align_rad=0`. `EgoGotoTask` captures MAVROS yaw when the EGO task
+starts and holds that yaw through planning, arrival, and task exit.
+
+`ego.kp_xy` in `config/ego_test.yaml` sets the horizontal EGO position-error
+correction gain for `ego_test_node` (default `1.0`). The planner caps the error
+at 0.30 m before multiplying by this gain. Edit the YAML and restart the node
+to apply a new value; this parameter does not update the active planner at runtime.
 
 ## Door Navigation Flight
 
@@ -204,6 +256,29 @@ must already be running. Configure `door.planning_frame` and the `ego.*` axis
 mapping in `config/door_navigation.yaml` to match those nodes. This launch has
 `auto_start: true` and begins takeoff/control tasks when MAVROS localization is
 available; validate it in SITL before flight.
+
+## Corridor Door Flight
+
+`corridor_door.launch.py` starts the occupancy-grid corridor task. It scans
+forward along ENU +x for a free run bounded by occupied cells, sends the run
+midpoint to EGO, then moves another 0.1 m along +x to count the door as
+crossed. Set `corridor.door_count` in `config/corridor_door.yaml` to choose
+the number of doors. Unknown grid cells are not treated as free space.
+
+```bash
+source /opt/ros/humble/setup.bash
+source /home/jetson/ego_planner_ws/install/setup.bash
+source install/setup.bash
+ros2 launch offboard_core_pkg corridor_door.launch.py
+```
+
+The launch expects MAVROS, FAST-LIO, and EGO2D (including
+`/ego_2d_planner/occupancy_grid`, `/position_cmd`, and `/fastlio2/lio_odom`)
+to be running. A candidate opening must be between
+`corridor.min_opening_width_m` and `corridor.max_opening_width_m` (defaults
+0.5 m and 1.5 m). Configure these limits, the forward scan range, occupancy
+freshness, and EGO frame mapping in `config/corridor_door.yaml`; validate it
+in SITL before flight.
 
 EGO supplies horizontal motion only. When `EgoGotoTask` begins, it captures
 the current MAVROS ENU altitude and holds that value for the entire EGO phase;

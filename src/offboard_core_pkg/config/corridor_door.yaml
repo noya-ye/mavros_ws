@@ -1,0 +1,34 @@
+corridor_door_node:
+  ros__parameters:
+    setpoint_rate_hz: 20.0
+    auto_start: true
+    presetpoint_duration_s: 2.0
+    command_timeout_s: 10.0
+    command_retry_interval_s: 1.0
+    takeoff.height_m: 0.6
+    takeoff.tolerance_m: 0.10
+    takeoff.timeout_s: 30.0
+    land.timeout_s: 20.0
+    corridor.door_count: 2
+    corridor.occupied_threshold: 50
+    corridor.min_opening_width_m: 0.1
+    corridor.max_opening_width_m: 1.0
+    corridor.min_lookahead_m: 0.1
+    corridor.max_lookahead_m: 5.0
+    corridor.occupancy_timeout_s: 0.5
+    corridor.goto_tolerance_m: 0.08
+    corridor.crossing_distance_m: 0.1
+    corridor.stage_timeout_s: 30.0
+    ego.goal_topic: /simple_2d_planner/goal
+    ego.command_topic: /position_cmd
+    ego.odom_topic: /fastlio2/lio_odom
+    ego.occupancy_grid_topic: /ego_2d_planner/occupancy_grid
+    ego.goal_frame: camera_init
+    ego.use_velocity_ff: true
+    ego.use_acceleration_ff: false
+    ego.vel_ff_scale: 1.0
+    ego.acc_ff_scale: 0.0
+    ego.x_sign: 1.0
+    ego.y_sign: 1.0
+    ego.swap_xy: false
+    ego.yaw_align_rad: 0.0

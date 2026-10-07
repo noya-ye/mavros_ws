@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>door_offboard</name><version>1.0.0</version>
+  <description>Separated door perception and MAVROS position flight nodes.</description>
+  <maintainer email="maintainer@example.com">Maintainer</maintainer>
+  <license>Apache-2.0</license>
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>rosidl_default_generators</buildtool_depend>
+  <depend>rclcpp</depend><depend>std_msgs</depend><depend>geometry_msgs</depend>
+  <depend>sensor_msgs</depend><depend>nav_msgs</depend><depend>mavros_msgs</depend>
+  <depend>eigen</depend><depend>libopencv-dev</depend><depend>nlohmann_json</depend>
+  <exec_depend>rosidl_default_runtime</exec_depend>
+  <exec_depend>launch_ros</exec_depend><exec_depend>launch_xml</exec_depend>
+  <member_of_group>rosidl_interface_packages</member_of_group>
+  <export><build_type>ament_cmake</build_type></export>
+</package>

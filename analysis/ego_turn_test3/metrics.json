@@ -1,0 +1,3380 @@
+{
+  "topics": {
+    "/position_cmd": {
+      "count": 3850,
+      "start": 44.706625935,
+      "end": 111.849007828,
+      "median_hz": 50.06928086392812,
+      "max_gap": 0.025842014999994944,
+      "header_age": {
+        "median": 0.00025945196978938156,
+        "p95": 0.00043331033657949546,
+        "max": 0.006073751299069841
+      }
+    },
+    "/fastlio2/lio_odom": {
+      "count": 1119,
+      "start": 0.0,
+      "end": 111.812159128,
+      "median_hz": 9.972092600253546,
+      "max_gap": 0.23936186900000678,
+      "header_age": {
+        "median": 0.08151545750060762,
+        "p95": 0.09907965994059893,
+        "max": 0.20296020627002065
+      }
+    },
+    "/mavros/estimator_status": {
+      "count": 122,
+      "start": 0.090979425,
+      "end": 111.192635561,
+      "median_hz": 1.000604565278339,
+      "max_gap": 1.0082082670000005,
+      "header_age": {
+        "median": 0.00023110370825207838,
+        "p95": 3.8512538098413827,
+        "max": 9.903899280117798
+      }
+    },
+    "/mavros/local_position/pose": {
+      "count": 3352,
+      "start": 0.117459285,
+      "end": 111.819887455,
+      "median_hz": 30.212578420907132,
+      "max_gap": 0.042296544999999686,
+      "header_age": {
+        "median": 0.00466986647973755,
+        "p95": 0.009319862742509955,
+        "max": 0.017062092021241426
+      }
+    },
+    "/mavros/local_position/velocity_local": {
+      "count": 3352,
+      "start": 0.117561721,
+      "end": 111.820354544,
+      "median_hz": 30.210566743882712,
+      "max_gap": 0.042277472999999954,
+      "header_age": {
+        "median": 0.004938560955693561,
+        "p95": 0.00965155066304213,
+        "max": 0.017100077021240168
+      }
+    },
+    "/mavros/state": {
+      "count": 122,
+      "start": 0.100288208,
+      "end": 111.792026169,
+      "median_hz": 1.0002054271916647,
+      "max_gap": 1.0026557359999941,
+      "header_age": {
+        "median": 0.00027970593884418804,
+        "p95": 3.262315267910865,
+        "max": 9.312321479789551
+      }
+    },
+    "/mavros/setpoint_raw/local": {
+      "count": 797,
+      "start": 44.717427859,
+      "end": 84.518907483,
+      "median_hz": 19.99934062173957,
+      "max_gap": 0.051661539999997785,
+      "header_age": {
+        "median": 0.0002573540377213135,
+        "p95": 0.0004442713152116083,
+        "max": 0.001792771097655077
+      }
+    },
+    "/mavros/setpoint_position/local": {
+      "count": 296,
+      "start": 29.91680924,
+      "end": 44.667393947,
+      "median_hz": 19.99751830797697,
+      "max_gap": 0.05158533899999895,
+      "header_age": {
+        "median": 0.0002760535571297851,
+        "p95": 0.00046982136712792055,
+        "max": 0.0016111926448942882
+      }
+    }
+  },
+  "state_changes": [
+    {
+      "t": 0.100288208,
+      "armed": false,
+      "mode": "OFFBOARD",
+      "connected": true
+    },
+    {
+      "t": 34.790726681,
+      "armed": true,
+      "mode": "OFFBOARD",
+      "connected": true
+    },
+    {
+      "t": 74.792111767,
+      "armed": true,
+      "mode": "AUTO.LAND",
+      "connected": true
+    },
+    {
+      "t": 79.793982922,
+      "armed": false,
+      "mode": "POSCTL",
+      "connected": true
+    }
+  ],
+  "estimator": [
+    {
+      "t": 0.090979425,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.09103898,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091060677,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091079237,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091112839,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091129159,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091146664,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091162601,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091178153,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.091195306,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 0.190277291,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 1.191118328,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 2.191039509,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 3.1902626,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 4.187398045,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 5.191821379,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 6.189246377,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 7.190588763,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 8.187855649,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 9.187794914,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 10.189607584,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 11.189770993,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 12.190779093,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 13.190663297,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 14.191485413,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 15.189925822,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 16.1912527,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 17.190750181,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 18.189917876,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 19.189782578,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 20.188687326,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 21.191283277,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 22.190189856,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 23.191750285,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 24.189768708,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 25.190698752,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 26.188058051,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 27.192644437,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 28.191944683,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 29.191501631,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 30.190758011,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 31.189526327,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 32.191191288,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 33.190228485,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 34.191879629,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 35.195295533,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 36.1904992,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 37.191126843,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 38.188722579,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 39.189551197,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 40.188851263,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 41.192309622,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 42.191065963,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 43.196979146,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 44.188547119,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 45.193120737,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 46.192099213,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 47.189055392,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 48.192369661,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 49.193312529,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 50.189109939,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 51.192479182,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 52.191326573,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 53.191852674,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 54.189178223,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 55.191548307,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 56.190783987,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 57.18960911,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 58.192239457,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 59.189234726,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 60.197442993,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 61.194065296,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 62.195863724,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 63.190920887,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 64.189495231,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 65.190338291,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 66.189610686,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 67.191433696,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 68.189462309,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 69.190645239,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 70.18960308,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 71.192449412,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 72.189715996,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 73.196792292,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 74.191271706,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 75.192696337,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 76.197146033,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 77.191909584,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 78.192367712,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 79.19331727,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": false,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 80.192156721,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 81.196631001,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 82.192663153,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 83.190907538,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 84.191313404,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 85.190709204,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 86.193314747,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 87.191319143,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 88.193727633,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 89.192930165,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 90.194489863,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 91.192876182,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 92.193000123,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 93.192479677,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 94.191045329,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 95.196659656,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 96.191409876,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 97.191063761,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 98.191913105,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 99.193919762,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 100.190772995,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 101.19303068,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 102.194897811,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 103.193651468,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 104.197470716,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 105.191721396,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 106.196602614,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 107.191053889,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 108.191295901,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 109.199174706,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 110.196941658,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    },
+    {
+      "t": 111.192635561,
+      "attitude_status_flag": true,
+      "velocity_horiz_status_flag": true,
+      "velocity_vert_status_flag": true,
+      "pos_horiz_rel_status_flag": true,
+      "pos_horiz_abs_status_flag": false,
+      "pos_vert_abs_status_flag": true,
+      "pos_vert_agl_status_flag": false,
+      "const_pos_mode_status_flag": true,
+      "pred_pos_horiz_rel_status_flag": true,
+      "pred_pos_horiz_abs_status_flag": false,
+      "gps_glitch_status_flag": false,
+      "accel_error_status_flag": false
+    }
+  ],
+  "tracking": {
+    "position_error": {
+      "median": 0.11984509097344268,
+      "p95": 0.2068991607531888,
+      "max": 0.29381804419801416
+    },
+    "fraction_error_above_030": 0.0,
+    "raw_speed": {
+      "median": 0.017415384969695445,
+      "p95": 0.28556672727135396,
+      "max": 0.3142802411889547
+    },
+    "raw_acc": {
+      "median": 0.020207306443527907,
+      "p95": 0.13189972250954066,
+      "max": 0.17594232983472285
+    },
+    "actual_speed": {
+      "median": 0.11994337792725981,
+      "p95": 0.3455479868118286,
+      "max": 0.46938331096070596
+    },
+    "raw_masks": [
+      0.0
+    ],
+    "cmd_speed": {
+      "median": 0.018439578334186486,
+      "p95": 0.28547185621665844,
+      "max": 0.3144653530177066
+    },
+    "cmd_acc": {
+      "median": 0.01892640964285891,
+      "p95": 0.13175746495257082,
+      "max": 0.17603275927417927
+    },
+    "frame_offset_xy": {
+      "median": 0.03284559624482707,
+      "p95": 0.07261334008125701,
+      "max": 0.09754568655024734
+    },
+    "velocity_ff_difference": {
+      "median": 2.394643168372618e-05,
+      "p95": 0.0013296813775487712,
+      "max": 0.012628983276216709
+    },
+    "acc_ff_difference": {
+      "median": 4.734852717491961e-05,
+      "p95": 0.005681738046108133,
+      "max": 0.02097269855001134
+    }
+  },
+  "inferred_kp": {
+    "median": 0.7,
+    "p95": 0.7000000000000013,
+    "max": 0.8522243597942156
+  },
+  "controller": {
+    "position_mapping_residual": {
+      "median": 9.71445146547012e-17,
+      "p95": 3.572238521980021e-16,
+      "max": 0.020120778517719658
+    },
+    "command_age_at_raw": {
+      "median": 0.010796232441158793,
+      "p95": 0.011334969753514201,
+      "max": 0.021110623942263373
+    },
+    "lio_age_at_raw": {
+      "median": 0.11292976770935326,
+      "p95": 0.16270843834304288,
+      "max": 0.261634981395261
+    },
+    "position_correction": {
+      "median": 0.08525804070878683,
+      "p95": 0.1537032941056591,
+      "max": 0.19949292939956226
+    }
+  },
+  "turns": [
+    {
+      "window": [
+        49.0,
+        59.0
+      ],
+      "peak_actual_y_velocity": {
+        "t": 52.267556312,
+        "value": -0.2821596674607,
+        "cmd_y_velocity": -0.1437509941772533,
+        "cmd_y_acceleration": 0.02627285059177156,
+        "position_correction_y": -0.1088680263478683
+      },
+      "max_position_error": {
+        "t": 56.767743664,
+        "value": 0.206839187091236
+      },
+      "actual_y_range": [
+        -0.6576219690952285,
+        0.06388333293826251
+      ],
+      "cmd_y_range": [
+        -0.5759927494821238,
+        -0.027618574013031406
+      ]
+    },
+    {
+      "window": [
+        59.0,
+        75.0
+      ],
+      "peak_actual_y_velocity": {
+        "t": 65.718572155,
+        "value": 0.3994314882896991,
+        "cmd_y_velocity": 0.1795757702119007,
+        "cmd_y_acceleration": -0.09687003177542529,
+        "position_correction_y": -0.06299767280392099
+      },
+      "max_position_error": {
+        "t": 66.418402844,
+        "value": 0.29381804419801416
+      },
+      "actual_y_range": [
+        -0.5575219856674332,
+        1.1541976172285595
+      ],
+      "cmd_y_range": [
+        -0.454964482689034,
+        1.0184874834414561
+      ]
+    }
+  ],
+  "estimator_flag_counts": {
+    "attitude_status_flag": 122,
+    "velocity_horiz_status_flag": 122,
+    "velocity_vert_status_flag": 122,
+    "pos_horiz_rel_status_flag": 122,
+    "pos_horiz_abs_status_flag": 0,
+    "pos_vert_abs_status_flag": 122,
+    "pos_vert_agl_status_flag": 0,
+    "const_pos_mode_status_flag": 78,
+    "pred_pos_horiz_rel_status_flag": 122,
+    "pred_pos_horiz_abs_status_flag": 0,
+    "gps_glitch_status_flag": 0,
+    "accel_error_status_flag": 0
+  },
+  "trajectory_changes": [
+    {
+      "t": 44.766521287,
+      "id": 1,
+      "position_step": 1.1084132732551606e-09,
+      "velocity_step": 1.2412039560446696e-06,
+      "acceleration_step": 0.0009263281547693224
+    },
+    {
+      "t": 45.766498335,
+      "id": 2,
+      "position_step": 0.002128314888911031,
+      "velocity_step": 0.0031975469304850197,
+      "acceleration_step": 0.0010159918358630185
+    },
+    {
+      "t": 46.766512845,
+      "id": 3,
+      "position_step": 0.004234784575107412,
+      "velocity_step": 0.002632342323406839,
+      "acceleration_step": 0.002886246740949869
+    },
+    {
+      "t": 47.766577649,
+      "id": 4,
+      "position_step": 0.0051558141950774185,
+      "velocity_step": 0.0025283751481861277,
+      "acceleration_step": 0.0032702152309340214
+    },
+    {
+      "t": 48.766696267,
+      "id": 5,
+      "position_step": 0.005409225958689921,
+      "velocity_step": 0.0020561218265534894,
+      "acceleration_step": 0.003936386017853434
+    },
+    {
+      "t": 49.766679732,
+      "id": 6,
+      "position_step": 0.0051918298582385655,
+      "velocity_step": 0.0017286491861467647,
+      "acceleration_step": 0.004195086654967713
+    },
+    {
+      "t": 50.766920635,
+      "id": 7,
+      "position_step": 0.004693683811122996,
+      "velocity_step": 0.002328694303715466,
+      "acceleration_step": 0.0021726099338385445
+    },
+    {
+      "t": 51.766769254,
+      "id": 8,
+      "position_step": 0.005252175054781338,
+      "velocity_step": 0.0025642054474927472,
+      "acceleration_step": 0.005246100161613194
+    },
+    {
+      "t": 53.366735674,
+      "id": 9,
+      "position_step": 0.17141157752033026,
+      "velocity_step": 9.429025762923651e-07,
+      "acceleration_step": 0.0007304183179555969
+    },
+    {
+      "t": 54.366833616,
+      "id": 10,
+      "position_step": 0.0018840391880770675,
+      "velocity_step": 0.002965004006703895,
+      "acceleration_step": 0.0018183342723746884
+    },
+    {
+      "t": 55.366831991,
+      "id": 11,
+      "position_step": 0.0036192636969300377,
+      "velocity_step": 0.002570081603624656,
+      "acceleration_step": 0.0039028031370513714
+    },
+    {
+      "t": 56.366858994,
+      "id": 12,
+      "position_step": 0.004801962924928425,
+      "velocity_step": 0.0031646560975722203,
+      "acceleration_step": 0.008401289801935873
+    },
+    {
+      "t": 57.366984838,
+      "id": 13,
+      "position_step": 0.005834981130383943,
+      "velocity_step": 0.0029889747202800597,
+      "acceleration_step": 0.010346322048898023
+    },
+    {
+      "t": 58.366974729,
+      "id": 14,
+      "position_step": 0.0059308328223135875,
+      "velocity_step": 0.0023235951238741604,
+      "acceleration_step": 0.0069417381325322545
+    },
+    {
+      "t": 59.366996609,
+      "id": 15,
+      "position_step": 0.006207409090259285,
+      "velocity_step": 0.002215371305133228,
+      "acceleration_step": 0.008908497808675682
+    },
+    {
+      "t": 60.367080304,
+      "id": 16,
+      "position_step": 0.005940102295147027,
+      "velocity_step": 0.0020132624973197098,
+      "acceleration_step": 0.005116113284320467
+    },
+    {
+      "t": 61.367034638,
+      "id": 17,
+      "position_step": 0.005880237319183799,
+      "velocity_step": 0.002059588683621535,
+      "acceleration_step": 0.005094456137903197
+    },
+    {
+      "t": 62.367104452,
+      "id": 18,
+      "position_step": 0.00518689442844466,
+      "velocity_step": 0.0016301241365155347,
+      "acceleration_step": 0.0036392945636715677
+    },
+    {
+      "t": 63.36714635,
+      "id": 19,
+      "position_step": 0.0048947417922434264,
+      "velocity_step": 0.00152116583146074,
+      "acceleration_step": 0.0012576774428708546
+    },
+    {
+      "t": 64.367255919,
+      "id": 20,
+      "position_step": 0.0049193247978350525,
+      "velocity_step": 0.002111414266229804,
+      "acceleration_step": 0.005665871249218805
+    },
+    {
+      "t": 65.367329059,
+      "id": 21,
+      "position_step": 0.004904132819192081,
+      "velocity_step": 0.001357961018748171,
+      "acceleration_step": 0.0074827218637302535
+    },
+    {
+      "t": 66.367250502,
+      "id": 22,
+      "position_step": 0.00487003199942842,
+      "velocity_step": 0.0019647808320813055,
+      "acceleration_step": 0.0074211506472638
+    }
+  ],
+  "sampled_timeline": [
+    {
+      "t": 45.017871626,
+      "cmd_xy": [
+        -0.03891684999834271,
+        0.00027237143049881627
+      ],
+      "lio_xy": [
+        -0.02788449340826836,
+        -0.015286517443722223
+      ],
+      "error": 0.019073329938186362,
+      "actual_v": [
+        0.0350543856021333,
+        -0.017011660031681364
+      ],
+      "cmd_v": [
+        0.009922853165619298,
+        0.001034608091762248
+      ],
+      "cmd_a": [
+        0.07348382072783885,
+        0.007634770924038768
+      ],
+      "raw_p": [
+        -0.02497866083116991,
+        -0.003824126552623137
+      ]
+    },
+    {
+      "t": 46.017443408,
+      "cmd_xy": [
+        0.03202038124789489,
+        0.0070347000167362075
+      ],
+      "lio_xy": [
+        0.023820032760735705,
+        -0.023607832301011857
+      ],
+      "error": 0.03172082127176232,
+      "actual_v": [
+        0.1298075424999014,
+        0.011939688293822791
+      ],
+      "cmd_v": [
+        0.1363366133238431,
+        0.010924575406767544
+      ],
+      "cmd_a": [
+        0.08756164738763762,
+        -0.005647574161545859
+      ],
+      "raw_p": [
+        0.05594875533823977,
+        0.004603678751726563
+      ]
+    },
+    {
+      "t": 47.017733446,
+      "cmd_xy": [
+        0.21514305030256564,
+        0.011255741288360602
+      ],
+      "lio_xy": [
+        0.1411343792666259,
+        0.021338284164850178
+      ],
+      "error": 0.07469230923838276,
+      "actual_v": [
+        0.1477731290275211,
+        0.07512722852933261
+      ],
+      "cmd_v": [
+        0.21934310129873325,
+        -0.0034598605589738116
+      ],
+      "cmd_a": [
+        -0.029200766523052254,
+        -0.011841493243115737
+      ],
+      "raw_p": [
+        0.22760411648226242,
+        0.02558574346813404
+      ]
+    },
+    {
+      "t": 48.01743084,
+      "cmd_xy": [
+        0.4510517567863564,
+        0.00014251256088201156
+      ],
+      "lio_xy": [
+        0.3546764677908999,
+        0.028708169964516007
+      ],
+      "error": 0.10051961555765894,
+      "actual_v": [
+        0.33663857536547986,
+        -0.02277456855302393
+      ],
+      "cmd_v": [
+        0.25967631888201964,
+        -0.01972010365887523
+      ],
+      "cmd_a": [
+        -0.0619870176655648,
+        -0.010409899593175021
+      ],
+      "raw_p": [
+        0.46101677792001217,
+        0.004186035154095102
+      ]
+    },
+    {
+      "t": 49.017653203,
+      "cmd_xy": [
+        0.7079648457264851,
+        -0.027618574013031406
+      ],
+      "lio_xy": [
+        0.6362556673205155,
+        0.046149809042397676
+      ],
+      "error": 0.10287847494141664,
+      "actual_v": [
+        0.2093781315794781,
+        0.05734132616170967
+      ],
+      "cmd_v": [
+        0.2581066922373333,
+        -0.034215293466698944
+      ],
+      "cmd_a": [
+        -0.12532843293354076,
+        0.013479791658677113
+      ],
+      "raw_p": [
+        0.709686361274299,
+        0.001898925307602252
+      ]
+    },
+    {
+      "t": 50.017584951,
+      "cmd_xy": [
+        0.9533328011388882,
+        -0.06318391531659759
+      ],
+      "lio_xy": [
+        0.8519784337165446,
+        0.04279666603231021
+      ],
+      "error": 0.14664443875795594,
+      "actual_v": [
+        0.33040151763011244,
+        -0.06467489061620751
+      ],
+      "cmd_v": [
+        0.245928685055471,
+        -0.04471717850682767
+      ],
+      "cmd_a": [
+        -0.1179437319522635,
+        -0.030428946875282272
+      ],
+      "raw_p": [
+        0.9748007512578087,
+        -0.02715482628440588
+      ]
+    },
+    {
+      "t": 51.01760069,
+      "cmd_xy": [
+        1.167682583374567,
+        -0.14206737507576517
+      ],
+      "lio_xy": [
+        1.1868305553629113,
+        -0.030607838796414735
+      ],
+      "error": 0.11309232095449387,
+      "actual_v": [
+        0.30512351192735515,
+        -0.05817885423975606
+      ],
+      "cmd_v": [
+        0.20020686664269846,
+        -0.11639165696087576
+      ],
+      "cmd_a": [
+        -0.090243677063353,
+        -0.02787351685994963
+      ],
+      "raw_p": [
+        1.2095032021329089,
+        -0.11327299940513155
+      ]
+    },
+    {
+      "t": 52.017629185,
+      "cmd_xy": [
+        1.3596436858943166,
+        -0.28697660586183865
+      ],
+      "lio_xy": [
+        1.422331990452212,
+        -0.12970533537211662
+      ],
+      "error": 0.16930468407517485,
+      "actual_v": [
+        0.1642817749682132,
+        -0.17271440528126056
+      ],
+      "cmd_v": [
+        0.1978933795912547,
+        -0.16502529381559908
+      ],
+      "cmd_a": [
+        -0.0706471854809294,
+        0.06683604886912516
+      ],
+      "raw_p": [
+        1.3971031005935128,
+        -0.25494373707538287
+      ]
+    },
+    {
+      "t": 53.0176249,
+      "cmd_xy": [
+        1.4521125759347988,
+        -0.1706042182732944
+      ],
+      "lio_xy": [
+        1.4830795869726325,
+        -0.3217705925709068
+      ],
+      "error": 0.154305633373844,
+      "actual_v": [
+        -0.041076939334548236,
+        -0.09528132714157989
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        1.4711737038141974,
+        -0.22395517689739852
+      ]
+    },
+    {
+      "t": 54.017665244,
+      "cmd_xy": [
+        1.4773950962061142,
+        -0.3501201996014262
+      ],
+      "lio_xy": [
+        1.4259089261942683,
+        -0.38714259715667676
+      ],
+      "error": 0.06341516871559767,
+      "actual_v": [
+        0.024832601953719547,
+        -0.05112788987190218
+      ],
+      "cmd_v": [
+        0.026760017488286783,
+        -0.038908225535746084
+      ],
+      "cmd_a": [
+        0.07613547757283366,
+        -0.099524740565751
+      ],
+      "raw_p": [
+        1.462386503892405,
+        -0.37131756878466543
+      ]
+    },
+    {
+      "t": 55.017774475,
+      "cmd_xy": [
+        1.5445746838929455,
+        -0.4285717929177534
+      ],
+      "lio_xy": [
+        1.470790409507224,
+        -0.4436382766377914
+      ],
+      "error": 0.07530682623981451,
+      "actual_v": [
+        0.03585127461935485,
+        -0.15551609318279777
+      ],
+      "cmd_v": [
+        0.10469132437315415,
+        -0.0982505823641904
+      ],
+      "cmd_a": [
+        0.09805273021877946,
+        -0.036451457002593
+      ],
+      "raw_p": [
+        1.5239997538287315,
+        -0.4674233836937736
+      ]
+    },
+    {
+      "t": 56.017761097,
+      "cmd_xy": [
+        1.6945807890400288,
+        -0.5294074236516685
+      ],
+      "lio_xy": [
+        1.5471852400996198,
+        -0.5748772462148779
+      ],
+      "error": 0.15424964379658798,
+      "actual_v": [
+        0.13085310561024419,
+        -0.17156967917088536
+      ],
+      "cmd_v": [
+        0.18510750913447355,
+        -0.07644238689732832
+      ],
+      "cmd_a": [
+        0.11365515908888936,
+        0.058618247011577126
+      ],
+      "raw_p": [
+        1.666340243915108,
+        -0.5935532384022179
+      ]
+    },
+    {
+      "t": 57.01797786,
+      "cmd_xy": [
+        1.915549360920532,
+        -0.5751236878448286
+      ],
+      "lio_xy": [
+        1.7267620063989697,
+        -0.6572797003039992
+      ],
+      "error": 0.20588898856044116,
+      "actual_v": [
+        0.2790776334174035,
+        -0.03700282669472181
+      ],
+      "cmd_v": [
+        0.2420086116206698,
+        -0.011184000758588771
+      ],
+      "cmd_a": [
+        0.1518851501543401,
+        0.0684643861673469
+      ],
+      "raw_p": [
+        1.9055885938104433,
+        -0.6433519692521845
+      ]
+    },
+    {
+      "t": 58.017929386,
+      "cmd_xy": [
+        2.189214751168385,
+        -0.5464352156312028
+      ],
+      "lio_xy": [
+        2.02215583650786,
+        -0.6098661824257449
+      ],
+      "error": 0.17869574285931628,
+      "actual_v": [
+        0.3226590127774842,
+        0.013604498752146438
+      ],
+      "cmd_v": [
+        0.2589191414350951,
+        0.06479694041407234
+      ],
+      "cmd_a": [
+        0.020980552220418027,
+        0.07653979741377238
+      ],
+      "raw_p": [
+        2.21035463479314,
+        -0.5920826401565004
+      ]
+    },
+    {
+      "t": 59.017951174,
+      "cmd_xy": [
+        2.4518300856772037,
+        -0.454964482689034
+      ],
+      "lio_xy": [
+        2.3421410757691326,
+        -0.5575219856674332
+      ],
+      "error": 0.15016564291400775,
+      "actual_v": [
+        0.2891176895251019,
+        0.02920788234132362
+      ],
+      "cmd_v": [
+        0.24937951653329538,
+        0.1043373956715134
+      ],
+      "cmd_a": [
+        0.07742986393208706,
+        0.055953104687208606
+      ],
+      "raw_p": [
+        2.4734499632905322,
+        -0.49671012911357004
+      ]
+    },
+    {
+      "t": 60.017961014,
+      "cmd_xy": [
+        2.7154847460073377,
+        -0.33341647559934795
+      ],
+      "lio_xy": [
+        2.6320299085796557,
+        -0.48397198385470236
+      ],
+      "error": 0.17213852258024326,
+      "actual_v": [
+        0.25324846733044426,
+        0.06647831488555879
+      ],
+      "cmd_v": [
+        0.2398375821545431,
+        0.12209438390073117
+      ],
+      "cmd_a": [
+        0.019288536205923,
+        0.03422246852699414
+      ],
+      "raw_p": [
+        2.740416498448129,
+        -0.381787193656467
+      ]
+    },
+    {
+      "t": 61.017909016,
+      "cmd_xy": [
+        2.962825315230339,
+        -0.1952739874322778
+      ],
+      "lio_xy": [
+        2.8963838395889545,
+        -0.3418658796359007
+      ],
+      "error": 0.16094611690017038,
+      "actual_v": [
+        0.23876539181198822,
+        0.17063445291761786
+      ],
+      "cmd_v": [
+        0.22783550176263773,
+        0.14181068661460555
+      ],
+      "cmd_a": [
+        0.00401470279236951,
+        0.03848510042388917
+      ],
+      "raw_p": [
+        2.979093161629364,
+        -0.22369531146331767
+      ]
+    },
+    {
+      "t": 62.017978451,
+      "cmd_xy": [
+        3.1875698506660695,
+        -0.039499433472347543
+      ],
+      "lio_xy": [
+        3.1083141769967586,
+        -0.12945161716134906
+      ],
+      "error": 0.11988685148587463,
+      "actual_v": [
+        0.18197583365437706,
+        0.24027128090317346
+      ],
+      "cmd_v": [
+        0.1907998657909171,
+        0.149463833095215
+      ],
+      "cmd_a": [
+        -0.02543895583653749,
+        0.028674016446933088
+      ],
+      "raw_p": [
+        3.1935610945100366,
+        -0.03812749123695472
+      ]
+    },
+    {
+      "t": 63.018063906,
+      "cmd_xy": [
+        3.37039597729499,
+        0.12983988000832233
+      ],
+      "lio_xy": [
+        3.2702914883391214,
+        0.1218159523220483
+      ],
+      "error": 0.1004255551372766,
+      "actual_v": [
+        0.18335534477110213,
+        0.19262962919050994
+      ],
+      "cmd_v": [
+        0.15672233236182334,
+        0.17233322657452219
+      ],
+      "cmd_a": [
+        -0.03697241333695533,
+        0.01338581568299681
+      ],
+      "raw_p": [
+        3.3610988645121176,
+        0.1574643387820893
+      ]
+    },
+    {
+      "t": 64.01807434,
+      "cmd_xy": [
+        3.5186395850857752,
+        0.3085466847069583
+      ],
+      "lio_xy": [
+        3.4633941851470667,
+        0.34045398373882907
+      ],
+      "error": 0.06379757006263706,
+      "actual_v": [
+        0.19530595445769416,
+        0.1575597684997368
+      ],
+      "cmd_v": [
+        0.13265347595044288,
+        0.17092044219907054
+      ],
+      "cmd_a": [
+        0.015944669446538794,
+        0.0347697804806927
+      ],
+      "raw_p": [
+        3.5360168728324064,
+        0.32691727948544214
+      ]
+    },
+    {
+      "t": 65.018097274,
+      "cmd_xy": [
+        3.6566645723210986,
+        0.4926802376428752
+      ],
+      "lio_xy": [
+        3.7150259498574276,
+        0.5272445864708987
+      ],
+      "error": 0.06782878885726333,
+      "actual_v": [
+        0.25881907486282385,
+        0.1276865996522924
+      ],
+      "cmd_v": [
+        0.1250714666907912,
+        0.17925735782191107
+      ],
+      "cmd_a": [
+        0.02075696300220623,
+        0.05375603570266847
+      ],
+      "raw_p": [
+        3.695923597234081,
+        0.4830610082048254
+      ]
+    },
+    {
+      "t": 66.018200999,
+      "cmd_xy": [
+        3.7923199499519678,
+        0.6785794069727489
+      ],
+      "lio_xy": [
+        3.920517376780053,
+        0.8442233939718611
+      ],
+      "error": 0.20945765842839065,
+      "actual_v": [
+        0.15007770321688063,
+        0.36789569521723064
+      ],
+      "cmd_v": [
+        0.14326889348879793,
+        0.16364991013363245
+      ],
+      "cmd_a": [
+        0.07355242000716063,
+        -0.003703564260603629
+      ],
+      "raw_p": [
+        3.8750107084742105,
+        0.7567950300110949
+      ]
+    },
+    {
+      "t": 67.018225318,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.0295485365355255,
+        1.151695326242838
+      ],
+      "error": 0.14587970919499094,
+      "actual_v": [
+        0.04358005849464935,
+        -0.03983775239247919
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.0105382646577965,
+        1.036925323023037
+      ]
+    },
+    {
+      "t": 68.018268058,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.078514248570305,
+        1.1340289586663002
+      ],
+      "error": 0.15845477590586038,
+      "actual_v": [
+        0.00022649958572254535,
+        -0.0511338956213109
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9747035405852,
+        1.0375620865568345
+      ]
+    },
+    {
+      "t": 69.018483209,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.171941341994673,
+        1.137019546973011
+      ],
+      "error": 0.23408979583132414,
+      "actual_v": [
+        -0.019736403514896986,
+        -0.07070586734721204
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.972720117625154,
+        1.0048276199431077
+      ]
+    },
+    {
+      "t": 70.018716141,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.170477373350515,
+        1.119945811047086
+      ],
+      "error": 0.22461762889140913,
+      "actual_v": [
+        -0.07825883037156851,
+        -0.09280438591967517
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.0052891656837355,
+        0.9980785040615403
+      ]
+    },
+    {
+      "t": 71.018336238,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.017243993886553,
+        1.1025640262892664
+      ],
+      "error": 0.09640202111384244,
+      "actual_v": [
+        -0.09735702713865362,
+        -0.03531753946548347
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.005542769549484,
+        1.0163286681138906
+      ]
+    },
+    {
+      "t": 72.018414357,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        3.951739792054718,
+        1.1061700712944038
+      ],
+      "error": 0.0895800367951878,
+      "actual_v": [
+        0.05292333780464742,
+        -0.02605366376475462
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9966413270809924,
+        1.020998871807021
+      ]
+    },
+    {
+      "t": 73.018564052,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.020395169885633,
+        1.133473976840759
+      ],
+      "error": 0.12551316707508786,
+      "actual_v": [
+        0.05651499210156923,
+        -0.06151003025497033
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9883114125837666,
+        1.022467400421649
+      ]
+    },
+    {
+      "t": 74.018547424,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.014170615009153,
+        1.1277986039955405
+      ],
+      "error": 0.1178683288701474,
+      "actual_v": [
+        -0.03007518919870287,
+        -0.061291494329439186
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.001603194800837,
+        1.0235485645539693
+      ]
+    },
+    {
+      "t": 75.018608773,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        3.9309735004012287,
+        1.1067046520913242
+      ],
+      "error": 0.09649638378615884,
+      "actual_v": [
+        -0.11250785563467892,
+        -0.02187795758702033
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9527395550360835,
+        1.0185543576787064
+      ]
+    },
+    {
+      "t": 76.020065171,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        3.885715773859686,
+        1.1184265957730841
+      ],
+      "error": 0.13078636460182003,
+      "actual_v": [
+        0.07475545740173592,
+        -0.03419316388356818
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9640631563878985,
+        1.0297459565338305
+      ]
+    },
+    {
+      "t": 77.018640327,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        3.9410207785158176,
+        1.1229836202458072
+      ],
+      "error": 0.10846130600049847,
+      "actual_v": [
+        -0.013616061933635064,
+        -0.03879243529488268
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9327890374368275,
+        1.0218206961055083
+      ]
+    },
+    {
+      "t": 78.018633991,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        3.962729400432543,
+        1.1222149632887384
+      ],
+      "error": 0.10398757039875399,
+      "actual_v": [
+        0.024627755970259377,
+        -0.029837760078989337
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.960930437993582,
+        1.025377189954918
+      ]
+    },
+    {
+      "t": 79.018795969,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.00824548138055,
+        1.1257051465938595
+      ],
+      "error": 0.11380802031932057,
+      "actual_v": [
+        0.04729121814958819,
+        -0.026704265933257587
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9826255622063904,
+        1.0295856888176416
+      ]
+    },
+    {
+      "t": 80.019111286,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.033768394724547,
+        1.1272261784249453
+      ],
+      "error": 0.1260173501036095,
+      "actual_v": [
+        0.058422219953120476,
+        -0.026657643762275605
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.011470534701438,
+        1.0348296278069675
+      ]
+    },
+    {
+      "t": 81.018791304,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.017377710912226,
+        1.125300045343668
+      ],
+      "error": 0.11681626280546255,
+      "actual_v": [
+        0.031860669826910416,
+        -0.029331229468699895
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.02597675617344,
+        1.036482552825381
+      ]
+    },
+    {
+      "t": 82.01879401,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.0623842502390985,
+        1.1251454923467383
+      ],
+      "error": 0.14105349431055994,
+      "actual_v": [
+        0.015387719115487874,
+        -0.032400163374476924
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        3.9818971922303272,
+        1.0321598163600436
+      ]
+    },
+    {
+      "t": 83.018790817,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        4.025626609247162,
+        1.1226013863292126
+      ],
+      "error": 0.11800500154407963,
+      "actual_v": [
+        0.021278399627332238,
+        -0.03423621321929326
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.024886503079317,
+        1.029734771511436
+      ]
+    },
+    {
+      "t": 84.01889837,
+      "cmd_xy": [
+        3.9700795515852385,
+        1.0184874834414561
+      ],
+      "lio_xy": [
+        3.918455307687835,
+        1.1274276327783872
+      ],
+      "error": 0.120552970496506,
+      "actual_v": [
+        -0.029613142549405502,
+        -0.034869862452208765
+      ],
+      "cmd_v": [
+        0.0,
+        0.0
+      ],
+      "cmd_a": [
+        0.0,
+        0.0
+      ],
+      "raw_p": [
+        4.029468964833068,
+        1.0248216403902066
+      ]
+    }
+  ]
+}

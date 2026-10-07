@@ -127,8 +127,26 @@ public:
 - `name()`：`"align_down"`。
 - 行为：使用 `Context` 中下视圆心偏差，圆心超过 0.5 秒未更新时回退到轮廓中心。图像上/左分别视作机体前/左，按当前 yaw 转到 ENU，保持偏差方向，将水平纠偏距离限制为 `max_step_m` 后加到当前 XY；Z 固定为进入任务时的高度，yaw setpoint 锁定为 `home_yaw_enu`。超出阈值继续修正；第一次进入阈值时检查 YOLO：接收时间不超过 0.5 秒、序号非零且存在置信度严格大于 0.40 的检测，打印 `FIND TARGET`；否则打印 `NO TARGET`、保持位置并返回 `SUCCESS`，跳过稳定帧等待并继续后续流程。circle 或 contour 当前检测偏差进入到达阈值时均可判定到达。确认只执行一次，`onEnter` 重置，暂停恢复或再次进入阈值不重复确认；确认通过后连续收到 `stable_frames` 个阈值内的新检测帧后成功。无新检测时不累计帧数，检测超时后保持当前位置并清零稳定计数。
 - 失败条件：构造参数无效，设置 `ctx.fault` 后返回 `FAILURE`。无连接/定位或目标暂时丢失则等待，不会误判成功。
-- 生命周期：`onEnter`、`tick`、`onPause`、`onResume`；暂停时保持当前位置，恢复时等待新检测帧重新计数。无公开查询接口。
-- 节点接入：`offboard_core_node` 通过 `align_down.enabled`（默认 true）决定是否在悬停与降落之间插入本任务，并订阅视觉节点的 `/target/circle_center` 和 `/target/contour_center`；circle 优先，circle 数据过期时，与最近 circle 点相距小于 40 像素的 contour 按 circle 等效进行到达判定。`align_down.max_step_m` 默认 0.10 m，组合任务节点也透传此参数。相机需要使图像上/左与机体前/左一致，安装方向不同时需先调整坐标映射。
+- 生命周期：`onEnter`、`tick`、`onPause`、`onResume`；暂停时保持当前位置，恢复时等待新检测帧重新计数。
+- 查询接口：`reached_arrival_tolerance()` 表示检测偏差曾进入阈值；`target_confirmed()` 表示该次校准通过 YOLO 确认目标，而不是 `NO TARGET` 跳过。
+- 节点接入：`offboard_core_node` 通过 `align_down.enabled`（默认 true）在悬停与降落之间插入本任务；组合任务节点也使用相同检测输入。circle 优先，circle 数据过期时，与最近 circle 点相距小于 40 像素的 contour 按 circle 等效进行到达判定。相机需要使图像上/左与机体前/左一致，安装方向不同时需先调整坐标映射。
+
+### `RedCrossAlignTask`
+
+- 构造：`RedCrossAlignTask(double pixels_per_meter, int stable_frames, double arrive_distance_m, double max_step_m)`；参数边界与 `AlignDownTask` 相同。
+- `name()`：`"red_cross_align"`。
+- 行为：只读取 `Context` 中最新的 red-cross 图像中心偏差，不做 circle/contour 回退或 YOLO 筛选。图像上/左分别映射为机体前/左，以当前 yaw 转为 ENU；单帧限步长规则与 `AlignDownTask` 相同。Z 固定为进入任务时高度，yaw 锁定为 home yaw。检测超过 0.5 秒未更新时悬停并清零稳定帧计数；误差进入阈值后，连续收到 `stable_frames` 个新帧才成功。
+- 失败条件：构造参数无效时设置 `ctx.fault` 并返回 `FAILURE`；无连接/定位、无效 yaw 或暂时丢失目标时等待并保持安全位置。
+- 生命周期：`onEnter`、`tick`、`onPause`、`onResume`；暂停时保持当前位置，恢复后从新的视觉帧重新计数。无公开查询接口。
+- 节点接入：`offboard_core_node` 的 `red_cross_align.enabled`（默认 false）启用后订阅 `red_cross_align.topic`（默认 `/target/red_cross_center`），沿用其现有 AlignDown 校准参数。`AlignDropSnakeEgoTask` 则通过 `red_cross_align.*` 配置独立校准参数。`camera_center_node` 发布同名话题，消息使用与现有中心点相同的上/左为正偏差约定。
+
+### `DownDropTask`
+
+- 构造：`DownDropTask(rclcpp::Logger, double land_height, obj_id target, std::string serial_device, unsigned int baud_rate = 115200)`。
+- `name()`：`"down_drop"`。
+- 行为：先移动到配置高度，再移动目标 XY 偏移；位置满足 `GotoTask` 容差后返回 `SUCCESS`。当前串口发送段仍为注释代码，因此任务成功不代表已向投放器发出命令。
+- 失败条件：投放配置或进入时位置无效，或内部位置任务失败时设置 `ctx.fault` 并返回 `FAILURE`。
+- 生命周期：`onEnter`、`tick`、`onExit`；退出时关闭串口。无公开查询接口。
 
 ### `EgoVelFollowTask`
 
@@ -141,6 +159,16 @@ public:
 - 构造：`EgoGotoTask(rclcpp::Logger, rclcpp::Clock::SharedPtr, PoseStamped publisher, const Config &)`。
 - `name()`：由 `Config::task_name` 指定，默认 `"EGO_GOTO"`。
 - 行为：向配置目标发布 `PoseStamped`，跟踪 EGO 输出并在位置、速度同时稳定达到容差后返回 `SUCCESS`；规划器异常时保持当前位置。
+
+### `CorridorDoorTask`
+
+- 构造：`CorridorDoorTask(rclcpp::Logger, rclcpp::Clock::SharedPtr, PoseStamped publisher, const Config &)`；配置包含 `door_count`、占据阈值、门洞最小/最大宽度、前向搜索范围、地图超时、goto 容差、穿门距离、阶段超时及 `EgoGotoTask::Config`。
+- `name()`：`"CORRIDOR_DOOR"`。
+- 行为：逐列扫描飞机 ENU x 正方向的新鲜 `/ego_2d_planner/occupancy_grid`。只接受在同一 x 列中由 occupied 单元夹住、宽度处于最小值和最大值之间的连续 free 区域，unknown 不视为 free；从每列候选中选择离飞机 y 最近的开口中点，交给 `EgoGotoTask`。到达后用 `GotoTask` 向 ENU +x 飞行 `crossing_distance_m`（默认 0.1 m），完成后增加穿门计数并继续扫描，达到 `door_count` 后成功。
+- 失败条件：单阶段超过 `stage_timeout_s`、EGO 或 goto 子任务失败时设置 `ctx.fault` 并返回 `FAILURE`；等待连接、定位、地图新鲜或尚未找到合格门洞时保持当前位置。
+- 生命周期：`onEnter`、`tick`、`onExit`；运动期间拒绝 scheduler pause，退出时让位置 setpoint 回到当前位置。
+- 查询接口：`doorsCrossed()` 返回本轮已完成门数。
+- 节点接入：`corridor_door_node` 订阅 EGO 的 PositionCommand、Odometry 和 OccupancyGrid，按预设点、OFFBOARD、解锁、起飞、穿门、降落顺序调度。`corridor.door_count` 配置门数；其余门洞扫描参数见 `config/corridor_door.yaml`。
 
 ### `SnakeEgoAvoidTask`
 
@@ -155,10 +183,10 @@ public:
 
 - 构造：`AlignDropSnakeEgoTask(rclcpp::Logger, rclcpp::Clock::SharedPtr, PoseStamped publisher, const Config &)`；配置包含蛇形、EGO、避障和 AlignDown 参数，`align_timeout_s` 默认 10 秒。
 - `name()`：`"ALIGN_DROP_SNAKE_EGO"`。
-- 行为：蛇形遍历与 EGO 避障时都检查新鲜的下视轮廓数据；新鲜时先中断当前阶段执行 `AlignDownTask`，成功后返回中断位置，再恢复原蛇形航点或原 EGO 目标。Align 检查优先于障碍触发和 EGO tick。
+- 行为：蛇形遍历与 EGO 避障时检查新鲜的 RedCross、下视 circle 和 contour 数据；同时有效时 RedCross 优先，开始后两种校准不会互相打断。RedCross 使用独立参数；RedCross 成功或 AlignDown 成功且 YOLO 确认目标时执行 `DownDropTask`。每次 DownDrop 依次使用 `id=0/1/2` 的目标偏移；第三次投放成功后返回纠偏开始位置并结束组合任务，不再恢复蛇形/EGO。前两次投放成功后返回并恢复原阶段。Align 检查优先于障碍触发和 EGO tick。
 - 防重复：触发后锁存至本次 AlignDown 成功或失败。AlignDown 首次进入到达阈值时，优先记录新鲜圆心对应的 ENU 目标位置，其次记录新鲜轮廓投影位置，最后使用此时位于到达阈值内的飞机 ENU 位置估算。每次成功对齐的位置保留在本次任务运行的列表中；新的轮廓位置按像素比例和飞机 yaw 投影到 ENU，距任一已完成位置不超过 `align_retrigger_radius_m`（默认 0.55 m）时跳过重复对齐。`NO TARGET` 不会清除已记录位置。
-- 失败处理：对齐超时或 AlignDown 配置失败时直接以 `FAILURE` 结束；蛇形/EGO 避障故障沿用内部降落处理。
-- 节点接入：`snake_ego_avoid_node` 订阅 `/target/contour_center` 与 `/target/circle_center`；话题、标定比例、稳定帧数、到达阈值和超时均在 `snake_ego_avoid.yaml` 配置。
+- 失败处理：AlignDown 或 RedCross 超时后返回纠偏前位置并恢复原阶段；校准任务失败或 DownDrop 失败时返回 `FAILURE`。蛇形/EGO 避障故障沿用内部降落处理。
+- 节点接入：`snake_ego_avoid_node` 订阅 `/target/contour_center` 与 `/target/circle_center`；`align_drop_snake_ego_node` 还可订阅 `/target/red_cross_center`。话题、独立标定参数、超时及 DownDrop 参数在各自 YAML 配置中设置。
 
 ## 8. 维护检查清单
 

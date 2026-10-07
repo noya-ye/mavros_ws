@@ -31,6 +31,10 @@ void EgoGotoTask::onEnter(Context &ctx, MavrosIface &) {
   if (held_altitude_valid_) {
     held_altitude_enu_ = ctx.position_enu.z;
   }
+  locked_yaw_valid_ = std::isfinite(ctx.yaw_enu);
+  if (locked_yaw_valid_) {
+    locked_yaw_enu_ = ctx.yaw_enu;
+  }
 
   planner_.reset(ctx);
 
@@ -85,6 +89,11 @@ ITask::Status EgoGotoTask::tick(
     MavrosIface &,
     double dt_s)
 {
+  if (!locked_yaw_valid_ && std::isfinite(ctx.yaw_enu)) {
+    locked_yaw_enu_ = ctx.yaw_enu;
+    locked_yaw_valid_ = true;
+  }
+
   // --------------------------------------------------------------------------
   // 1. MAVROS 位置信息无效
   // --------------------------------------------------------------------------
@@ -208,8 +217,7 @@ ITask::Status EgoGotoTask::tick(
         0.0
     };
 
-    ctx.yaw_setpoint_enu =
-        cfg_.yaw_local;
+    ctx.yaw_setpoint_enu = locked_yaw_enu_;
 
     ctx.setpoint_mode =
         SetpointMode::POSITION;
@@ -264,6 +272,9 @@ ITask::Status EgoGotoTask::tick(
 
   const auto result =
       planner_.plan(ctx, &dbg);
+
+  // The velocity planner normally tracks measured yaw; EGO keeps its entry yaw.
+  ctx.yaw_setpoint_enu = locked_yaw_enu_;
 
   // Preserve the entry altitude even when EGO input becomes stale and the
   // planner falls back to its own hold behavior.
@@ -471,8 +482,7 @@ void EgoGotoTask::hold(
       0.0
   };
 
-  ctx.yaw_setpoint_enu =
-      cfg_.yaw_local;
+  ctx.yaw_setpoint_enu = locked_yaw_valid_ ? locked_yaw_enu_ : ctx.yaw_enu;
 
   ctx.setpoint_mode =
       SetpointMode::POSITION;

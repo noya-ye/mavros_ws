@@ -71,6 +71,7 @@ public:
     // The EGO target is referenced to the initial MAVROS local position.
     ego_cfg.height_m = takeoff_height_m;
     ego_cfg.goal_frame = declare_parameter<std::string>("ego.goal_frame", "lidar");
+    ego_cfg.planner.kp_xy = declare_parameter<double>("ego.kp_xy", 1.0);
     ego_cfg.planner.use_velocity_ff = declare_parameter<bool>(
       "ego.use_velocity_ff", true);
     ego_cfg.planner.use_acceleration_ff = declare_parameter<bool>(

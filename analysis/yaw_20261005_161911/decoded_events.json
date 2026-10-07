@@ -1,0 +1,163 @@
+[
+  {
+    "id": 9489139,
+    "name": "commander_armed_by",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/Commander.cpp",
+    "line": 613,
+    "context": "\n\tmavlink_log_info(&_mavlink_log_pub, \"Armed by %s\\t\", arm_disarm_reason_str(calling_reason));\n\tevents::send<events::px4::enums::arm_disarm_reason_t>(events::ID(\"commander_armed_by\"), events::Log::Info,\n\t\t\t\"Armed by {1}\", calling_reason);\n\n\tif (_param_com_home_en.get()) {\n\t\t_home_position.setHomePosition();\n\t}\n\n\t_status_changed = true;\n\n\treturn TRANSITION_CHANGED;\n}\n\ntransition_result_t Commander::disarm(arm_disarm_reason_t calling_reason, bool forced)\n{\n\tif (!isArmed()) {\n\t\treturn TRANSITION_NOT_CHANGED;\n\t}\n\n\tif (!forced) {\n\t\tconst bool landed = (_vehicle_land_detected.landed || _vehicle_land_detected.maybe_landed\n\t\t\t\t     || is_ground_vehicle(_vehicle_status));\n\t\tconst bool mc_manual_thrust_mode = _vehicle_status.vehicle"
+  },
+  {
+    "id": 16017271,
+    "name": "commander_disarmed_by",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/Commander.cpp",
+    "line": 665,
+    "context": "avlink_log_info(&_mavlink_log_pub, \"Disarmed by %s\\t\", arm_disarm_reason_str(calling_reason));\n\tevents::send<events::px4::enums::arm_disarm_reason_t>(events::ID(\"commander_disarmed_by\"), events::Log::Info,\n\t\t\t\"Disarmed by {1}\", calling_reason);\n\n\tif (_param_com_force_safety.get()) {\n\t\t_safety.activateSafety();\n\t}\n\n\t// update flight uuid\n\tconst int32_t flight_uuid = _param_com_flight_uuid.get() + 1;\n\t_param_com_flight_uuid.set(flight_uuid);\n\t_param_com_flight_uuid.commit_no_notification();\n\n\t_status_changed = true;\n\n\treturn TRANSITION_CHANGED;\n}\n\nCommander::Commander() :\n\tModuleParams(nullptr)\n{\n\t_vehicle_land_detected.landed = true;\n\n\t_vehicle_status.arming_state = vehicle_status_s::ARMING_STATE_DISARMED;\n\t_vehicle_status.sys"
+  },
+  {
+    "id": 9844908,
+    "name": "commander_landing_detected",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/Commander.cpp",
+    "line": 2103,
+    "context": " (isArmed()) {\n\t\t\tif (!was_landed && _vehicle_land_detected.landed) {\n\t\t\t\tmavlink_log_info(&_mavlink_log_pub, \"Landing detected\\t\");\n\t\t\t\tevents::send(events::ID(\"commander_landing_detected\"), events::Log::Info, \"Landing detected\");\n\n\t\t\t} else if (was_landed && !_vehicle_land_detected.landed) {\n\t\t\t\tmavlink_log_info(&_mavlink_log_pub, \"Takeoff detected\\t\");\n\t\t\t\tevents::send(events::ID(\"commander_takeoff_detected\"), events::Log::Info, \"Takeoff detected\");\n\t\t\t\t_vehicle_status.takeoff_time = hrt_absolute_time();\n\t\t\t\t_have_taken_off_since_arming = true;\n\t\t\t}\n\n\t\t\t// automatically set or update home position\n\t\t\tif (_param_com_home_en.get()) {\n\t\t\t\t// set the home position when taking off\n\t\t\t\tif (!_vehicle_land_detected.landed) {\n\t\t\t\t\tif (w"
+  },
+  {
+    "id": 4277609,
+    "name": "commander_takeoff_detected",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/Commander.cpp",
+    "line": 2107,
+    "context": "ted\");\n\n\t\t\t} else if (was_landed && !_vehicle_land_detected.landed) {\n\t\t\t\tmavlink_log_info(&_mavlink_log_pub, \"Takeoff detected\\t\");\n\t\t\t\tevents::send(events::ID(\"commander_takeoff_detected\"), events::Log::Info, \"Takeoff detected\");\n\t\t\t\t_vehicle_status.takeoff_time = hrt_absolute_time();\n\t\t\t\t_have_taken_off_since_arming = true;\n\t\t\t}\n\n\t\t\t// automatically set or update home position\n\t\t\tif (_param_com_home_en.get()) {\n\t\t\t\t// set the home position when taking off\n\t\t\t\tif (!_vehicle_land_detected.landed) {\n\t\t\t\t\tif (was_landed) {\n\t\t\t\t\t\t_home_position.setHomePosition();\n\n\t\t\t\t\t} else if (_param_com_home_in_air.get()) {\n\t\t\t\t\t\t_home_position.setInAirHomePosition();\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t}\n\t}\n}\n\nvoid Commander::safetyButtonUpdate()\n{\n\tconst bool"
+  },
+  {
+    "id": 11047904,
+    "name": "commander_arming_check_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/Common.cpp",
+    "line": 288,
+    "context": ", events::px4::enums::health_component_t,\n\t       events::px4::enums::navigation_mode_group_t, events::px4::enums::navigation_mode_group_t>(\n\t\t       events::ID(\"commander_arming_check_summary\"), events::Log::Protocol,\n\t\t       \"Arming check summary event\", 0, current_results.arming_checks.error, current_results.arming_checks.warning,\n\t\t       (navigation_mode_group_t)current_results.arming_checks.can_arm,\n\t\t       (navigation_mode_group_t)current_results.arming_checks.can_run);\n\n\t// send all events\n\tint offset = 0;\n\tevent_s event;\n\n\tfor (int i = 0; i < max_num_events && offset < _next_buffer_idx; ++i) {\n\t\tEventBufferHeader *header = (EventBufferHeader *)(_event_buffer + offset);\n\t\tmemcpy(&event.id, &header->id, sizeof(event.id));\n\t\te"
+  },
+  {
+    "id": 1914663,
+    "name": "commander_health_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/Common.cpp",
+    "line": 322,
+    "context": "events::send<uint8_t, events::px4::enums::health_component_t, events::px4::enums::health_component_t,\n\t       events::px4::enums::health_component_t>(events::ID(\"commander_health_summary\"),\n\t\t\t       events::Log::Protocol,\n\t\t\t       \"Health report summary event\", 0, current_results.health.is_present,\n\t\t\t       current_results.health.error, current_results.health.warning);\n\treturn true;\n}\n\nbool Report::reportIfUnreportedDifferences()\n{\n\tif (_had_unreported_difference) {\n\t\treturn report(true);\n\t}\n\n\treturn false;\n}\n"
+  },
+  {
+    "id": 11047904,
+    "name": "commander_arming_check_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecksTest.cpp",
+    "line": 186,
+    "context": "LSE(reporter.canArm(vehicle_status_s::NAVIGATION_STATE_POSCTL));\n\n\t\t\tif (i == 0) {\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\t\tASSERT_EQ(event.id, events::ID(\"commander_arming_check_summary\"));\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\n\t\t\t\tif (with_arg) {\n\t\t\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_fail1\"));\n\n\t\t\t\t} else {\n\t\t\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_fail2\"));\n\t\t\t\t}\n\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\t\tASSERT_EQ(event.id, events::ID(\"commander_health_summary\"));\n\n\t\t\t} else {\n\t\t\t\tASSERT_FALSE(event_sub.updated());\n\t\t\t}\n\t\t}\n\t}\n\n\t// now the same for health\n\tfor (int j = 0; j < 2; ++j) {\n\t\tconst bool with_arg = j == 0;\n\n\t\tfor (int i = 0; i < 3; ++i) {\n\t\t\treporter.reset();\n\n\t\t\tif"
+  },
+  {
+    "id": 1914663,
+    "name": "commander_health_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecksTest.cpp",
+    "line": 197,
+    "context": "else {\n\t\t\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_fail2\"));\n\t\t\t\t}\n\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\t\tASSERT_EQ(event.id, events::ID(\"commander_health_summary\"));\n\n\t\t\t} else {\n\t\t\t\tASSERT_FALSE(event_sub.updated());\n\t\t\t}\n\t\t}\n\t}\n\n\t// now the same for health\n\tfor (int j = 0; j < 2; ++j) {\n\t\tconst bool with_arg = j == 0;\n\n\t\tfor (int i = 0; i < 3; ++i) {\n\t\t\treporter.reset();\n\n\t\t\tif (with_arg) {\n\t\t\t\treporter.healthFailure<uint16_t>(NavModes::All, health_component_t::remote_control,\n\t\t\t\t\t\t\t\t events::ID(\"arming_test_reporting_fail3\"), events::Log::Warning, \"\", 4938);\n\n\t\t\t} else {\n\t\t\t\treporter.healthFailure(NavModes::PositionControl, health_component_t::remote_control,\n\t\t\t\t\t\t       events::ID(\"arming_test_repo"
+  },
+  {
+    "id": 11047904,
+    "name": "commander_arming_check_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecksTest.cpp",
+    "line": 227,
+    "context": "LSE(reporter.canArm(vehicle_status_s::NAVIGATION_STATE_POSCTL));\n\n\t\t\tif (i == 0) {\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\t\tASSERT_EQ(event.id, events::ID(\"commander_arming_check_summary\"));\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\n\t\t\t\tif (with_arg) {\n\t\t\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_fail3\"));\n\n\t\t\t\t} else {\n\t\t\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_fail4\"));\n\t\t\t\t}\n\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\t\tASSERT_EQ(event.id, events::ID(\"commander_health_summary\"));\n\n\t\t\t} else {\n\t\t\t\tASSERT_FALSE(event_sub.updated());\n\t\t\t}\n\t\t}\n\t}\n\n}\n\nTEST_F(ReporterTest, reporting_multiple)\n{\n\tfailsafe_flags_s failsafe_flags{};\n\tReport reporter{failsafe_flags, 0_s};\n\n\tuORB::Subscription event_sub"
+  },
+  {
+    "id": 1914663,
+    "name": "commander_health_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecksTest.cpp",
+    "line": 238,
+    "context": "else {\n\t\t\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_fail4\"));\n\t\t\t\t}\n\n\t\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\t\tASSERT_EQ(event.id, events::ID(\"commander_health_summary\"));\n\n\t\t\t} else {\n\t\t\t\tASSERT_FALSE(event_sub.updated());\n\t\t\t}\n\t\t}\n\t}\n\n}\n\nTEST_F(ReporterTest, reporting_multiple)\n{\n\tfailsafe_flags_s failsafe_flags{};\n\tReport reporter{failsafe_flags, 0_s};\n\n\tuORB::Subscription event_sub{ORB_ID(event)};\n\tevent_sub.subscribe();\n\tevent_s event;\n\n\twhile (event_sub.update(&event)); // clear all updates\n\n\tfor (int i = 0; i < 3; ++i) {\n\t\treporter.reset();\n\t\treporter.armingCheckFailure<uint16_t>(NavModes::All, health_component_t::remote_control,\n\t\t\t\t\t\t      events::ID(\"arming_test_reporting_multiple_fail1\"), events::Lo"
+  },
+  {
+    "id": 11047904,
+    "name": "commander_arming_check_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecksTest.cpp",
+    "line": 273,
+    "context": "_FALSE(reporter.canArm(vehicle_status_s::NAVIGATION_STATE_POSCTL));\n\n\t\tif (i == 0) {\n\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"commander_arming_check_summary\"));\n\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_multiple_fail1\"));\n\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_multiple_fail2\"));\n\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_multiple_fail3\"));\n\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"commander_health_summary\"));\n\n\t\t} else {\n\t\t\tASSERT_FALSE(event_sub.updated());\n\t\t}\n\t}\n}\n"
+  },
+  {
+    "id": 1914663,
+    "name": "commander_health_summary",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/HealthAndArmingChecksTest.cpp",
+    "line": 281,
+    "context": "event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"arming_test_reporting_multiple_fail3\"));\n\t\t\tASSERT_TRUE(event_sub.update(&event));\n\t\t\tASSERT_EQ(event.id, events::ID(\"commander_health_summary\"));\n\n\t\t} else {\n\t\t\tASSERT_FALSE(event_sub.updated());\n\t\t}\n\t}\n}\n"
+  },
+  {
+    "id": 13835193,
+    "name": "check_modes_local_pos",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/modeCheck.cpp",
+    "line": 84,
+    "context": "ficient to execute the selected mode.\n\t\t */\n\t\treporter.armingCheckFailure(local_position_modes, health_component_t::local_position_estimate,\n\t\t\t\t\t    events::ID(\"check_modes_local_pos\"),\n\t\t\t\t\t    events::Log::Error, \"Navigation error: No valid position estimate\");\n\t\treporter.clearCanRunBits(local_position_modes);\n\t}\n\n\tif (reporter.failsafeFlags().global_position_invalid && reporter.failsafeFlags().mode_req_global_position != 0) {\n\t\t/* EVENT\n\t\t * @description\n\t\t * The available positioning data is not sufficient to execute the selected mode.\n\t\t */\n\t\treporter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_global_position,\n\t\t\t\t\t    health_component_t::global_position_estimate,\n\t\t\t\t\t    events::ID(\"check_modes_glo"
+  },
+  {
+    "id": 10011251,
+    "name": "check_modes_global_pos",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/modeCheck.cpp",
+    "line": 96,
+    "context": "orter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_global_position,\n\t\t\t\t\t    health_component_t::global_position_estimate,\n\t\t\t\t\t    events::ID(\"check_modes_global_pos\"),\n\t\t\t\t\t    events::Log::Error, \"Navigation error: No valid global position estimate\");\n\t\treporter.clearCanRunBits((NavModes)reporter.failsafeFlags().mode_req_global_position);\n\t}\n\n\tif (reporter.failsafeFlags().local_altitude_invalid && reporter.failsafeFlags().mode_req_local_alt != 0) {\n\t\t/* EVENT\n\t\t * @description\n\t\t * The available positioning data is not sufficient to execute the selected mode.\n\t\t */\n\t\treporter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_local_alt, health_component_t::system,\n\t\t\t\t\t    events::ID(\"check_mod"
+  },
+  {
+    "id": 377561,
+    "name": "check_modes_mission",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/modeCheck.cpp",
+    "line": 128,
+    "context": "m>COM_ARM_MIS_REQ</param> parameter.\n\t\t * </profile>\n\t\t */\n\t\treporter.armingCheckFailure(mission_required_modes, health_component_t::system,\n\t\t\t\t\t    events::ID(\"check_modes_mission\"),\n\t\t\t\t\t    events::Log::Info, \"No valid mission available\");\n\t\treporter.clearCanRunBits((NavModes)reporter.failsafeFlags().mode_req_mission);\n\t}\n\n\tif (reporter.failsafeFlags().offboard_control_signal_lost && reporter.failsafeFlags().mode_req_offboard_signal != 0) {\n\t\t/* EVENT\n\t\t * @description\n\t\t * The offboard component is not sending setpoints or the required estimate (e.g. position) is missing.\n\t\t */\n\t\treporter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_offboard_signal, health_component_t::system,\n\t\t\t\t\t    events::ID(\"che"
+  },
+  {
+    "id": 3087815,
+    "name": "check_modes_offboard_signal",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/modeCheck.cpp",
+    "line": 139,
+    "context": "on) is missing.\n\t\t */\n\t\treporter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_offboard_signal, health_component_t::system,\n\t\t\t\t\t    events::ID(\"check_modes_offboard_signal\"),\n\t\t\t\t\t    events::Log::Error, \"No offboard signal\");\n\t\treporter.clearCanRunBits((NavModes)reporter.failsafeFlags().mode_req_offboard_signal);\n\t}\n\n\tif (reporter.failsafeFlags().home_position_invalid && reporter.failsafeFlags().mode_req_home_position != 0) {\n\t\t/* EVENT\n\t\t */\n\t\treporter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_home_position, health_component_t::system,\n\t\t\t\t\t    events::ID(\"check_modes_home_position\"),\n\t\t\t\t\t    events::Log::Info, \"Home position not set\");\n\t\treporter.clearCanRunBits((NavModes)reporter.failsafe"
+  },
+  {
+    "id": 79408,
+    "name": "check_modes_home_position",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/modeCheck.cpp",
+    "line": 148,
+    "context": "= 0) {\n\t\t/* EVENT\n\t\t */\n\t\treporter.armingCheckFailure((NavModes)reporter.failsafeFlags().mode_req_home_position, health_component_t::system,\n\t\t\t\t\t    events::ID(\"check_modes_home_position\"),\n\t\t\t\t\t    events::Log::Info, \"Home position not set\");\n\t\treporter.clearCanRunBits((NavModes)reporter.failsafeFlags().mode_req_home_position);\n\t}\n\n\tif (reporter.failsafeFlags().manual_control_signal_lost && reporter.failsafeFlags().mode_req_manual_control != 0) {\n\t\tconst bool rc_disabled = (_param_com_rc_in_mode.get() == 4);\n\t\tNavModes nav_modes = rc_disabled ? (NavModes)reporter.failsafeFlags().mode_req_manual_control : NavModes::None;\n\t\tevents::LogLevel log_level = rc_disabled ? events::Log::Error : events::Log::Warning;\n\n\t\t/* EVENT\n\t\t * @des"
+  },
+  {
+    "id": 6801787,
+    "name": "check_rc_dl_no_dllink",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/rcAndDataLinkCheck.cpp",
+    "line": 94,
+    "context": ">NAV_DLL_ACT</param> parameter.\n\t\t * </profile>\n\t\t */\n\t\treporter.armingCheckFailure(affected_modes, health_component_t::communication_links,\n\t\t\t\t\t    events::ID(\"check_rc_dl_no_dllink\"),\n\t\t\t\t\t    log_level, \"No connection to the ground control station\");\n\n\t\tif (gcs_connection_required && reporter.mavlink_log_pub()) {\n\t\t\tmavlink_log_warning(reporter.mavlink_log_pub(), \"Preflight Fail: No connection to the ground control station\\t\");\n\t\t}\n\n\t} else {\n\t\treporter.setIsPresent(health_component_t::communication_links);\n\t}\n}\n"
+  },
+  {
+    "id": 5049764,
+    "name": "check_battery_low",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/batteryCheck.cpp",
+    "line": 221,
+    "context": " Can be configured with <param>BAT_LOW_THR</param>.\n\t\t\t* </profile>\n\t\t\t*/\n\t\t\treporter.armingCheckFailure(affected_modes, health_component_t::battery, events::ID(\"check_battery_low\"),\n\t\t\t\t\t\t    log_level, \"Low battery\");\n\n\t\t\tif (reporter.mavlink_log_pub()) {\n\t\t\t\tmavlink_log_emergency(reporter.mavlink_log_pub(), \"Low battery\\t\");\n\t\t\t}\n\n\t\t\tbreak;\n\n\t\tcase battery_status_s::WARNING_CRITICAL:\n\t\t\t/* EVENT\n\t\t\t* @description\n\t\t\t* The lowest battery state of charge is below the critical threshold.\n\t\t\t*\n\t\t\t* <profile name=\"dev\">\n\t\t\t* Can be configured with <param>BAT_CRIT_THR</param> and from when to disalow arming with <param>COM_ARM_BAT_MIN</param>.\n\t\t\t* </profile>\n\t\t\t*/\n\t\t\treporter.armingCheckFailure(affected_modes, health_compon"
+  },
+  {
+    "id": 2627595,
+    "name": "check_battery_critical",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/batteryCheck.cpp",
+    "line": 239,
+    "context": "disalow arming with <param>COM_ARM_BAT_MIN</param>.\n\t\t\t* </profile>\n\t\t\t*/\n\t\t\treporter.armingCheckFailure(affected_modes, health_component_t::battery, events::ID(\"check_battery_critical\"),\n\t\t\t\t\t\t    log_level, \"Critical battery\");\n\n\t\t\tif (reporter.mavlink_log_pub()) {\n\t\t\t\tmavlink_log_emergency(reporter.mavlink_log_pub(), \"Critical battery\\t\");\n\t\t\t}\n\n\t\t\tbreak;\n\n\t\tcase battery_status_s::WARNING_EMERGENCY:\n\t\t\t/* EVENT\n\t\t\t* @description\n\t\t\t* The lowest battery state of charge is below the emergency threshold.\n\t\t\t*\n\t\t\t* <profile name=\"dev\">\n\t\t\t* Can be configured with <param>BAT_EMERGEN_THR</param>.\n\t\t\t* </profile>\n\t\t\t*/\n\t\t\treporter.armingCheckFailure(affected_modes, health_component_t::battery, events::ID(\"check_battery_emergency\")"
+  },
+  {
+    "id": 16642797,
+    "name": "check_estimator_heading_not_stable",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/HealthAndArmingChecks/checks/estimatorCheck.cpp",
+    "line": 143,
+    "context": "s.pre_flt_fail_innov_heading) {\n\t\t/* EVENT\n\t\t */\n\t\treporter.armingCheckFailure(required_groups, health_component_t::local_position_estimate,\n\t\t\t\t\t    events::ID(\"check_estimator_heading_not_stable\"),\n\t\t\t\t\t    events::Log::Error, \"Heading estimate not stable\");\n\n\t\tif (reporter.mavlink_log_pub()) {\n\t\t\tmavlink_log_critical(reporter.mavlink_log_pub(), \"Preflight Fail: heading estimate not stable\");\n\t\t}\n\n\t} else if (!context.isArmed() && estimator_status.pre_flt_fail_innov_vel_horiz) {\n\t\t/* EVENT\n\t\t */\n\t\treporter.armingCheckFailure(required_groups, health_component_t::local_position_estimate,\n\t\t\t\t\t    events::ID(\"check_estimator_hor_vel_not_stable\"),\n\t\t\t\t\t    events::Log::Error, \"Horizontal velocity unstable\");\n\n\t\tif (reporter.mavlink_log_pub("
+  },
+  {
+    "id": 12216659,
+    "name": "commander_failsafe_enter_low_bat",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/failsafe/framework.cpp",
+    "line": 254,
+    "context": "ng to {2}\", mavlink_mode, failsafe_action);\n\t\t\t}\n\n\t\t} else {\n\t\t\tif (action == Action::Warn) {\n\t\t\t\tif (cause == Cause::BatteryLow) {\n\t\t\t\t\tevents::send(events::ID(\"commander_failsafe_enter_low_bat\"),\n\t\t\t\t\t{events::Log::Warning, events::LogInternal::Info},\n\t\t\t\t\t\"Low battery level, return advised\");\n\n\t\t\t\t} else if (cause == Cause::BatteryCritical) {\n\t\t\t\t\tevents::send(events::ID(\"commander_failsafe_enter_crit_bat_warn\"),\n\t\t\t\t\t{events::Log::Critical, events::LogInternal::Info},\n\t\t\t\t\t\"Critical battery level, land now\");\n\n\t\t\t\t} else if (cause == Cause::BatteryEmergency) {\n\t\t\t\t\tevents::send(events::ID(\"commander_failsafe_enter_crit_low_bat_warn\"), {events::Log::Emergency, events::LogInternal::Info},\n\t\t\t\t\t\t     \"Emergency battery level, land imme"
+  },
+  {
+    "id": 2474944,
+    "name": "commander_failsafe_enter_crit_bat_warn",
+    "path": "/home/jetson/PX4-Autopilot/src/modules/commander/failsafe/framework.cpp",
+    "line": 259,
+    "context": ":Warning, events::LogInternal::Info},\n\t\t\t\t\t\"Low battery level, return advised\");\n\n\t\t\t\t} else if (cause == Cause::BatteryCritical) {\n\t\t\t\t\tevents::send(events::ID(\"commander_failsafe_enter_crit_bat_warn\"),\n\t\t\t\t\t{events::Log::Critical, events::LogInternal::Info},\n\t\t\t\t\t\"Critical battery level, land now\");\n\n\t\t\t\t} else if (cause == Cause::BatteryEmergency) {\n\t\t\t\t\tevents::send(events::ID(\"commander_failsafe_enter_crit_low_bat_warn\"), {events::Log::Emergency, events::LogInternal::Info},\n\t\t\t\t\t\t     \"Emergency battery level, land immediately\");\n\n\t\t\t\t} else if (cause == Cause::RemainingFlightTimeLow) {\n\t\t\t\t\tevents::send(events::ID(\"commander_failsafe_enter_low_flight_time_warn\"),\n\t\t\t\t\t{events::Log::Warning, events::LogInternal::Info},\n\t\t\t\t\t\"Low remainin"
+  }
+]

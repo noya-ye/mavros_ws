@@ -1,0 +1,80 @@
+door_flight:
+  ros__parameters:
+    # true：本节点自动预发送→Offboard→解锁→起飞。只允许它发布 MAVROS 位置设定点。
+    auto_start: true
+    # 起飞、穿门和等待的固定目标高度：MAVROS 本地 ENU 坐标系 Z（米，向上为正）。
+    # 直接设为此值，不叠加启动位置 Z；坐标原点在地面时才等于离地高度。修改后重启生效。
+    hover_height_m: 0.6
+    setpoint_rate_hz: 20.0
+    presetpoint_duration_s: 2.0
+    command_timeout_s: 10.0
+    command_retry_interval_s: 1.0
+    takeoff_timeout_s: 30.0
+    # 高度、水平位置和速度均稳定达到条件，连续保持该时长后开启识别。
+    hover_duration_s: 1.0
+    height_tolerance_m: 0.10
+    stop_speed_mps: 0.10
+    arrival_tolerance_m: 0.10
+    arrival_dwell_s: 0.3
+    # 中间位置参考的最大速度/加速度。跟踪误差超限时暂停参考点，追上后续走原轨迹。
+    max_speed: 0.20
+    max_acceleration: 0.30
+    tracking_error_m: 0.12
+    # MAVROS pose/state 与规划心跳超时。失去规划时锁定当前位置XY，保持固定Z。
+    input_timeout_s: 3.0
+    goal_timeout_s: 0.6
+    local_frame: map
+    planning_frame: lidar
+    odom_child_frame: body
+    odom_topic: /fastlio2/lio_odom
+    # LIO pose原点到与MAVROS一致的机体参考点，必须与识别节点一致。
+    body_offset: [0.0, 0.0, 0.0]
+    # 假定两侧位姿姿态描述同一机体轴；悬停时由配对位姿锁定XY旋转和平移。
+    alignment_sync_tolerance_s: 0.08
+    # 飞行中两套位姿映射差超过此值，悬停并禁止自动重新校准。
+    alignment_error_m: 0.15
+    # 默认开启JSONL记录：飞行状态/实际位置/发送参考/目标误差/超时/服务请求。
+    enable_logging: true
+    # 空值保存到 ~/.ros/door_offboard/；自定义时填写绝对路径，例如 /home/jetson/door_logs。
+    log_directory: ""
+
+door_perception:
+  ros__parameters:
+    cloud_topic: /fastlio2/world_cloud
+    odom_topic: /fastlio2/lio_odom
+    planning_frame: lidar
+    odom_child_frame: body
+    body_offset: [0.0, 0.0, 0.0]
+    lidar_offset: [0.0, 0.0, 0.0]
+    # 机体上下尺寸按实物测量；低空0.3m时尤其需要核对下方包络。
+    body_below: 0.15
+    body_above: 0.15
+    vertical_margin: 0.08
+    radius: 0.25
+    margin: 0.0
+    corridor_width: 2.2
+    corridor_tolerance: 0.5
+    lateral_range: 2.0
+    door_min: 0.50
+    door_max: 1.20
+    # 稳定识别后：当前位置直连门前0.5m，再穿越到门后0.5m。
+    pre_distance: 0.50
+    post_distance: 0.50
+    wall_thickness: 0.15
+    stable_frames: 3
+    max_doors: 2
+    slice_half_thickness: 0.08
+    self_filter_radius: 0.28
+    cache_seconds: 0.6
+    max_age: 0.3
+    sync_tolerance: 0.03
+    enable_timeout: 0.5
+    # 由控制节点传入固定LIO切片高度，不需要手动填写flight_z。
+    height_tolerance: 0.06
+    # 与控制端到达判据一致；收到匹配编号反馈且LIO证实到点后才换段。
+    arrival_tolerance: 0.10
+    stop_speed: 0.10
+    # 默认开启JSONL记录：点云同步/切片统计/门洞/路径/阻塞原因/到达反馈。
+    enable_logging: true
+    # 可与飞行节点填写同一绝对目录；按节点名分别保存，不会覆盖上次启动的日志。
+    log_directory: ""
